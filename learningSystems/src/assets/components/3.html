@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../jquery.min.js"></script>
+    <script src="../echarts.min.js"></script>
+    <title>Document</title>
+    <style>
+        *{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    color: #fff;
+}
+div{
+    user-select: none;
+}
+body{
+    background: #051332;
+}
+.pg-canvas{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: .1;
+}
+
+::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 5px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+    }
+::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius   : 10px;
+    background-color: #5cd3bb;
+    background-image: -webkit-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+    );
+    }
+::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #ededed;
+    border-radius: 10px;
+    }
+    ul{
+        
+        display: flex;
+    
+    }
+     li{
+      flex: 0 0 25%;
+      height: 250px;
+     }
+
+    </style>
+</head>
+<body>
+                                  
+  <div>
+      <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+      </ul>       
+  </div>
+</body>
+<script>
+   var option1 = {
+       grid:{
+              left:'20px',
+              top:'20px',
+              right:'20px',
+              bottom:'40px'
+            },
+    xAxis: {
+        type: 'category',
+        data: ['cpu温度', '主板温度'],
+        axisLine:{
+            lineStyle:{
+                color:"#009cf3"
+            }
+        }
+    },
+    yAxis: {
+        type: 'value',
+        show:false,
+        
+    },
+    series: [{
+        data: [38, 36,],
+        type: 'bar',
+        barWidth : 30,
+        itemStyle:{
+              normal: {
+                label: {
+                    show: true,		//开启显示
+                    position: 'top',	//在上方显示
+                    textStyle: {	    //数值样式
+                        color: '#009cf3',
+                        fontSize: 12
+                    },
+                    formatter:(parmas)=>{
+                        return parmas.data+"℃"
+                    }
+                },
+                color: '#009cf3'
+            }     
+        }
+        }]
+    };
+
+    var option2 = {
+        title:{
+            show:true,
+            text:"cpu使用率",
+            textStyle:{
+                color:"#fff",
+            },
+            x:'center',
+            y:'top',
+        },
+    color:['#f9ae3b', '#29a9e0', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center',
+        show:false
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['45%', '60%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 0
+            },
+            label: {
+                show: true,
+                position: 'center',
+                fontSize: '20', 
+                fontWeight: 'bold', 
+                color:"#f5911e",
+                formatter:(x)=>{
+              
+                    return x.percent+"%\n\n"+x.name
+                },
+                rich: {
+                                    a: {
+                                        color: '#ff0000',
+                                        fontFamily: 'Microsoft YaHei',
+                                        fontSize: 13
+                                    },
+                                    b: {
+                                        color: '#005c98',
+                                        fontFamily: 'Microsoft YaHei',
+                                        fontSize: 13
+                                    }
+                                }
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 1048, name: '已使用',label: {show: true}},
+                {value: 735, name: '未使用',label: {show: false}}
+                
+            ]
+        }
+    ]
+};
+
+var option3 = {
+        title:{
+            show:true,
+            text:"cpu使用率",
+            textStyle:{
+                color:"#fff",
+            },
+            x:'center',
+            y:'top',
+        },
+    color:['#f9ae3b', '#29a9e0', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center',
+        show:false
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['45%', '60%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 0
+            },
+            label: {
+                show: true,
+                position: 'center',
+                fontSize: '20', 
+                fontWeight: 'bold', 
+                color:"#f5911e",
+                formatter:(x)=>{
+                   
+                    return x.percent+"%\n\n"+x.name
+                }
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 1048, name: '已使用',label: {show: true}},
+                {value: 735, name: '未使用',label: {show: false}}
+                
+            ]
+        }
+    ]
+};
+
+var option4 = {
+        title:{
+            show:true,
+            text:"cpu使用率",
+            textStyle:{
+                color:"#fff",
+            },
+            x:'center',
+            y:'top',
+        },
+    color:['#f9ae3b', '#29a9e0', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center',
+        show:false
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['45%', '60%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 0
+            },
+            label: {
+                show: true,
+                position: 'center',
+                fontSize: '20', 
+                fontWeight: 'bold', 
+                color:"#f5911e",
+                formatter:(x)=>{
+              
+                    return x.percent+"%\n\n"+x.name
+                },
+                rich: {
+                                    a: {
+                                        color: '#ff0000',
+                                        fontFamily: 'Microsoft YaHei',
+                                        fontSize: 13
+                                    },
+                                    b: {
+                                        color: '#005c98',
+                                        fontFamily: 'Microsoft YaHei',
+                                        fontSize: 13
+                                    }
+                                }
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 1048, name: '已使用',label: {show: true}},
+                {value: 735, name: '未使用',label: {show: false}}
+                
+            ]
+        }
+    ]
+};
+
+    var pieChart1 = document.querySelectorAll('li')
+    echarts.init(pieChart1[0]).setOption(option1);
+    echarts.init(pieChart1[1]).setOption(option2);
+    echarts.init(pieChart1[2]).setOption(option3);
+    echarts.init(pieChart1[3]).setOption(option4);
+
+</script>
+</html>

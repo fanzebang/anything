@@ -1,0 +1,49 @@
+<div class="device">
+    <div class="left">
+       <div class="box">
+            <div class="content">
+                <ul class="btn">
+                    <li *ngFor="let item of btnArr">{{item}}</li>
+                </ul>
+                <div class="line"></div>
+                <h2>设 备 列 表</h2>
+                <div class="list">
+                    <div class="title">
+                        设备名称：
+                    </div>
+                    <ul>
+                        <li *ngFor="let item of deviceList">{{item}}</li>
+                    </ul>
+                </div>
+            </div>
+       </div>
+    </div>
+    <div class="right">
+        <div class="box">
+            <div class="border1"></div>
+            <div class="border2"></div>
+            <div class="border3"></div>
+       </div>
+       <div class="contentBox">
+            <div class="content">
+                <nz-collapse
+                nzExpandIconPosition ="right"
+                >
+                    <nz-collapse-panel
+                      *ngFor="let panel of panels"
+                      [nzHeader]="panel.name"
+                      [nzActive]="panel.active"
+                      [nzDisabled]="panel.disabled"
+                      [nzShowArrow]="true"
+                    >
+                      <p style="margin:0;padding: 20px;">
+                  
+                        <iframe [src]="panel.src" frameborder="0"></iframe>
+                
+                      </p>
+                    </nz-collapse-panel>
+                  </nz-collapse>
+            </div>
+       </div>
+    </div>
+</div>

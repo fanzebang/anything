@@ -1,0 +1,18 @@
+<div class="setting">
+        <div class="header">
+            <ul>
+                <li *ngFor="let item of headerList;let i = index" (click)="headerLiclick($event,i)">
+                    <div></div>
+                    <p>{{item.title}}</p>
+                </li>
+            </ul>
+            <div>
+                {{headerTitle}}
+            </div>
+            <div style="cursor: pointer;position: absolute;right: 20px;width: 40px;font-size: 14px;color: #fff;height: 20px;background: transparent;"><a [routerLink]="[ '/home']">返回</a></div>
+        </div>
+
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+</div>

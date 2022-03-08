@@ -1,0 +1,103 @@
+<div class="details">
+   
+    <h2>
+    <select style="background: none;border: none;" class="select"  (keydown)="selectPreventDefault($event)">
+        <option *ngFor="let item of optionArr"  [value]="item.equipmentId">{{item.text}}</option>
+    </select>
+    <a class="to_home" [routerLink]="[ '/home']">返回</a>
+     </h2>
+    <div class="content">
+
+        <div class="left">
+            <div class="border1"></div>
+            <div class="border2"></div>
+
+
+            <div class="boxContent">
+
+            <h3>时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间</h3>
+            <div class="line"></div>
+            <div class="cursor1">
+                <nz-collapse
+                nzExpandIconPosition ="right"
+                nzAccordion
+                >
+                    <nz-collapse-panel
+                      *ngFor="let panel of timeList;let i = index"
+                      [nzHeader]="panel.title"
+                      [nzActive]="panel.active"
+                      [nzDisabled]="panel.disabled"
+                      [nzShowArrow]="true"
+                      (nzActiveChange)="collopseChange($event,i)"
+                      [ngClass]="{'isFinsh': panel.isFinsh}"
+                    >
+                        <ul>
+                            <li *ngFor="let item of panel.workList;let i = index">
+                                <div [ngClass]="{'aaa':item.isSelect,'isFinsh2':item.isFinsh}" (click)="TimeClick(i,status,'userChange')"><p>{{item.num}}</p></div>
+                                <div><p>ok率{{item.ok}}%</p></div>
+
+                            </li>
+                     
+                        </ul>
+                
+                    </nz-collapse-panel>
+                  </nz-collapse>
+
+            </div>
+
+            </div>
+            
+        </div>
+        <div class="center">
+            <div class="border1"></div>
+            <div class="border2"></div>
+           
+            <div class="boxContent">
+
+                <h4>
+                    <select name="" id="dsh" (keydown)="selectPreventDefault($event)">
+                        <option *ngFor="let item of topBottom" [value]="item.text">{{item.text}}</option>
+                    </select>
+                    <p>图片总数/未干预总数:<span>{{total}}</span>/<span>{{lastImg}}</span></p>
+                 
+                    <p><span>{{labelMap.artificialCheckStatus}}</span></p>
+                    <input type="button" value="1：1" class="initLableSize" (click)="setZoom()">
+                    <p >当前图片比例:<span>{{zoom1}}%</span></p>
+                </h4>
+                <div class="imgSwiper">
+                <div class="top" (click)="topClick($event)">
+                    <div id="detailCanvas"></div>
+                </div>
+                  
+                <div class="bottom">
+                    <nz-pagination [nzPageIndex]="pageNum" [nzTotal]="total" nzShowQuickJumper [nzPageSize]="1" (click)="pageIndexChange1($event)"  (nzPageIndexChange)="pageIndexChange($event)">
+                    </nz-pagination>
+                </div>
+                </div>
+            </div>
+          
+        </div>
+        <div class="right">
+            <div class="border1"></div>
+            <div class="border2"></div>
+            <div class="boxContent">
+                <h3>人 工 审 核</h3>
+                <div class="line"></div>
+                <h4>人工确认</h4>
+                <div class="btn">
+                    <input type="button" *ngFor="let item of btnItems;let i = index" value="{{item.text}}" [ngClass]="{'aaa':item.isSelect}" (mousedown)="changeSelect(i,$event)" (mouseup)="changeSelect1(i,$event)">
+                </div>
+               <div class="bottom">
+                <h4>人工标注</h4>
+                <div class="jx" (click)="jxClick()">矩形</div>
+                <div class="dbx" (click)="dbxClick()">多边形</div>
+               </div>
+              
+            </div>
+         
+        </div>
+
+
+    </div>
+
+</div>

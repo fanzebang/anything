@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../assets/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        *{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    color: #fff;
+}
+div{
+    user-select: none;
+}
+body{
+    background: #051332;
+}
+.pg-canvas{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: .1;
+}
+
+::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 5px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+    }
+::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius   : 10px;
+    background-color: #5cd3bb;
+    background-image: -webkit-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+    );
+    }
+::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #ededed;
+    border-radius: 10px;
+    }
+    ul{
+        list-style: none;
+    
+    }
+     li{
+       float: left;
+       margin-right: 20px;
+       font-size: 15px;
+     }
+    </style>
+</head>
+<body>
+  <div id="">
+      <ul>
+          <li>设备型号：<span>-</span></li>
+          <li>设备IP地址：<span>-</span> </li>
+          <li>设备安装地点：<span>-</span> </li>
+          <li>工位数：<span>-</span></li>
+      </ul>
+                         
+  </div>
+</body>
+    <script>
+
+
+// $("#EquiMassage li span")[0].innerHTML = value.model||"-"
+//                 $("#EquiMassage li span")[1].innerHTML = value.ip||"-"
+//                 $("#EquiMassage li span")[2].innerHTML = value.place||"-"
+//                 $("#EquiMassage li span")[3].innerHTML = value.num+"个"||"-"   
+
+
+ 
+    </script>
+</html>

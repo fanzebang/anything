@@ -1,0 +1,74 @@
+<div class="box">
+    <div class="top cBox">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" *ngFor="let item of array"><img [src]="item.img" alt=""><div class="{{'box'+item.status}}"></div></div>
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    
+    <div class="center cBox" id="certify" (dblclick)="cBoxDBclick()">
+        <div class="pieData">
+            <!-- {{pieData.title}} -->
+                <h2>{{pieData.title}} </h2>
+                <div class="chart" id="chart"></div>
+                <div class="text">
+                    <div class="box1">
+                        <div class="box1_1">
+                            当前UPH
+                        </div>
+                        <div class="box1_2">
+                            {{pieData.uph}}PIC/H
+                        </div>
+                    </div>
+                    <div class="box2">
+                        <div class="box1_1">
+                            当前耗时
+                        </div>
+                        <div class="box1_2">
+                            {{pieData.time}}ms
+                        </div>
+                    </div>
+                    <div class="box3">
+                        <div class="box1_1">
+                            检测总数
+                        </div>
+                        <div class="box1_2">
+                            {{pieData.count}}
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    <div class="bottom cBox">
+        <h2 style="color: #fff;text-align: center;font-weight: 800;">缺陷实时预览</h2>
+        <ul style="display: flex;">
+            <li *ngFor="let item of defects" style="flex: 0 0 33%;height: 160px">
+                <img src="{{item.img}}" alt="" style="height: 100%;margin-left:22%;">
+                <h3 style="color: #fff;font-weight: 800; text-align:center;">{{item.text}}</h3>
+            </li>
+        </ul>
+    </div>
+
+ <div class="outer" style="position: fixed;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0, 0, 0, 0.445);z-index: 9996;display: none;">
+    <div class="maks">
+        <h2></h2>
+
+        <div class="btn"  style="display: none;">
+            <input type="button" *ngFor="let item of btnList;let i = index" value ="{{item.value}}" [ngClass]="{'aaa': item.isSelect}" (click)="changeSelect1(i,$event)">
+        </div>
+
+
+        <img src="./assets/alertImg/close.png" alt="" (click)="closeMaks()">
+        <!-- <img src="../../../../../assets/alertImg/close.png" alt="" (click)="closeMaks()"> -->
+        <div class="alertBox" id="alertBox">
+           
+        </div>
+    </div>
+</div>
+    
+    
+</div>

@@ -1,0 +1,293 @@
+
+.box{
+    width: 100%;
+    height:100%;
+    overflow: hidden;
+    .cBox{
+        width: 100%;
+
+        margin-bottom: 10px;
+    }
+    .top{
+        height: 20%;
+        border: 1px solid #6bbeee;
+        padding: 10px;
+        img{
+            height: 80%;
+            opacity: .3;
+        }
+        .swiper-pagination-fraction{
+            bottom: 0px !important;
+        }
+        .swiper-container {
+            width: 100%;
+            height:100%;
+            
+            .swiper-wrapper{
+            }
+         
+        }
+        ::-webkit-scrollbar{
+            height:0px;
+        }
+        .boxTop{
+            width: 100%;
+            height: 100%;
+            border-right: 0;
+            overflow-x: auto;
+            display: flex;
+            padding: 10px;
+           div:first-child{
+            opacity: 1;
+            }
+            
+        }
+
+        .boxTop>div{
+            margin: 10px;
+            width: 200px;
+            height: 80%;
+			opacity: .3;
+            flex: 0 0 200px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            transition:all .7s ease 0s;
+        }
+        .box0{
+            width: 10px;
+            position: absolute;
+            background: #12be5a;
+            height: 10px;
+            border-radius: 50%;
+            margin: 4px 41%;
+              }
+        .box1{
+        width: 10px;
+        position: absolute;
+        height: 10px;
+        background: yellow;
+        border-radius: 50%;
+        margin: 4px 41%;
+            }
+        .box2{
+            width: 10px;
+            position: absolute;
+            border-radius: 50%;
+            height: 10px;
+            background: red;
+            margin: 4px 41%;
+        }
+
+    }
+
+      
+
+  
+    .center{
+        height: 45%;
+        border: none;
+        position: relative;
+        .chartsBox{
+            width: 90%;
+            height: 95%;
+            position: absolute;
+            top: 40px;
+            left: 15px;
+            h2{
+                color: #6bbeee;
+                text-align: center;
+            }
+            .charts{
+                position: absolute;
+                width: 100%;
+                height: 200px;
+                left: -100px;
+            }
+            .chartsBox_left{
+              
+                position: absolute;
+                right: 10px;
+                width: 50%;
+                height: 80%;
+                display: flex;
+                flex-wrap: wrap;
+                .box1, .box2, .box3{height: 50%;display: flex;flex-wrap: wrap;}
+                .box1,.box2{
+                    flex: 0 0 50%;
+                
+                }
+                .box3{
+                    width: 100%;
+                  
+                }
+                .box1_1{
+                   width: 100%;
+                   height: 30%;
+                   border-bottom: 1px solid #fff;
+                   text-align: center;
+                   padding: 5px;
+                }
+                .box1_2{
+                    width: 100%;
+                    height: 70%;
+
+                    font-size: 21px;
+                    font-weight: bold;
+                    text-align: center;
+                    padding-top: 15px;
+                 }
+            }
+        }
+    }
+    .bottom{
+        height: 32%;
+        margin-bottom: 0px;
+        border: 1px solid #6bbeee;
+    }
+   
+    .maks{
+        position: fixed;
+        display: block;
+        left: 19%;
+        top:150px;
+        width: 60%;
+        height: 75%;
+        img{
+            position: fixed;
+            top: 220px;
+            z-index: 9999;
+            right:25%;
+        }
+        .alertBox{         
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 9998;
+            background-image: url("../../../../../assets/homeImg/alertBg.png");
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size: 100% 100%;
+          
+        }
+        h2{
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            z-index: 9999;
+            color: #fff;
+            font-weight: 800;
+        }
+        
+.btn{
+    position: absolute;
+    z-index: 9999;
+    left: 100px;
+    top: 200px;
+    input[type=button]{
+        width: 60px;
+        height: 30px;
+        color: #72d0f4;
+        background: none;
+        border: 1px solid #72d0f4;
+        border-radius: 5px;
+        display: block;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+    .aaa{
+        background: #72d0f4 !important;
+        color: #fff !important;
+    }
+
+}
+
+    }
+      
+   
+   
+}
+
+
+
+
+// antd Style
+:host ::ng-deep .slick-dots-bottom{
+    bottom: 0;
+}
+
+
+
+
+// swiper Style
+#certify {
+	position: relative;
+	margin: 0 auto;
+
+    .pieData{
+        position: absolute;
+        height: 95%;
+        width: 100%;
+        border: 1px solid #fff;
+        background: #143268;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0px 30px;
+        h2{
+                font-size: 22px;
+                text-align: center;
+                color: #fff;
+                font-weight: 800;
+                letter-spacing:.5em;
+                width: 100%;
+                margin-bottom:0;
+        }
+        .chart{
+            flex:  0 0 60%;
+            height: 80%;
+
+        }
+    
+        .text{
+
+            flex:1;
+            height: 80%;
+            display: flex;
+            flex-wrap: wrap;
+            text-align: center;
+          
+            .box1_1{
+                border-bottom: 1px solid #fff;
+            }
+            .box1_2{
+                font-size: 23px;
+                font-weight: 800;
+            }
+            .box1{
+               flex: 0 0 40%;
+               margin: 35px auto;
+               margin-right: 0px;
+               margin-bottom: 0px;
+               
+              
+            }
+            .box2{
+                flex: 0 0 40%;
+                margin:  35px auto;
+                margin-left: 0px;
+                margin-bottom: 0px;
+        
+            }
+            .box3{
+                flex:0 0 80%;
+                margin: 0 auto;
+            }
+        }
+
+    }
+
+  
+
+    
+
+}
+

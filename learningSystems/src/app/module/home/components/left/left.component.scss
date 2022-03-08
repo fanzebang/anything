@@ -1,0 +1,52 @@
+.left{
+    width: 100%;
+    height: 100%;
+    background: #122c5c;
+    border: 1px solid #6bbeee;
+    overflow-y: auto;
+    padding:20px;
+    position: relative;
+    img{
+
+        width: 90%;
+        position: absolute;
+    }
+    h3{
+        text-align: center;
+        color: #6bbeee;
+    }
+    ul{
+        width: 90%;
+        height: 150px;
+        position: absolute;
+        top: 195px;
+        z-index: 999;
+        left: 5px;
+        li{
+            position: relative;
+            margin-bottom: 20px;
+            cursor: pointer;
+           img{
+               width: 110%;
+
+           }
+           .box{
+               position: absolute;
+               top: 15px;
+               left: 15px;
+               width: 100%;
+               height: 110%;
+               padding: 10px;
+               h4{
+                   color: #6bbeee;
+                   font-weight: 800;
+               }
+               .lineChart{
+                    height: 230px;
+               }
+           }
+
+        }
+    }
+    
+}

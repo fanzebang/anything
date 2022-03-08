@@ -1,0 +1,29 @@
+<div nz-row class="header">
+    <img src="assets/homeImg/header.png" alt="">
+    <ul>
+        <li *ngFor="let item of items">{{item}}</li>
+    </ul>
+    <ul class="right">
+        <li (click)="userAlert($event)">
+            <img src="assets/homeImg/tongzhi.png" alt=""><div class="text">通知</div><div [ngClass]="{'num':tzData.numB}"><span>{{tzData.num}}</span></div>
+        </li>
+        <li (click)="toSetting($event)">
+            <img src="assets/homeImg/shezhi.png" alt=""><div class="text">设置</div>
+        </li>
+        <li >
+            <img src="assets/homeImg/user.png" alt=""><div class="text">用户</div>
+        </li>
+    </ul>
+
+    <div class="alert">
+        <div>
+            <img src="assets/alertImg/background.png" alt="" class="bg">
+            <img src="assets/alertImg/close.png" alt="" class="close" (click)="close()">
+            <p>{{alertTitle}}</p>
+            <div class="content">
+            
+            </div>
+        </div>
+        
+    </div>
+</div>

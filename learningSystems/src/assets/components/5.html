@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery.min.js"></script>
+
+    <link rel="stylesheet" href="../table/bootstrap/css/bootstrap/bootstrap.css" />
+	<link rel="stylesheet" href="../table/bootstrap-table/bootstrap-table.css" />	
+	
+
+	<script src="../table/bootstrap/js/bootstrap.js"></script>	
+	<script src="../table/bootstrap-table/bootstrap-table.js"></script>
+	<script src="../table/bootstrap-table/bootstrap-table-export.js"></script>
+	<script src="../table/extends/tableExport/jquery.base64.js"></script>
+	<script src="../table/extends/tableExport/tableExport.js"></script>
+
+
+
+    <script src="../loginJs/jquery-ui.min.js"></script>
+    <link href="../table/date/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <script src="../table/date/jQuery-Timepicker/jquery-ui-timepicker-addon.min.js"></script>
+    <script type="text/javascript" src="../table/date/jQuery-Timepicker/i18n/jquery-ui-timepicker-zh-CN.js"></script>
+    <link href="../table/date/jQuery-Timepicker/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+
+    <style>
+     
+        ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 5px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+    }
+::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius   : 10px;
+    background-color: #5cd3bb;
+    background-image: -webkit-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+    );
+    }
+::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #ededed;
+    border-radius: 10px;
+    }
+  #content{
+      padding: 0 10px; 
+  }
+    .date{
+     margin-top: 5px;
+    position: absolute;
+    height: 40px;
+
+    }
+    .date input{
+        width: 150px;
+        margin-top: 10px;
+    }
+    </style>
+
+</head>
+<body>
+
+    <div id="content">
+
+        <div class="date">
+            <input id="date_start" placeholder="选择开始时间"/>~<input id="date_end"  placeholder="选择结束时间"/>
+        </div>
+
+       <div id="content-body">
+           
+           <div id="reportTableDiv" class="span10">
+               <table id="reportTable">
+               </table>
+           </div>
+       </div>
+   </div>
+   
+
+   <script type="text/javascript">
+       $(function () {
+           $('#reportTable').bootstrapTable({
+               method: 'get',
+               cache: false,
+               height: 400,
+            //    rowStyle:rowStyle,
+               striped: true,
+               pagination: true,
+               pageSize: 20,
+               pageNumber:1,
+               pageList: [10, 20, 50, 100, 200, 500],
+               search: true,
+               showColumns: true,
+               showRefresh: true,
+               showExport: false,
+               exportTypes: ['csv','txt','xml'],
+               search: true,
+               clickToSelect: true,
+               columns: [{field:"user_email",title:"email",align:"center",valign:"middle",sortable:"true"},{field:"user_company",title:"company",align:"center",valign:"middle",sortable:"true"},{field:"user_dates",title:"date",align:"center",valign:"middle",sortable:"true"},{field:"user_lastlogintime",title:"lastlogintime",align:"center",valign:"middle",sortable:"true"},{field:"user_version",title:"version",align:"center",valign:"middle",sortable:"true"},{field:"user_isv2",title:"isv2",align:"center",valign:"middle",sortable:"true"},{field:"userstatus_usertype",title:"usertype",align:"center",valign:"middle",sortable:"true"},{field:"userstatus_package_id",title:"package_id",align:"center",valign:"middle",sortable:"true"},{field:"userstatus_end_time",title:"end_time",align:"center",valign:"middle",sortable:"true"}],
+               data : [{"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+               {"user_email":"20dai.rikon@gmail.com","user_company":"","user_dates":"2014-10-13 13:35:51","user_lastlogintime":"0","user_version":"0","user_isv2":"0","userstatus_usertype":"0","userstatus_package_id":"100014","userstatus_end_time":"NULL"},
+            ],
+               onPageChange: function (size, number) {
+                   //$("#pageSizeInput").val(size);
+                   //$("#pageNumberInput").val(number);
+                   
+                   //var form = $('#tableForm');
+                   //form.action= '${base}/showReport';
+                   //form.submit();
+               },
+               //onSort: function (name, order) {
+              // },
+               //formatShowingRows: function (pageFrom, pageTo, totalRows) {
+               //	return '';
+              // },
+               //formatRecordsPerPage: function () {
+               //	return '';
+             //  },
+               formatNoMatches: function(){
+                   return '�޷��������ļ�¼';
+               }
+           });
+                               
+           $(window).resize(function () {
+               $('#reportTable').bootstrapTable('resetView');
+           });
+       });
+
+
+
+// bootstrapTable设置行样式(背景颜色)函数2：调用自定义样式设置指定行的字体颜色
+
+function rowStyle(row, index) {
+
+    var style = {};
+
+    style={css:{'color':'#fff','background':'#051332'}};
+
+    return style;
+
+    }
+
+
+    (function($) {
+
+$(function() {
+    $.datepicker.regional['zh-CN'] = {
+        changeMonth: true,
+        changeYear: true,
+        clearText: '清除',
+        clearStatus: '清除已选日期',
+        closeText: '关闭',
+        closeStatus: '不改变当前选择',
+        prevText: '<上月',
+        prevStatus: '显示上月',
+        prevBigText: '<<',
+        prevBigStatus: '显示上一年',
+        nextText: '下月>',
+        nextStatus: '显示下月',
+        nextBigText: '>>',
+        nextBigStatus: '显示下一年',
+        currentText: '今天',
+        currentStatus: '显示本月',
+        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+        monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        monthStatus: '选择月份',
+        yearStatus: '选择年份',
+        weekHeader: '周',
+        weekStatus: '年内周次',
+        dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+        dayNamesMin: ['日', '一', '二', '三', '四', '五', '六'],
+        dayStatus: '设置 DD 为一周起始',
+        dateStatus: '选择 m月 d日, DD',
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        initStatus: '请选择日期',
+        isRTL: false
+    };
+
+});
+
+$(function() {
+
+    $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+    
+
+
+    $("#date_start").prop("readonly", true).datetimepicker({
+        timeText: '时间',
+        hourText: '小时',
+        minuteText: '分钟',
+        secondText: '秒',
+        currentText: '现在',
+        closeText: '完成',
+        showSecond: true, //显示秒  
+        timeFormat: 'HH:mm:ss', //格式化时间  
+        onClose: function(selectedDate) {
+            console.log(selectedDate)
+            $("#date_end").datepicker("option", "minDate", selectedDate);
+        }
+    })
+
+    $("#date_end").prop("readonly", true).datetimepicker({
+        timeText: '时间',
+        hourText: '小时',
+        minuteText: '分钟',
+        secondText: '秒',
+        currentText: '现在',
+        closeText: '完成',
+        showSecond: true, //显示秒  
+        timeFormat: 'HH:mm:ss', //格式化时间  
+        onClose: function(selectedDate) {
+            console.log(selectedDate)
+            $("#date_start").datepicker("option", "maxDate", selectedDate);
+            $("#date_end").val($(this).val());
+        
+        }
+    }) 
+});
+
+
+}(jQuery));
+
+
+  </script>     
+
+</body>
+</html>
