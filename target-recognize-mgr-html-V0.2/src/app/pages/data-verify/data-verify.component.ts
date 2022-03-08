@@ -126,7 +126,7 @@ export class DataVerifyComponent implements OnInit {
       }).subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
           // 切到下一张图片
-          this.currentLabelTask.checkFile++;
+       this.currentLabelTask.checkFile = 0;
           for (let i = 0; i < this.currentLabelTask.sampleFiles.length; i++) {
             if (this.currentSampleFile.id == this.currentLabelTask.sampleFiles[i].id) {
               this.currentSampleFile.markStatus = enumMarkStatus === 'ERROR_LABEL' ? 2 : 3;
@@ -134,6 +134,9 @@ export class DataVerifyComponent implements OnInit {
               if (i + 1 < this.currentLabelTask.sampleFiles.length) {
                 this.currentSampleFile = this.currentLabelTask.sampleFiles[i + 1];
                 break;
+              }
+              if(this.currentLabelTask.sampleFiles.length<=(i+1)){
+                this.currentSampleFile = null 
               }
             }
           }
@@ -192,7 +195,7 @@ export class DataVerifyComponent implements OnInit {
           }
 
           //
-
+          
           }
         }
     });

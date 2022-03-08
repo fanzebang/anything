@@ -85,6 +85,12 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
       }else if(event.keyCode  == 46){
         if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
           this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
+        }else if(this.gMapArr.getActiveFeature().props.name == "123"){
+          let idx = this.gMapArr.getActiveFeature().id.split("_")[1]*1
+          this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
+          this.drawingRects.splice(idx, 1);
+          // // 删除对应text
+          this.gMapArr.layers[2].removeTextById(this.gMapArr.layers[2].texts[idx].id);
         }
       }
       if(event.ctrlKey){
@@ -602,6 +608,7 @@ removeImg(){
     }
   }
   delRect(idx: number) {
+    console.log(idx,this.gMapArr.layers[1].features)
     this.drawingRects.splice(idx, 1);
     this.gfeatureLayer.removeFeatureById(this.gMapArr.layers[1].features[idx].id);
     // 删除对应text
@@ -636,8 +643,8 @@ removeImg(){
                 sampleId: marks[i].sampleOssType.id,
                 samplePath: marks[i].sampleOssType.sampleTypeName
               })
-              const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}`;
-              var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id, 
+              const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}${i}`;
+              var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id+"_"+i, 
                 {height:marks[i].markPolygon.maxY - marks[i].markPolygon.minY,width:marks[i].markPolygon.maxX - marks[i].markPolygon.minX,x:marks[i].markPolygon.minX ,y: marks[i].markPolygon.minY}, 
                 {name:'123',textId: relatedTextId}, 
                 {fill: true,
