@@ -659,12 +659,13 @@ removeImg(){
             );
             this.gMapArr.layers[2].addText(gFirstText);
             this.currentAllotFile.relatedTextId.push(relatedTextId)
-        
+       
              this.drawingRects.push({
                       id:marks[i].sampleOssType.id,
                       markData:this.currentAllotFile,
-                      samplePath:marks[i].sampleOssType.samplePath
+                      samplePath:marks[i].sampleOssType.samplePath 
                     })
+                   
             }
           }
         }
