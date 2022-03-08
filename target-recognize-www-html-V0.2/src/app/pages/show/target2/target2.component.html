@@ -1,0 +1,66 @@
+<div class="target2" >
+    <header>
+        <p>
+           <a href="/home" style="display: inline;color: #fff;">首页 </a> / 影像整编库 
+        </p>
+        <img src="assets/images/videoBanner.png" alt="">
+        <div>
+            <h1>影像分析模型</h1>
+            <p>快速检测人脸并返回人脸框位置，输出人脸150个关键点坐标，准确识别多种属性信息</p>
+        </div>
+    </header>
+    <div class="content">
+           <div class="top">
+               <div class="left">
+                    <video controls data-setup="{}" [src]="videoArr[videoSelect].videoSrc" type='video/mp4' ngDefaultControl>
+                 </video>
+               </div>
+               <div class="right">
+                    <ul>
+                        <li *ngFor="let item of videoArr[videoSelect].items;let key = index" (click)="changeLi(key)" [hidden]="key==3">
+                            {{item.title}}
+                        </li>
+                    </ul>
+                        <span [ngSwitch]="itemSelect">
+                            <p *ngSwitchCase="0" style="overflow: auto; height: 354px;">
+                                <app-obj [list]=videoArr[videoSelect].items[itemSelect].list (outer)='changeVideoTime($event)'></app-obj>
+                            </p>
+                            <p *ngSwitchCase="1" style="overflow-y: auto; height: 354px;">
+                                <app-world [list]=videoArr[videoSelect].items[itemSelect].list></app-world>
+                            </p>
+                            <p *ngSwitchCase="2" style="overflow-y: auto; height: 354px;">
+
+                                <app-key [list]=videoArr[videoSelect].items[itemSelect].list></app-key>
+
+                            </p>
+                            <p *ngSwitchCase="3" style="overflow-y: auto; height: 354px;">
+
+                                <app-sence></app-sence>
+
+                            </p>
+                            <p *ngSwitchCase="4" style="overflow-y: auto; height: 354px;">
+
+                                <app-target2-label [list]=videoArr[videoSelect].items[itemSelect].list></app-target2-label>
+
+                            </p>
+                            <p *ngSwitchCase="5" style="overflow-y: auto; height: 354px;">
+                                <app-time [list]=videoArr[videoSelect].items[itemSelect].list></app-time>
+                            </p>
+                        </span>
+                   
+               </div>
+           </div>
+           <div class="bottom">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                  <div *ngFor="let item of videoArr;let key = index" (click)="changeVideoUrl($event,key)" class="swiper-slide"><video [src]="item.videoSrc" style="width: 100%;height: 100%;" class="video"></video></div>
+                </div>
+            </div>
+             <!-- <ul>
+                    <li *ngFor="let item of videoArr;let key = index" (click)="changeVideoUrl($event,key)" class="swiper-slide">
+                        <video [src]="item.videoSrc" style="width: 100%;height: 100%;" class="video"></video>
+                    </li>
+                </ul>  -->
+           </div> 
+    </div>    
+</div>

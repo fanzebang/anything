@@ -1,0 +1,162 @@
+
+:host {
+  > div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: url('../../../assets/images/detect/bg03.jpg') no-repeat 0 0 ~"/" cover;
+  }
+
+  .detect-header {
+
+    .operations {
+      height: 40px;
+      padding: 0 10px;
+      margin-top: -10px;
+
+      .goback {
+        flex: 1;
+
+        .btn-goback {
+          display: inline-block;
+          height: 40px;
+          line-height: 40px;
+          color: #fff;
+          padding-left: 30px;
+          background: url("../../../assets/images/detect/goback.png") no-repeat 0 50% ~"/" 30px;
+        }
+      }
+
+      .mismatching {
+        width: 120px;
+        height: 40px;
+        text-align: center;
+        color: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background-color: #4b5e77;
+      }
+    }
+
+
+  }
+
+  .detect-body {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    overflow: hidden;
+
+    .detect-body-left {
+      width: 55%;
+
+      .detect-title {
+        height: 40px;
+        line-height: 40px;
+        text-indent: 30px;
+        color: #fff;
+        font-size: 16px;
+        background: url("../../../assets/images/detect/bg05.png") no-repeat 0 0 ~"/" 100% 100%;
+      }
+
+      .detect-image {
+
+
+
+      }
+
+      .detect-result {
+
+        .detect-result-object-list {
+          display: flex;
+
+
+          .detect-result-object {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            padding: 5px;
+            border: 2px solid transparent;
+
+            img {
+              width: 100%;
+              height: 100%;
+              display: block;
+            }
+
+            .detect-result-object-text {
+              position: absolute;
+              left: 5px;
+              bottom: 5px;
+              right: 5px;
+              height: 30px;
+              line-height: 30px;
+              background-color: rgba(0, 0, 0, 0.5);
+              color: white;
+              text-align: center;
+            }
+
+            &.selected {
+              border-color: #E29426;
+            }
+          }
+        }
+      }
+
+      .detect-similarity {
+
+      }
+    }
+
+    .detect-body-right {
+      flex-grow: 1;
+    }
+  }
+}
+
+
+.border {
+  border: 2px solid #15a0ff;
+  border-top: none;
+}
+
+.slide-prev, .slide-next {
+  flex-basis: 40px;
+  align-items: center;
+}
+.content-item {
+  flex: 1;
+  overflow: hidden;
+}
+.content-top {
+  flex-basis: 60%;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.border-bottom {
+  border-bottom: 2px dashed #1f60c2;
+}
+.effect {
+  flex: 1;
+  margin-bottom: 10px;
+  border-bottom: 2px dashed #1f60c2;
+  overflow: hidden;
+}
+.effect-content, .similar-content {
+  flex: 1;
+  padding: 10px;
+  overflow: hidden;
+}
+.effect-item, .similar-item {
+  align-items: center;
+  width: 100px;
+  margin-right: 10px;
+  border: 1px dotted #1f60c2;
+  cursor: pointer;
+  overflow: hidden;
+}

@@ -1,0 +1,113 @@
+.content-right {
+  background-image: none;
+}
+
+.statistics-left, .statistics-right {
+  flex-basis: 25%;
+  overflow: hidden;
+}
+
+.statistics-main {
+  flex: 1;
+  margin: 0 10px;
+  overflow: hidden;
+}
+
+.statistics-top, .statistics-bottom {
+  position: relative;
+  flex: 1;
+  padding: 1px;
+  border: 1px solid #094f8d;
+}
+
+.statistics-top {
+  margin-bottom: 10px;
+  background: url('../../../assets/images/bg11.png') no-repeat 0 0 ~"/" 100% 100%;
+}
+
+.statistics-top-type {
+  background: url('../../../assets/images/bg13.png') no-repeat 0 0 ~"/" 100% 100%;
+}
+
+.statistics-main-top {
+  position: relative;
+  flex-basis: 60%;
+  padding: 1px;
+  border: 1px solid #094f8d;
+  background: url('../../../assets/images/bg12.png') no-repeat 0 0 ~"/" 100% 100%;
+}
+
+.statistics-main-bottom {
+  flex: 1;
+  margin-top: 10px;
+}
+
+.statistics-main-item {
+  position: relative;
+  flex: 1;
+  padding: 1px;
+  border: 1px solid #094f8d;
+}
+
+.statistics-main-item:first-child {
+  margin-right: 10px;
+}
+
+.statistics-title {
+  position: relative;
+  flex-basis: 40px;
+  line-height: 40px;
+  color: #fff;
+  font-size: 18px;
+  padding-left: 10px;
+  background: url('../../../assets/images/bg14.png') no-repeat 0 0 ~"/" 100% 100%;
+}
+
+.statistics-title::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 10px;
+  height: 10px;
+  border-left: 1px solid #00afdf;
+  border-top: 1px solid #00afdf;
+}
+
+.statistics-title::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid #00afdf;
+  border-top: 1px solid #00afdf;
+}
+
+.statistics-top::before, .statistics-bottom::before, .statistics-main-top::before, .statistics-main-item::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  width: 10px;
+  height: 10px;
+  border-left: 1px solid #00afdf;
+  border-bottom: 1px solid #00afdf;
+}
+
+.statistics-top::after, .statistics-bottom::after, .statistics-main-top::after, .statistics-main-item::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid #00afdf;
+  border-bottom: 1px solid #00afdf;
+}
+
+.echart-box {
+  flex: 1;
+  overflow: hidden;
+}

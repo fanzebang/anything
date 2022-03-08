@@ -1,0 +1,34 @@
+<router-outlet></router-outlet>
+<div style="background: #fff;height: 100%;" *ngIf="hidden">
+        <header>
+            <div class="location"> <a href="/home" style="display: inline;color: #fff;">首页 </a> / 检测模型库</div>
+            <img src="assets/images/modelBanner.png" alt="  ">
+            <div class="text">
+                <h1>检测模型库</h1>
+                <p>支持260来种目标的识别，也可以用来训练私有的子类识别模型。任何一种模型支持高精度、低时延、平衡、边缘和终端5类计算场景，可以支持浏览器、移动终端和装备3种服务样式</p>
+            </div>
+        </header>
+        <div class="content">
+            <ul>
+                <li *ngFor="let item of navList;let key = index" (click)="slecet(key)" [ngClass]="{'select': item.isSelect}">
+                    <img [src]="item.img" alt="">
+                    <h2>{{item.text}}</h2>
+                </li>
+                <div style="width: 20px;height: 20px;background: #f5f7fa;border-top: 1px solid #e5e8ed;border-left: 1px solid #e5e8ed;left: 200px;bottom: -24px;position: absolute;transform: rotate(45deg );" #triangle></div>
+            </ul>
+            <div class="introduce">
+                <p>{{theValue.text}}</p>
+                <ul>
+                 
+                    <li *ngFor="let item of theValue.label" (click)="derect($event)">
+                        {{item}}
+                    </li>
+                 
+                </ul>
+            </div>
+        </div>
+ </div>
+
+
+
+

@@ -1,0 +1,55 @@
+<div style="height: 120%;background: #fff;">
+    <header>
+        <div class="location"> <a href="/home" style="display: inline;color: #fff;">首页 </a> /  <a href="/model" style="display: inline;color: #fff;">检测模型库 </a> / 装备识别</div>
+        <img src="assets/images/personBanner.png" alt="">
+        <div class="text">
+            <h1>装备识别模型</h1>
+            <p>快速检测装备位置，输出具体型号信息，准确识别多种属性信息。</p>
+        </div>
+
+    </header>
+
+    <div class="content">
+        <nz-tabset [nzSelectedIndex]="selectIndex" nzTabBarGutter='50' (nzSelectedIndexChange)="changeTab($event)"> 
+            <nz-tab *ngFor="let item of items" [nzTitle]="item">
+                <div style="display: flex;width: 100%;height: 500px;">
+                    <div class="img">
+                        <div class="picBig">
+                            <img [src]="selectImg" alt="">
+                        </div>
+                        <ul>
+                            <li *ngFor="let item of content[selectIndex].imgUrl;let key = index" >
+                                <img [src]="item" alt="" (click)="getImg($event,key)">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="accrdion">
+                        <nz-collapse nzAccordion style="height: 700px;">
+                            <nz-collapse-panel *ngFor="let panel of content[selectIndex].panels;let key = index" [nzHeader]="panel.name" [nzActive]="panel.active">
+                              <div style="max-height: 378px;overflow-y: auto;padding-top: 10px;" class="world" *ngIf="key==0">
+                                <ul>
+                                    <li *ngFor="let item2 of panel.imgArr;let key=index" class="imgLi">
+                                        <img src="{{item2.src}}" alt="" crossOrigin='anonymous'>
+                                        <p>{{item2.text}}</p>
+                                    </li>
+                                </ul>
+                              </div>
+                              <div style="max-height: 378px;overflow-y: auto;padding-top: 10px;" class="keyframe" *ngIf="key==1">
+                                <ul>
+                                    <li *ngFor="let item2 of panel.imgArr;let key=index" class="imgLi">
+                                        <img [src]="item2.src" alt="" crossOrigin='anonymous'>
+                                        <p>{{item2.text}}</p>
+                                    </li>
+                                </ul>
+                              </div>
+                              <div style="max-height: 678px;overflow-y: auto;" class="scence" *ngIf="key==2">
+                                    <iframe [src]="scenceSrc" style="width: 100%;height: 309px;padding: 10px;background: #000937;overflow: auto;" ></iframe>
+                              </div>
+                            </nz-collapse-panel>
+                          </nz-collapse>
+                    </div>
+                </div>
+            </nz-tab>
+          </nz-tabset>
+    </div>
+</div>  

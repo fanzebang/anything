@@ -1,0 +1,377 @@
+<nz-spin [nzSpinning]="isSpinning" style="overflow:hidden;height: 100%;">
+  <div class="home">
+    <div id="backstore" style="display: none">
+      <div id="dataContent">
+        <div id="modal-container" >
+          <div class="modal-background">
+            <div class="modal">
+              <div id="backstore1" style="display: none">
+              <div id="errorCorrectionBox">
+
+                  <div id="errorCorrectioncontent">
+                    <h1 style="text-align: center;"></h1>
+                    <div nz-row style="padding: 10px;">
+                      <div nz-col nzSpan="10" style="text-align: right;line-height: 30px;"><label for="imgId">错误id：</label></div>
+                      <div nz-col nzSpan="14"><input nz-input placeholder="{{winboxData.modalData.detail.id}}" [value]="" disabled style="width: 40%;"/></div>
+                    </div>
+                    <div nz-row style="padding: 10px;">
+                      <div nz-col nzSpan="10" style="text-align: right;line-height: 30px;"><label for="imgId">纠错信息：</label></div>
+                      <div nz-col nzSpan="14"><textarea nz-input placeholder="请填写纠错信息" [(ngModel)]="winboxData.modalData.errorCorrectionData.errorCorrectionMsg" [nzAutosize]="{ minRows: 3, maxRows: 5 }"  style="width: 80%;height: 100px;background-color: none;"></textarea></div>
+                    </div>
+                    <div nz-row style="padding: 10px;">
+                      <div nz-col nzSpan="24" style="text-align: center;"><button nz-button nzType="primary" (click)="errorCorrectionRequest()" >提交</button></div>
+                    </div>
+                </div>
+
+              </div>
+              </div>
+              <div class="digital">
+                <div class="digital-form" >
+                    <div class="digital-form-status">
+                    <span>分析状态：</span>
+                    <nz-select [(ngModel)]="winboxData.modalData.list.status" nzSize="small">
+                      <nz-option nzValue="" nzLabel="全部"></nz-option>
+                      <nz-option nzValue="1" nzLabel="识别错误"></nz-option>
+                      <nz-option nzValue="0" nzLabel="漏检"></nz-option>
+                    </nz-select>
+                  </div>
+                  <div class="digital-form-name">
+                    <span>目标名称：</span>
+                    <!-- [(ngModel)]="value"  -->
+                    <input nz-input  [(ngModel)]="winboxData.modalData.list.standardName"  style="width: 120px; background-color: #03050f ;color: #b6bdd7;font-size: 11px;font-weight: 700;border-radius: 4px;border: 1px solid rgba(225, 225, 225, 0.3);" nzSize="small"/>
+                  </div>
+                  <div class="digital-form-button" style="margin-left: 20px;">
+                      <button nz-button nzType="primary" class="updateName" nzSize="small" (click)="batchDiscern('true')">查询</button>
+                  </div>
+                </div>
+                <nz-table #fixedTable [nzData]="winboxData.listOfData" [nzScroll]="{ x: '', y: '265px' }" [nzShowPagination]="false">
+                  <thead>
+                    <tr>
+                      <th nzWidth="50px" >序号</th>
+                      <th >识别结果</th>
+                      <th >正确对象名称</th>
+                      <th nzWidth="80px" >状态</th>
+                      <th  nzWidth="75px" >详情</th>
+                      <th nzWidth="50px" ><div class="close" (click)="closeTable()"><svg t="1646276553731" class="icon" viewBox="0 0 1024 1024" version="1.1"  p-id="3119" width="25" height="25"><path d="M507.168 473.232L716.48 263.936a16 16 0 0 1 22.624 0l11.312 11.312a16 16 0 0 1 0 22.624L541.12 507.168 750.4 716.48a16 16 0 0 1 0 22.624l-11.312 11.312a16 16 0 0 1-22.624 0L507.168 541.12 297.872 750.4a16 16 0 0 1-22.624 0l-11.312-11.312a16 16 0 0 1 0-22.624l209.296-209.312-209.296-209.296a16 16 0 0 1 0-22.624l11.312-11.312a16 16 0 0 1 22.624 0l209.296 209.296z" p-id="3120"></path></svg></div></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of winboxData.modalData.list.listOfData;let key = index">
+                      <td >{{ key+1 }}</td>
+                      <td >{{ data.discernName }}</td>
+                      <td nzBreakWord>{{ data.standardName}}</td>
+                      <td nzBreakWord>{{data.status == "1"?'识别错误':'漏检'}}</td>
+                      <td >
+                        <button nz-button nzType="primary" class="updateName" nzSize="small" (click)="deatailFormAction(data,key)">详情</button>
+                      </td>
+                      <td  >
+                      </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+                  <div class="pagination">
+                      <nz-pagination
+                      [(nzPageIndex)]="winboxData.modalData.list.pageIndex"
+                      [(nzPageSize)] = "winboxData.modalData.list.pageSize"
+                      [nzTotal]="winboxData.modalData.list.total"
+                      [nzSize]="'small'"
+                      [nzPageSizeOptions] = '[10, 50, 100, 500]'
+                      nzShowSizeChanger
+                      nzShowQuickJumper
+                      (nzPageIndexChange)="batchDiscern('flase')"
+                      (nzPageSizeChange)="batchDiscern('true')"
+                    ></nz-pagination>
+                </div>
+              </div>
+              <div class="modal-detaile">
+                    <div class="detaile-title">目标对象详情</div>
+                    <div class="deatile-content">
+                        <ul>
+                          <li style="margin-top: 15px;">
+                              <span>识别结果：</span> 
+                              <nz-radio-group [(ngModel)]="winboxData.modalData.radioValue" style="margin-left: 10px;overflow-y: auto;max-height: 100px;"  nzSize="small">
+                                <label *ngFor="let item of winboxData.modalData.detail.discernName;let key = index" nz-radio [nzValue]="key" style="color: rgb(230, 140, 38);"  nzSize="small" >{{item}}</label>
+                              </nz-radio-group>
+                          </li>
+                          <li  style="margin-top: 15px;">
+                            <span>正确对象名称：<span style="color: rgb(230, 140, 38);">{{winboxData.modalData.detail.standardName}}</span></span>
+                        </li>
+                        <li  style="margin-top: 15px;">
+                          <span>图片:<img [src]="winboxData.modalData.detail.imgUrl"></span>
+                      </li>
+                        </ul>
+
+                        <div class="detaile-btn">
+                          <button nz-button nzType="primary"  class="errorCorrection" (click)="errorCorrection()">纠错</button>
+                          <button nz-button nzType="primary"  class="updateName" (click)="setanothername()">设为别名</button>
+                        </div>
+                    </div>
+              </div>
+            </div>
+
+          </div>
+         
+        </div>
+          <div class="nowAna">
+            <div class="title" style="display: flex;padding: 20px 0px 10px 30px;">
+               <span style="flex: 0 0 85%;color: #fff;font-size: 17px;"> 当前分析 </span>
+               <div style=" flex: 1;"><button nz-button nzType="primary" (click)="fenxi()" class="fenxiButton">开始分析</button></div>
+          </div>
+          <div class="content">
+                <div class="left box">
+                  <p>分析状态：<span style="color: rgb(230, 178, 10);">{{winboxData.status}}</span></p>
+                  <p>分析总量：{{winboxData.count}}</p>
+                  <div style="display: flex;" *ngIf="winboxData.status == '分析中'">
+                    <div style="flex: 0 0 25%;">分析进度：</div>
+                      <div style="flex: 1;color: #fff;">
+                        <nz-progress [nzPercent]="winboxData.progress" ></nz-progress>
+                      </div>
+                  </div>
+                  <p *ngIf="winboxData.status == '完成' ">准确率：{{winboxData.accuracyRate}}</p>
+                  <p *ngIf="winboxData.status == '完成' ">误检率：{{winboxData.errorRate}}</p>
+                  <p *ngIf="winboxData.status == '完成' ">漏检率：{{winboxData.lossRate}}</p>
+                </div>
+                <div class="right box" id="WinBoxcharts"></div>
+          </div>
+          </div>
+          <div class="historyAna">
+              <div class="title" style="padding: 0px 0px 10px 30px;color: #fff;font-size: 17px;">
+                  分析历史
+              </div>
+              <div class="historyContent" style="height: 100%;padding: 0 56px;">
+                      <div class="wrap wrap-center">
+                        <div class="wrap-inner-center">
+                     
+                            <div class="works">
+                                <div class="board">
+                                    <div class="board-img" style="padding: 15px;">
+                                    </div>
+                                    <div class="board-img1" style="padding: 15px;">
+                                      创建时间：{{winboxData.history[winboxData.historySelect].createTime}} | 结束时间：{{winboxData.history[winboxData.historySelect].updateTime}}
+                                      <br>
+                                      分析总量：<span style="color: rgb(230, 178, 10);">{{winboxData.history[winboxData.historySelect].imgCount}}</span> |  准确率： <span style="color: rgb(230, 178, 10);">{{(winboxData.history[winboxData.historySelect].accuracyRate*100).toFixed(2)}}% </span>  |  误检率：<span style="color: rgb(230, 178, 10);">{{(winboxData.history[winboxData.historySelect].errorRate*100).toFixed(2)}}% </span> |  漏检率： <span style="color: rgb(230, 178, 10);">{{(winboxData.history[winboxData.historySelect].lossRate*100).toFixed(2)}}%</span>
+                                       <div style=" position:absolute;bottom: 10px;right:20px;"><button nz-button nzType="primary" (click)="comparisonDeatil($event)" id="one" class="button">比对详情</button></div>
+                                    </div>
+                                    
+                                </div>
+                                <ul class="thumbnail">
+                                    <li class="active" (click)="thumbnail(0)">
+                                        <img 
+                                            src="assets/images/historyAna/01.jpg"
+                                            data="assets/images/historyAna/01.jpg"
+                                            url=""
+                                            alt=""
+                                        >
+                                    </li>
+                                    <li (click)="thumbnail(1)">
+                                        <img 
+                                            src="assets/images/historyAna/02.jpg"
+                                            data="assets/images/historyAna/02.jpg"
+                                            url=""
+                                            alt=""
+                                        >
+                                    </li>
+                                    <li (click)="thumbnail(2)">
+                                        <img 
+                                            src="assets/images/historyAna/03.jpg"
+                                            data="assets/images/historyAna/03.jpg"
+                                            url=""
+                                            alt=""
+                                        >
+                                    </li>
+                                    <li (click)="thumbnail(3)">
+                                        <img 
+                                            src="assets/images/historyAna/04.jpg"
+                                            data="assets/images/historyAna/04.jpg"
+                                            url=""
+                                            alt=""
+                                        >
+                                    </li>
+                                    <li (click)="thumbnail(4)">
+                                      <img 
+                                          src="assets/images/historyAna/05.jpg"
+                                          data="assets/images/historyAna/05.jpg"
+                                          url=""
+                                          alt=""
+                                      >
+                                  </li>
+                                  <li (click)="thumbnail(5)">
+                                    <img 
+                                        src="assets/images/historyAna/06.jpg"
+                                        data="assets/images/historyAna/06.jpg"
+                                        url=""
+                                        alt=""
+                                    >
+                                </li>
+                                <li (click)="thumbnail(6)"> 
+                                  <img 
+                                      src="assets/images/historyAna/07.jpg"
+                                      data="assets/images/historyAna/07.jpg"
+                                      url=""
+                                      alt=""
+                                  >
+                              </li>
+                              <li (click)="thumbnail(7)">
+                                <img 
+                                    src="assets/images/historyAna/08.jpg"
+                                    data="assets/images/historyAna/08.jpg"
+                                    url=""
+                                    alt=""
+                                >
+                            </li>
+                            <li (click)="thumbnail(8)">
+                              <img 
+                                  src="assets/images/historyAna/09.jpg"
+                                  data="assets/images/historyAna/09.jpg"
+                                  url=""
+                                  alt=""
+                              >
+                          </li>
+                          <li (click)="thumbnail(9)">
+                            <img 
+                                src="assets/images/historyAna/10.jpg"
+                                data="assets/images/historyAna/10.jpg"
+                                url=""
+                                alt=""
+                            >
+                        </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    
+    <canvas id="canvas"></canvas> 
+    <div class="content" style="z-index: 2;">
+    <div class="header">智能图像检测服务</div>
+
+    <div class="account">
+      <div class="dataAna" (click)="dataAna()">{{dataAnalysis}}<span class="status">{{dataAnaStatus}}</span></div>
+      <a class="mgr-link" [href]="'' | adminUrl" target="_blank">数据管理</a>
+      <span style="font-size: 20px">{{user?.name}}</span>
+    </div>
+
+ 
+
+    <div class="search flex-row">
+      <div class="search-left">
+        <button class="upload">本地上传</button>
+        <input #filesInput type="file" value="本地上传" multiple (change)="fileUpload($event)">
+      </div>
+
+      <div class="search-right flex-column" style="position:relative;bottom: 43px;">
+
+        <ul class="nav">
+          <li *ngFor="let item of navArr;let key =index" (click)="changeBorderShow(key)" [ngClass]="{'select': key==borderShow}">
+            <img src="{{item.icon}}" alt="">{{item.text}}
+            <div class="line" style="height: 2px;background: #357af6;"></div>
+          </li>
+          <div style="clear: both;"></div>
+        </ul>
+
+        <div class="search-input">
+          <input (paste)="onPasteImage($event)" [(ngModel)]="pasteText" class="search-img" type="text"
+                 placeholder="截图后，在输入框Ctrl+V即可以图搜图">
+        </div>
+
+        <div class="search-drag flex-row" appDragDropUpload (fileDropped)="onFileDropped($event)">
+            你也可以将图片拖拽至此处搜图
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="sAnda"> 
+      <div class="achievements">
+        <div class="recommend-title">典型成果<div style="width: 60px;height: 2px;background: #357af6;margin: 0 auto;"></div></div>
+        <ul>
+          <li *ngFor="let item of resultList;let key=index"  (click)="toShow(key)" style="cursor: pointer;" (mouseover)="liMouseOver(key)" (mouseleave) = "liMouseLeave(key)">
+              <div align="center"><img [src]="item.src" alt=""></div>
+              <h3>{{item.title}}</h3>
+              <p>{{item.text}}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="server_style achievements">
+        <div class="recommend-title">服务样式<div style="width: 60px;height: 2px;background: #357af6;margin: 0 auto;"></div></div>
+        <ul>
+          <li *ngFor="let item of serverList" >
+            <div align="center"><img [src]="item.src" alt=""></div>
+              <h3>{{item.title}}</h3>
+              <p>{{item.text}}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="recommend">
+        <div class="recommend-title">样本图片<div style="width: 60px;height: 2px;background: #357af6;margin: 0 auto;"></div></div>
+  
+        <div class="recommend-pictures flex-row">
+          <div class="recommend-picture">
+            <ul class="pic">
+              <li><img src="assets/images/kjg.png" alt=""></li>
+              <li><img src="assets/images/yg.png" alt=""></li>
+            </ul>
+            <div class="echarts" id="recommendecharts">
+
+            </div>
+            <ul class="num">
+              <li><span>{{imageAllCount.kjg}}</span>个</li>
+              <li><span>{{imageAllCount.yg}}</span>个</li>
+            </ul>
+          </div>
+  
+          <div class="recommend-picture">
+            <ul class="pic">
+              <li><img src="assets/images/hw.png" alt=""></li>
+              <li><img src="assets/images/sar.png" alt=""></li>
+            </ul>
+            <div class="echarts" id="recommendecharts1">
+
+            </div>
+            <ul class="num">
+              <li><span>{{imageAllCount.hw}}</span>个</li>
+              <li><span>{{imageAllCount.sar}}</span>个</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="hotPic">
+        <div class="pic">
+          <div class="title">
+            <div class="text">热点图片<div style="width: 80px;height: 2px;background: #357af6;position: absolute;right: 10px;"></div></div>
+            <div class="detail">
+            </div>
+          </div>
+          <ul>
+            <li *ngFor="let hotImg of hotspots" align="center">
+              <img [src]="hotImg | ossPath" alt="图片" (click)="detectHotspot(hotImg)">
+            </li>
+          </ul>
+        </div>
+
+        <div class="news">
+              <div class="title">
+                <div class="text">新闻热点<div style="width: 80px;height: 2px;background: #357af6;position: absolute;right: 10px;"></div></div>
+                <div class="detail">
+                </div>
+            </div>
+              <ul>
+                <li *ngFor="let newsItem of news;let key = index" align="center">
+                  <a href="/news;iframe={{news[key].src}}"  target="_blank"> {{newsItem.text}}</a>
+                </li>
+              </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</nz-spin>

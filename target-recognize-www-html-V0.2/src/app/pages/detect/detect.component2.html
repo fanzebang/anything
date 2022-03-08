@@ -1,0 +1,120 @@
+<div>
+  <div class="detect-header">
+    <div>
+      <img class="img-responsive" src="assets/images/home/bg02.png" alt="智能图像检测服务">
+    </div>
+    <div class="operations flex-row">
+      <div class="goback">
+        <a class="btn-goback" href="#">返回</a>
+      </div>
+      <button class="mismatching">纠错</button>
+    </div>
+  </div>
+  <div class="detect-body">
+    <div class="detect-body-left">
+      <div class="detect-title">目标检测对象</div>
+
+
+      <div class="content-item flex-column border">
+        <div class="detect-image content-top flex-column border-bottom">
+          <div class="slide flex-row">
+            <div class="slide-prev flex-row">
+              <img class="pointer" src="assets/images/detect/prev.png" alt="上一张">
+            </div>
+
+            <div class="slide-current flex-row">
+              <img class="img-responsive"
+                   src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595260824678&di=21b03cf39f1918ad547d2a13ba1d5165&imgtype=0&src=http%3A%2F%2Fhimg2.huanqiu.com%2Fattachment2010%2F2014%2F0822%2F20140822032412123.jpg"
+                   alt="图片">
+            </div>
+
+            <div class="slide-next flex-row">
+              <img class="pointer" src="assets/images/detect/next.png" alt="下一张">
+            </div>
+          </div>
+
+          <div class="quantity">2 / 5</div>
+
+        </div>
+        <div class="content-bottom flex-column">
+          <div class="detect-result effect flex-column">
+            <div class="effect-title">目标检测结果</div>
+            <div class="detect-result-object-list">
+              <div (click)="selectedObject = 1" class="detect-result-object" [class.selected]="selectedObject === 1">
+
+                <img src="assets/demo/object-jet.jpg">
+
+                <div class="detect-result-object-text">
+                  飞行器
+                </div>
+              </div>
+
+              <div (click)="selectedObject = 2" class="detect-result-object" [class.selected]="selectedObject === 2">
+
+                <img src="assets/demo/object-warship.jpg">
+
+                <div class="detect-result-object-text">
+                  舰艇
+                </div>
+              </div>
+
+              <div (click)="selectedObject = 3" class="detect-result-object" [class.selected]="selectedObject === 3">
+
+                <img src="assets/demo/object-personage.jpg">
+
+                <div class="detect-result-object-text">
+                  人物
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="detect-similarity effect-content flex-row">
+            <div class="effect-item flex-row">
+              <img class="img-responsive" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595260824678&di=21b03cf39f1918ad547d2a13ba1d5165&imgtype=0&src=http%3A%2F%2Fhimg2.huanqiu.com%2Fattachment2010%2F2014%2F0822%2F20140822032412123.jpg" alt="图片">
+            </div>
+            <div class="effect-item flex-row">
+              <img class="img-responsive" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595260824677&di=73a8569e85fe92a2d14a1e4753e3fd06&imgtype=0&src=http%3A%2F%2Fimg2.cache.netease.com%2Fcnews%2F2009%2F7%2F8%2F2009070811270713563.jpg" alt="图片">
+            </div>
+            <div class="effect-item flex-row">
+              <img class="img-responsive" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595260824677&di=73a8569e85fe92a2d14a1e4753e3fd06&imgtype=0&src=http%3A%2F%2Fimg2.cache.netease.com%2Fcnews%2F2009%2F7%2F8%2F2009070811270713563.jpg" alt="图片">
+            </div>
+            <div class="effect-item flex-row">
+              <img class="img-responsive" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595260824677&di=73a8569e85fe92a2d14a1e4753e3fd06&imgtype=0&src=http%3A%2F%2Fimg2.cache.netease.com%2Fcnews%2F2009%2F7%2F8%2F2009070811270713563.jpg" alt="图片">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="detect-body-right">
+      <div>
+        <div>
+
+        </div>
+
+        <div *ngIf="selectedObject === 1">
+          <app-jet></app-jet>
+        </div>
+
+        <div *ngIf="selectedObject === 2">
+          <app-warship></app-warship>
+        </div>
+
+        <div *ngIf="selectedObject === 3">
+          <app-personage></app-personage>
+        </div>
+      </div>
+ <!--     <div>
+        <div>
+          扩展资料
+        </div>
+        <div>
+          <p>美国将向印尼出售8架最新版"鱼鹰" 总价高达20亿美元</p>
+        </div>
+      </div>-->
+    </div>
+  </div>
+</div>

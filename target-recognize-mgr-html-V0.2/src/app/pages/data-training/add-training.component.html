@@ -1,0 +1,62 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label nzSm="6" [nzXs]="24">任务名称</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请填写任务名称!">
+      <input formControlName="taskName" nz-input/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzSm="6" [nzXs]="24">模型说明</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请填写模型说明!">
+        <input formControlName="taskPattern" nz-input  id="taskPattern" name="taskPattern" maxlength="400"/>
+      <!-- <nz-select formControlName="taskPattern" id="taskPattern" name="taskPattern">
+        <nz-option [nzValue]="2" nzLabel="自动"></nz-option>
+        <nz-option [nzValue]="1" nzLabel="手动"></nz-option>
+      </nz-select> -->
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzSm="6" [nzXs]="24">应用场景</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择基准模型!">
+      <nz-select formControlName="normModel">
+        <nz-option [nzValue]="1" nzLabel="高精度"></nz-option>
+        <nz-option [nzValue]="2" nzLabel="低时延"></nz-option>
+        <nz-option [nzValue]="3" nzLabel="平衡"></nz-option>
+        <nz-option [nzValue]="4" nzLabel="边缘"></nz-option>
+        <nz-option [nzValue]="5" nzLabel="终端"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzSm="6" [nzXs]="24">任务方式</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择基准模型!">
+      <nz-select formControlName="taskMode">
+        <nz-option [nzValue]="1" nzLabel="增量训练"></nz-option>
+        <nz-option [nzValue]="2" nzLabel="重新训练"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzSm="6" [nzXs]="24">类别</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择基准模型!">
+
+      <nz-tree-select
+        #sampleTreeSelect
+        formControlName="sampleCategory"
+        [nzNodes]="nodes"
+        (nzExpandChange)="onExpandChange($event)"
+        [nzDropdownMatchSelectWidth]="true"
+        [nzDropdownStyle]="{ 'max-height': '300px' }"
+        [nzAsyncData]="true"
+        style="width: 275px"
+        nzCheckable>
+      </nz-tree-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
+</form>

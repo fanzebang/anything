@@ -1,0 +1,31 @@
+
+<nz-spin nzTip="Loading..." *ngIf="!isRequsetAll">
+  
+</nz-spin>
+<!-- <button nz-button nzType="primary"  *ngIf="isRequsetAll" (click)="showDetail()">{{buttonName}}</button> -->
+<div style="position: absolute;top: 14px;left: 130px;width: 200px;" class="inputGroup">
+  <nz-input-group nz-dropdown [nzDropdownMenu]="menu">
+    <input type="text" nz-input placeholder="请输入分类关键字" [(ngModel)]="classValue" (ngModelChange)="classSeach()" id="classSeach" autocomplete="off"/>
+  </nz-input-group>
+  <!-- <ng-template #suffixIconSearch>
+    <i nz-icon nzType="search"></i>
+  </ng-template> -->
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu nzSelectable >
+      <li  nz-menu-item *ngFor="let item of classList" (click)="selectClass(item)">{{item}}</li>
+    </ul>
+  </nz-dropdown-menu>
+</div>
+
+
+<nz-tree
+  #nzTreeComponent
+  [nzData]="nodes"
+  [nzCheckedKeys]="defaultCheckedKeys"
+  [nzExpandedKeys]="defaultExpandedKeys"
+  [nzSelectedKeys]="defaultSelectedKeys"
+  (nzClick)="selectSample($event,'')"
+  (nzExpandChange)="expandSampleNode($event,'handClick')"
+  *ngIf="isRequsetAll"
+>
+</nz-tree>

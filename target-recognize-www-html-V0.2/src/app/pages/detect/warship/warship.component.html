@@ -1,0 +1,232 @@
+<!--
+<div class="content-item flex-column"></div>
+-->
+
+<div class="content-top flex-column border">
+  <div class="result flex-row">
+    <div class="result-image flex-row">
+      <img class="img-responsive"
+           src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595260824678&di=21b03cf39f1918ad547d2a13ba1d5165&imgtype=0&src=http%3A%2F%2Fhimg2.huanqiu.com%2Fattachment2010%2F2014%2F0822%2F20140822032412123.jpg"
+           alt="图片">
+    </div>
+
+    <div class="result-info flex-column">
+      <div class="result-info-title">“阿利·伯克”级导弹驱逐舰</div>
+      <div class="result-info-main flex-row">
+        <div class="result-info-text">匹配度</div>
+        <div class="result-info-progress">
+          <div class="result-progress" style="width: 100%;"></div>
+        </div>
+        <div class="result-info-number">95%</div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs flex-column">
+
+
+    <div class="tabs-header flex-row">
+      <div class="tab-item" [class.active]="selectedTab === 1" (click)="selectedTab = 1">基本信息</div>
+      <div class="tab-item" [class.active]="selectedTab === 2" (click)="selectedTab = 2">技术数据</div>
+      <div class="tab-item" [class.active]="selectedTab === 3" (click)="selectedTab = 3">武器装备</div>
+      <div class="tab-item" [class.active]="selectedTab === 4" (click)="selectedTab = 4">结构特点</div>
+    </div>
+
+    <div class="tabs-content">
+      <!-- 基本信息 -->
+      <div class="tabs-content-info flex-row " *ngIf="selectedTab === 1">
+        <div class="info-image flex-row">
+          <img class="img-responsive"
+               src="assets/demo/warship-1.jpg"
+               alt="图片">
+        </div>
+
+        <div class="info-list flex-column">
+          <div class="info-list-item">建造时间：1986年7月</div>
+          <div class="info-list-item">下水时间：1989年9月</div>
+          <div class="info-list-item">服役时间：1991年7月</div>
+          <div class="info-list-item">现状：现役</div>
+          <div class="info-list-item">前型：纪德级</div>
+          <div class="info-list-item">次型：朱姆沃尔特级</div>
+          <div class="info-list-item">制造厂：巴斯钢铁厂，英戈尔斯造船厂</div>
+        </div>
+      </div>
+
+      <!-- 技术数据 -->
+      <div class="tabs-content-technology flex-row " *ngIf="selectedTab === 2">
+        <div class="technology-left"></div>
+
+        <div class="technology-main flex-row">
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">编制</div>
+              <div class="technology-number">300</div>
+              <div class="technology-unit">人</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">舰长</div>
+              <div class="technology-number">153.8</div>
+              <div class="technology-unit">米</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">型宽</div>
+              <div class="technology-number">20.4</div>
+              <div class="technology-unit">米</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">满载排水量</div>
+              <div class="technology-number">8315</div>
+              <div class="technology-unit">吨</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">续航距离</div>
+              <div class="technology-number">4400</div>
+              <div class="technology-unit">英里/20节</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">航速</div>
+              <div class="technology-number">32</div>
+              <div class="technology-unit">节</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">满排吨位</div>
+              <div class="technology-number">5000-10000</div>
+              <div class="technology-unit">吨</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="technology-right"></div>
+      </div>
+
+      <!-- 武器装备 -->
+      <div class="tabs-content-equip flex-row " *ngIf="selectedTab === 3">
+        <div class="equip-left flex-row">
+          <div class="equip-top-bd"></div>
+          <div class="equip-right-bd"></div>
+          <div class="equip-bottom-bd"></div>
+          <div class="equip-left-bd"></div>
+          <img class="img-responsive"
+               src="assets/demo2/ship.png"
+               alt="图片">
+        </div>
+
+        <div class="equip-right flex-row">
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship1.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship2.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">SM-2ER防空导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship3.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">SH-60B-F直升机</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship4.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">54MK-45Mod 1舰炮</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship5.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">54MK-45Mod 1舰炮</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship6.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">反潜直升机</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship7.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">Mk46Mod5型鱼雷</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship8.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">SLQ-95AEB诱饵装置</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image">
+              <img class="img-responsive"
+                   src="assets/demo2/ship9.png"
+                   alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 结构特点 -->
+      <div class="tabs-content-feature " *ngIf="selectedTab === 4">
+        <div class="m-b">
+          高舰首，贯通式主甲板由舰首延伸至舰尾飞行甲板；前甲板明显的武器装备仅有的武器装备--5英寸口径舰炮安装舰首与舰桥之间；导弹垂直发射系统位于前舰炮和舰桥以及飞行甲板前方位置；高大的前上层建筑顶部安装有向后倾斜的柱状主桅；2座独特的大型方形烟囱横截面为方形，装于舰舯部两侧，黑色排气口突出安装在顶部；近程防御系统位于舰桥前方上升平台以及“鱼叉”反舰导弹发射装置前缘。飞行甲板位于尾部。
+        </div>
+        <div>备注：该级舰的FlighIIA型上的直升机库空间和飞行甲板更大；日本海上自卫队装备了该级舰的放大版“金刚”级驱逐舰。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content-bottom flex-column" style="overflow:scroll">
+  <div class="content-title matching">扩展资料</div>
+
+  <div class="information flex-column" *ngFor="let data of kms">
+    <ng-container *ngIf="data?.url!==undefined && data?.url!==null && data?.url!==''">
+      <a class="information-item" target="_blank" href="{{data?.url}}">{{ data.name }}</a>
+    </ng-container>
+  </div>
+
+  <div class="trimming"></div>
+</div>
+

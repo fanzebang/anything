@@ -1,0 +1,29 @@
+<!--
+<div class="content-item flex-column"></div>
+-->
+
+<div class="content-top flex-column border">
+  <iframe style="height: 100%" [src]="kmsUrl | safe">
+
+  </iframe>
+</div>
+
+<div class="content-bottom flex-column" style="overflow:scroll">
+  <div class="content-title matching">扩展资料</div>
+  <div class="information flex-column" *ngFor="let data of kms">
+    <ng-container *ngIf="data?.url!==undefined && data?.url!==null && data?.url!==''&& data?.url!=='undefined'">
+      <a class="information-item" target="_blank" href="{{data?.url}}">{{ data.name }}</a>
+    </ng-container>
+    <!--        <a class="information-item" target="_blank" *ngIf="data?.url!==undefined" href="{{data?.url}}">{{ data.name }}</a>-->
+  </div>
+
+  <!--  <div class="information flex-column">-->
+  <!--    <a class="information-item" href="#">美国将向印尼出售8架最新版“鱼鹰” 总价高达20亿美元</a>-->
+  <!--    <a class="information-item" href="#">乌克兰海军司令称准备与俄进行全面军事对抗 俄专家：乌军已被北约控制！</a>-->
+  <!--    <a class="information-item" href="#">FH-98无人运输机合同交付批首架机首飞成功</a>-->
+  <!--    <a class="information-item" href="#">美国批准向法国出售3架E-2D预警机要价高达20亿美元</a>-->
+  <!--  </div>-->
+
+  <div class="trimming"></div>
+</div>
+

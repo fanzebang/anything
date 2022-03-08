@@ -1,0 +1,38 @@
+<div id="app" class="flex-column">
+  <img class="img-responsive" src="assets/images/top_bg.png" alt="智能目标检测系统">
+
+  <div class="content flex-row">
+    <div class="content-left flex-column m-r">
+      <div class="userinfo flex-column">
+        <img class="userinfo-photo" src="../assets/images/photo.png" alt="头像">
+        <span class="userinfo-account">{{user?.name}}</span>
+      </div>
+
+      <div class="menus">
+        <div class="menu-item flex-row" routerLinkActive="active" routerLink="/console/data-statistics">
+          <span class="menu-item-icon amanisky amani-analyze"></span>
+          <span class="menu-item-text">服务统计</span>
+        </div>
+        <div class="menu-item flex-row" routerLinkActive="active" routerLink="/console/data-manage">
+          <span class="menu-item-icon amanisky amani-data"></span>
+          <span class="menu-item-text ">数据管理</span>
+        </div>
+        <div class="menu-item flex-row" routerLink="/console/data-mark" routerLinkActive="active">
+          <span class="menu-item-icon amanisky amani-annotation"></span>
+          <span class="menu-item-text">数据标注</span>
+        </div>
+        <div class="menu-item flex-row" routerLink="/console/data-verify" routerLinkActive="active">
+          <span class="menu-item-icon amanisky amani-audit"></span>
+          <span class="menu-item-text">数据审核</span>
+        </div>
+        <div class="menu-item flex-row" routerLinkActive="active" routerLink="/console/data-training">
+          <span class="menu-item-icon amanisky amani-train"></span>
+          <span class="menu-item-text">模型训练</span>
+        </div>
+      </div>
+    </div>
+    <div class="content-right">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

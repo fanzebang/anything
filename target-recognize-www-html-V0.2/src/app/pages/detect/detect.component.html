@@ -1,0 +1,199 @@
+
+
+<div class="container flex-column">
+
+
+  <div class="header">
+    <img class="img-responsive" src="assets/images/bg02.png" alt="智能图像检测服务">
+  </div>
+  <div class="detectHeader" style="height: 80px;text-align: center;">
+    <div class="title">目标检测对象</div>
+      <img src="assets/images/detectHeader.png" alt="" style="width: 100%;">
+     <h1 style="color: #fff;position: relative;bottom:60px;letter-spacing: 8px;">智能目标检测系统</h1>
+  </div>
+  <div class="operations flex-row">
+
+    
+  <div id="backstore" style="display: none">
+    <div id="content">
+        <h1 style="text-align: center;"></h1>
+        <div nz-row style="padding: 10px;">
+          <div nz-col nzSpan="10" style="text-align: right;line-height: 30px;"><label for="imgId">图片id：</label></div>
+          <div nz-col nzSpan="14"><input nz-input placeholder="Basic usage" [value]="detectHistory[pageIndex].id" disabled style="width: 40%;"/></div>
+        </div>
+        <div nz-row style="padding: 10px;">
+          <div nz-col nzSpan="10" style="text-align: right;line-height: 30px;"><label for="imgId">错误信息：</label></div>
+          <div nz-col nzSpan="14"><textarea nz-input placeholder="请填写错误信息" [nzAutosize]="{ minRows: 3, maxRows: 5 }" [(ngModel)]="misForm.errorCorrectionMsg" style="width: 80%;height: 100px;"></textarea></div>
+        </div>
+        <div nz-row style="padding: 10px;">
+          <div nz-col nzSpan="24" style="text-align: center;"><button nz-button nzType="primary" (click)="submit()">提交</button></div>
+        </div>
+    </div>
+  </div>
+
+    <!-- <div class="goback">
+      <a class="btn-goback" [routerLink]="['/home']">返回</a>
+    </div> -->
+    <button class="mismatching" [routerLink]="['/home']" style="right: 150px;"><i nz-icon nzType="left" style="font-size: 20px; padding: inherit;color:#fff"></i><span style="font-size: 15px;margin-left: 10px;color: #fff;">返回</span></button>
+    <button class="mismatching" (click)="mismatch()"><i nz-icon nzType="edit" style="font-size: 20px; padding: inherit;color:#fff"></i><span style="font-size: 15px;margin-left: 10px;color: #fff;">纠错</span></button>
+  </div>
+
+  <div class="contents flex-row">
+    <div class="content-left flex-column">
+      <!-- <div class="content-title">目标检测对象</div> -->
+
+      <!-- <div class="content-item flex-column border"> -->
+        <div class="content-top flex-column border-bottom" *ngIf="isPic">
+          <div class="slide flex-row" style="width: 850px;">
+            <div class="slide-prev flex-row">
+              <img class="pointer" src="assets/images/prev.png" alt="上一张" (click)="prevImage()">
+            </div>
+
+            <div class="slide-current flex-row bigImg"
+                 [class.scaning]="currentDetectResult.status === 1 || currentDetectResult.status === 2" >
+
+              <img class="img-responsive showImg" [src]="currentDetectResult.ossKey | ossPath" >
+                   <!-- *ngIf="currentDetectResult.status === 1 || currentDetectResult.status === 2 ||
+                    currentDetectResult.status === 4"
+
+              <img class="img-responsive" *ngIf="currentDetectResult.status === 3"
+                   [src]="currentDetectResult.markedOssKey | ossPath" alt="图片">
+
+              <img class="img-responsive" *ngIf="currentDetectResult.status === 3" #markedImage> -->
+              <div class="scan-line"></div>
+           
+            </div>
+
+            <div class="slide-next flex-row">
+              <img class="pointer" src="assets/images/next.png" alt="下一张" (click)="nextImage()">
+            </div>
+          </div>
+
+          <div class="quantity">{{pageIndex + 1}} / {{total}}</div>
+        </div>
+
+        <div class="content-top border-bottom" *ngIf="video != null" style="position:relative;">
+
+          <div style="position:absolute;left: 0;right: 0;top: 0;bottom: 0;" app-video-canvas [video]="video"
+               (frameRecognized)="onFrameRecognized($event)"></div>
+
+
+          <canvas #videoFrameCanvas></canvas>
+
+        </div>
+        <div class="content-bottom flex-column" style="min-height: 400px;" >
+          <div class="effect flex-column">
+            <div class="effect-title">
+              目标检测结果
+              <span *ngIf="currentDetectResult.status === 4">
+                检测失败
+              </span>
+              <span style="top: 6px" *ngIf="currentDetectResult.status !== 4">{{ currentDetectResult.sceneType | sceneType}}</span>
+            </div>
+            <div class="effect-content flex-row" style="flex-wrap: wrap;">
+              <div class="effect-item flex-column" [class.target-selected]="selectedTargetPolygon == targetPolygon"
+                   *ngFor="let targetPolygon of currentDetectResult.targetJson;index as idx;"
+                   (click)="selectTargetPolygon(targetPolygon)" style="height: auto;">
+                <img class="" style="object-fit: contain;height: 76px;"
+                     [src]="targetsImageBase64[idx]">
+                <div style="color: white;text-align: center;font-size: 16px;">{{targetPolygon.categoryCn}}</div>
+              </div>
+              <img src="assets\images\detecting.gif" style="object-fit: contain"
+                   *ngIf="currentDetectResult.status !== 3">
+            </div>
+          </div>
+
+          <div class="similar flex-column">
+            <div class="similar-title">相似图片目标</div>
+            <div class="similar-content flex-row">
+              <div class="similar-item flex-row similarImg" *ngFor="let similarImg of similarTargets"  id="similarImg">
+                <img class="img-responsive"
+                     [src]="similarImg.ossKey | sampleOssPath"
+                     alt="图片"> 
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
+
+    <div class="content-right flex-column">
+      <div class="border"></div>
+      <div class="rightContent">
+        <ul class="tab">
+          <li [ngClass]="{'slectTab': isSlectTab}" (click)="changeSelect1()">百科匹配结果</li>
+          <li [ngClass]="{'slectTab': !isSlectTab}" (click)="changeSelect()">图谱匹配结果</li>
+        </ul>
+
+        <!-- <div class="content-title matching">匹配结果</div> -->
+
+        <div class="content-item flex-column" id="ifmBox">
+            <iframe src="" frameborder="0" [hidden]="!isSlectTab" class="result" ></iframe>
+            <iframe src="" frameborder="0" [hidden]="isSlectTab" class="result"></iframe>
+        </div>
+
+      </div>
+
+
+
+        <!--sll
+                <iframe *ngIf="kmsUrl" style="flex-grow: 1;border: 0px;" [src]="kmsUrl | safe">
+                </iframe>
+
+
+                <div class="content-top flex-column border">
+                  <div class="flex-row" style="padding: 10px 5px;color: white;justify-content: center;">
+
+                  </div>
+
+
+                </div>
+        -->
+
+
+        <!--sll
+                  <div class="content-top flex-column border">
+                    <div class="flex-row" style="padding: 10px 5px;color: white;justify-content: center;">
+                      <div class="result-info-text">匹配度</div>
+                      <div class="result-info-progress">
+                        <img src="assets/images/progress-tick.png" [ngStyle]="{left:(similarity - 100)+'%'}">
+                      </div>
+                      <div class="result-info-number">{{similarity}}%</div>
+                    </div>
+
+                    <iframe *ngIf="kmsUrl" style="flex-grow: 1;border: 0px;" [src]="kmsUrl | safe">
+                    </iframe>
+                  </div>
+
+                  <div class="content-bottom flex-column" style="overflow-y: auto;overflow-x: hidden;">
+                    <div class="content-title matching">扩展资料</div>
+                    <div class="information flex-column" *ngFor="let data of kms">
+                      <ng-container
+                        *ngIf="data?.url!==undefined && data?.url!==null && data?.url!==''&& data?.url!=='undefined'">
+                        <a class="information-item" target="_blank" href="{{data?.url}}">{{ data.name }}</a>
+                      </ng-container>
+                    </div>
+                    <div class="trimming"></div>
+                  </div>
+
+                </div>
+        -->
+
+
+        <!--        <div class="content-item flex-column" *ngIf="selectedTargetPolygon?.category === 'aeroplane'" app-jet></div>-->
+
+
+        <!--
+        <div class="tabs flex-column" app-warship></div>
+        -->
+        <!--
+                  <div class="tabs flex-column" app-personage></div>
+
+                  <div class="tabs flex-column" app-jet></div>
+                  -->
+
+
+        <!-- </div>-->
+      </div>
+    </div>
+  </div>

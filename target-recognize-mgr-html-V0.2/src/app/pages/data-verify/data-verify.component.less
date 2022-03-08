@@ -1,0 +1,156 @@
+:host {
+  > div {
+    height: 100%;
+  }
+
+  .search-form {
+    input {
+      height: 40px;
+    }
+  }
+
+  .audit-picture {
+    img {
+      object-fit: contain;
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .audit-image-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    > div {
+      margin: 5px;
+
+      &.current-sample {
+        padding: 5px;
+        border: 1px solid rgb(255, 194, 48);
+
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+
+:host ::ng-deep {
+  .ant-progress-text {
+    color: white;
+  }
+
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: 40px;
+  }
+
+  .ant-select-single .ant-select-selector .ant-select-selection-item, .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+    line-height: 40px;
+  }
+
+  .ant-table-row-expand-icon {
+    background: #001429;
+  }
+
+  .blue-table {
+    margin-top: 20px;
+
+    .ant-table {
+      color: #ffffff;
+      font-size: 20px;
+      border: solid 1px #0f366b;
+      //border-top: 1px solid rgb(21, 159, 255);
+      //border-left: 1px solid rgb(21, 159, 255);
+      //border-right: 1px solid rgb(21, 159, 255);
+      background: transparent;
+
+      th {
+        font-size: 16px;
+      }
+
+      th, td {
+        color: #ffffff;
+        border-bottom-color: #0f366b;
+
+        .ant-checkbox-inner {
+          background-color: transparent;
+          border-color: rgb(21, 159, 255);
+        }
+      }
+
+      thead {
+        th {
+          background-color: transparent;
+        }
+      }
+
+      .ant-table-tbody > tr.ant-table-row:hover > td {
+        background-color: rgb(13, 51, 101);
+      }
+
+      .ant-table-tbody > tr.ant-table-placeholder:hover > td {
+        background-color: rgb(13, 51, 101);
+      }
+
+      .ant-empty-description {
+        color: rgb(2, 130, 172);
+      }
+
+
+      tr.ant-table-expanded-row {
+        background-color: transparent;
+
+        td {
+          background-color: transparent;
+        }
+      }
+    }
+
+  }
+
+  .blue-datepicker {
+    background-color: transparent;
+    border-color: rgb(52, 106, 211);
+    margin-right: 10px;
+
+    i[nz-icon] {
+      color: white;
+    }
+
+    input {
+      color: white;
+    }
+  }
+
+  .blue-select {
+    width: 240px;
+    margin-right: 10px;
+
+    nz-select-top-control {
+      background-color: transparent !important;
+      border-color: rgb(52, 106, 211) !important;
+    }
+
+    i[nz-icon] {
+      color: white;
+    }
+
+    nz-select-item {
+      color: white !important;
+    }
+  }
+
+
+  .ant-progress-text {
+    color: white;
+  }
+}

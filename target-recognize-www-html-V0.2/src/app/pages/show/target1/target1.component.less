@@ -1,0 +1,99 @@
+header{
+    position: relative;
+    .location{
+        position: absolute;
+        top: 10px;
+        left: 200px;
+        color: #fff;
+    }
+    .text{
+        position: absolute;
+        top: 165px;
+        left: 360px;
+        width: 680px;
+    }
+    h1{
+        color: #fff;
+        margin-bottom: 20px;
+    }
+    p{
+        color: #fff;
+
+    }
+}
+.content{
+    margin: 50px auto;
+    width: 75%;
+}
+/deep/ .ant-tabs-nav {
+    width: 700px;
+    display: block;
+    margin: 0 auto;
+}
+.img{
+
+    flex: 0 0 700px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #ebebeb;
+    .picBig{
+        width: 100%;
+        overflow: hidden;
+        img{
+               height: 400px;
+               width: 700px;
+        }
+    }
+    div{
+        height: 80%;
+        flex: 0 0 100%;
+    }
+    ul{
+        height: 20%;
+        flex: 1;
+        display: flex;
+        list-style: none;
+        li{
+            flex: 1;
+            padding: 5px;
+            cursor: pointer;
+            height: 77px;
+            max-width: 150px;
+            img{
+                width: 95%;
+                max-width: 150px;
+                height: 100%;
+            }
+            &:first-child{
+                img{
+                    border: 3px solid #e29426;
+                }
+            }
+
+        }
+
+
+
+    }
+
+}
+.accrdion{
+    flex: 1;
+
+}
+.world,.keyframe,.scence{
+        ul{
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            li{
+                width: 150px;
+                flex: 1;
+                margin: 0 10px;
+                img{
+                    width: 150px;
+                    height: 100px;
+                }
+            }
+        }
+}

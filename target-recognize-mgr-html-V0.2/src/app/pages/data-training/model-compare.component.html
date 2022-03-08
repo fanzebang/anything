@@ -1,0 +1,17 @@
+<table>
+  <thead>
+  <tr>
+    <th>&nbsp;</th>
+    <th>召回率</th>
+    <th>准确率</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let model of comparingDataTrainList">
+    <td>{{model?.compareName}}</td>
+    <td>{{model?.recall}}%</td>
+    <td>{{model?.precision}}%</td>
+  </tr>
+  </tbody>
+</table>

@@ -1,0 +1,103 @@
+
+.header{
+  display: none;
+}
+.target-selected {
+  border: 2px solid #E29426;
+}
+.scaning {
+  position: relative;
+  background: url("../../../assets/images/scan-area.png") no-repeat;
+  background-size: 100% 100%;
+  border: 1px solid #b0f9e4;
+
+
+  .scan-line {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background: url("../../../assets/images/scan-line.png") no-repeat;
+    background-size: 100% 100%;
+
+    animation: move 1.5s ease-in-out infinite;
+    -webkit-animation: move 1.5s ease-in-out infinite;
+  }
+}
+
+.scan-line {
+  display: none;
+}
+
+
+@keyframes move {
+  from {
+    top: -100%
+  }
+  to {
+    top: 0
+  }
+}
+
+
+.match-degree {
+
+  //background-image: url("/assets/images/progress-bg.png");
+  //background-repeat: no-repeat;
+  //background-size: contain;
+
+}
+
+.result-info-progress {
+  width: 502px;
+  overflow: hidden;
+
+  img {
+    object-fit: contain;
+    position: relative;
+    //width: 100%;
+    //height: 100%;
+    left: 0;
+    bottom: 2px;
+  }
+}
+.slide-prev{
+  flex: 0 0 40px;
+}
+
+.tab{
+  color: #0082c4;
+  font-size: 24px;
+  font-family:Arial, Helvetica, sans-serif;
+  display: flex;
+  list-style: none;
+  position: relative;
+  z-index: 10;
+  li:nth-child(1){
+    padding-right: 20px;
+    border-right: 1px solid #0082c4;
+  }
+  li{
+    margin-right: 20px;
+    cursor: pointer;
+  }
+}
+
+.slectTab{
+  color: #fff;
+}
+.detectHeader{
+  position: relative;
+  .title{
+    left: 60px;
+    bottom: 5px;
+    font-size: 20px;
+    color: #fff;
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
+
+

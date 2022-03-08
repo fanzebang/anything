@@ -1,0 +1,196 @@
+<!--
+<div class="content-item flex-column"></div>
+-->
+<div class="content-top flex-column border">
+  <div class="result flex-row">
+    <div class="result-image flex-row">
+      <img class="img-responsive"
+           src="assets/demo/feiji-avatar.jpg"
+           alt="图片">
+    </div>
+
+    <div class="result-info flex-column">
+      <div class="result-info-title">F35A“闪电Ⅱ”战斗机</div>
+      <div class="result-info-main flex-row">
+        <div class="result-info-text">匹配度</div>
+        <div class="result-info-progress">
+          <div class="result-progress" style="width: 100%;"></div>
+        </div>
+        <div class="result-info-number">95%</div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs flex-column">
+
+    <div class="tabs-header flex-row">
+      <div class="tab-item" [class.active]="selectedTab === 1" (click)="selectedTab = 1">基本信息</div>
+      <div class="tab-item" [class.active]="selectedTab === 2" (click)="selectedTab = 2">技术数据</div>
+      <div class="tab-item" [class.active]="selectedTab === 3" (click)="selectedTab = 3">武器装备</div>
+      <div class="tab-item" [class.active]="selectedTab === 4" (click)="selectedTab = 4">结构特点</div>
+    </div>
+
+    <div class="tabs-content">
+      <!-- 基本信息 -->
+      <div class="tabs-content-info flex-row " *ngIf="selectedTab === 1">
+        <div class="fighter-image flex-row">
+          <img class="img-responsive" src="assets/images/img02.png" alt="图片">
+        </div>
+
+        <div class="fighter-list flex-column">
+          <div class="info-list-item">建造时间：1986年7月</div>
+          <div class="info-list-item">下水时间：1989年9月</div>
+          <div class="info-list-item">服役时间：1991年7月</div>
+          <div class="info-list-item">现状：现役</div>
+          <div class="info-list-item">前型：纪德级</div>
+          <div class="info-list-item">次型：朱姆沃尔特级</div>
+          <div class="info-list-item">制造厂：巴斯钢铁厂，英戈尔斯造船厂</div>
+        </div>
+      </div>
+
+      <!-- 技术数据 -->
+      <div class="tabs-content-technology flex-row " *ngIf="selectedTab === 2">
+        <div class="technology-left"></div>
+        <div class="technology-main flex-row">
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">乘员</div>
+              <div class="technology-number">1</div>
+              <div class="technology-unit">人</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">机长</div>
+              <div class="technology-number">15.38</div>
+              <div class="technology-unit">米</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">翼展</div>
+              <div class="technology-number">10.65</div>
+              <div class="technology-unit">米</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">机高</div>
+              <div class="technology-number">5.28</div>
+              <div class="technology-unit">米</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">空重</div>
+              <div class="technology-number">13300</div>
+              <div class="technology-unit">千克</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">最大起飞重量</div>
+              <div class="technology-number">31800</div>
+              <div class="technology-unit">千克</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">最大飞行速度</div>
+              <div class="technology-number">2000</div>
+              <div class="technology-unit">千米/小时</div>
+            </div>
+          </div>
+          <div class="technology-main-item">
+            <div class="technology-main-info flex-column">
+              <div class="technology-title">最大航程</div>
+              <div class="technology-number">1000</div>
+              <div class="technology-unit">千米</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="technology-right"></div>
+      </div>
+
+      <!-- 武器装备 -->
+      <div class="tabs-content-equip flex-row " *ngIf="selectedTab === 3">
+        <div class="fighter-left flex-row">
+          <img class="fighter-img-responsive" src="assets/images/img03.png" alt="图片">
+        </div>
+
+        <div class="equip-right flex-row">
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image fighter-right-image">
+              <img src="assets/images/img04.png" alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹巡航导弹巡航导弹巡航导弹巡航导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image fighter-right-image">
+              <img src="assets/images/img04.png" alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image fighter-right-image">
+              <img src="assets/images/img04.png" alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image fighter-right-image">
+              <img src="assets/images/img04.png" alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹巡航导弹巡航导弹巡航导弹巡航导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image fighter-right-image">
+              <img src="assets/images/img04.png" alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹</div>
+          </div>
+
+          <div class="equip-right-item flex-column">
+            <div class="equip-right-image fighter-right-image">
+              <img src="assets/images/img04.png" alt="图片">
+            </div>
+            <div class="equip-right-text ellipsis">“战斧”巡航导弹</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 结构特点 -->
+      <div class="tabs-content-feature " *ngIf="selectedTab === 4">
+        <div class="m-b">
+          F-35的隐身设计借鉴了F-22的很多技术与经验，显示装置创造性地使用了触摸式显示技术。F-35显示界面的先进性是由其复杂的任务决定的。
+          与争夺空中优势的F-22不同，F-35的任务涵盖范围更广。飞行员不再是简单的驾驶员，而是更高级的空中战术决策者。
+          F-35的设计者认为，战斗机越来越复杂，向飞行员展示所有系统的情况和工作状态只能使人疲于奔命。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content-bottom flex-column">
+  <div class="content-title matching">扩展资料</div>
+
+  <div class="information flex-column" *ngFor="let data of kms">
+    <ng-container *ngIf="data?.url!==undefined && data?.url!==null && data?.url!==''">
+      <a class="information-item" target="_blank" href="{{data?.url}}">{{ data.name }}</a>
+    </ng-container>
+  </div>
+
+  <!--  <div class="information flex-column">-->
+  <!--    <a class="information-item" href="#">美国将向印尼出售8架最新版“鱼鹰” 总价高达20亿美元</a>-->
+  <!--    <a class="information-item" href="#">乌克兰海军司令称准备与俄进行全面军事对抗 俄专家：乌军已被北约控制！</a>-->
+  <!--    <a class="information-item" href="#">FH-98无人运输机合同交付批首架机首飞成功</a>-->
+  <!--    <a class="information-item" href="#">美国批准向法国出售3架E-2D预警机要价高达20亿美元</a>-->
+  <!--  </div>-->
+
+  <div class="trimming"></div>
+</div>
+

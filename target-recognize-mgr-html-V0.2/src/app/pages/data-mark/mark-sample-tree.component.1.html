@@ -1,0 +1,10 @@
+<nz-tree
+  #nzTreeComponent
+  [nzData]="nodes"
+  [nzCheckedKeys]="defaultCheckedKeys"
+  [nzExpandedKeys]="defaultExpandedKeys"
+  [nzSelectedKeys]="defaultSelectedKeys"
+  (nzClick)="selectSample($event)"
+  (nzExpandChange)="expandSampleNode($event)"
+>
+</nz-tree>

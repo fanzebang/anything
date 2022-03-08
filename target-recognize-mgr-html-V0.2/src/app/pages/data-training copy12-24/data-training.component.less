@@ -1,0 +1,139 @@
+.train-btns {
+  text-align: right;
+
+  button {
+    width: 120px;
+    margin-left: 10px;
+  }
+
+  .btn-new-task {
+    background-color: rgb(0, 164, 140);
+  }
+
+}
+
+.echart-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  nz-progress {
+    text-align: center;
+  }
+}
+
+:host ::ng-deep {
+  .ant-progress-text {
+   color: white;
+  }
+
+  .blue-table {
+    margin-top: 20px;
+
+    .ant-table {
+      border: solid 1px #0f366b;
+      font-size: 20px;
+      //border-top: 1px solid rgb(21, 159, 255);
+      //border-left: 1px solid rgb(21, 159, 255);
+      //border-right: 1px solid rgb(21, 159, 255);
+      background: transparent;
+
+      th {
+        font-size: 16px;
+      }
+
+      th, td {
+        color: #ffffff;
+        border-bottom-color: #0f366b;
+
+        .ant-checkbox-inner {
+          background-color: transparent;
+          border-color: rgb(21, 159, 255);
+        }
+      }
+
+      thead {
+        th {
+          background-color: transparent;
+        }
+      }
+
+      .ant-table-tbody > tr.ant-table-row:hover > td, .current-row > td {
+        background-color: rgb(13, 51, 101);
+      }
+
+    }
+
+  }
+
+}
+
+:host {
+  display: block;
+  position: relative;
+  height: 100%;
+
+  .model-compare {
+    display: none;
+
+    &.show-compare {
+      display: block;
+    }
+
+    border: 1px solid #159fff;
+    background-color: #0a2952;
+    color: white;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 180px;
+
+    > div {
+      padding: 8px 16px;
+    }
+
+    .model-compare-title {
+      border-bottom: 1px solid #159fff;
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .model-compare-btn {
+      border-bottom: 1px solid #159fff;
+      text-align: center;
+    }
+
+    .compare-model-row {
+      height: 60px;
+      border-bottom: 1px solid #159fff;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      span, i[nz-icon] {
+        line-height: 43px;
+        font-size: 14px;
+      }
+
+      i[nz-icon] {
+        color: rgb(20, 138, 237);
+      }
+
+      &:hover {
+        background-color: rgb(13, 51, 101);
+      }
+    }
+
+    .model-compre-del {
+      color: rgb(184, 117, 62);
+      text-align: center;
+
+      a {
+        color: rgb(184, 117, 62);
+      }
+    }
+  }
+}
+

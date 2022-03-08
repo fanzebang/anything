@@ -1,0 +1,31 @@
+<div>
+  <div class="flex-row">
+    <span style="word-break: keep-all;">召回率</span>
+    <div class="precision-progress-bar">
+      <div style="margin-left: 2px;overflow: hidden;">
+        <img src="assets/IMG_2555.PNG" [ngStyle]="{right:(100-dataTrain?.recall)+'%'}">
+      </div>
+
+    </div>
+    <div style="min-width: 60px;">
+      {{dataTrain?.recall}}%
+    </div>
+    <!--
+    <nz-progress [nzPercent]="50"  nzStatus="active" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"></nz-progress>
+    -->
+  </div>
+  <div class="flex-row" style="margin-top: 10px;">
+    <span style="word-break: keep-all;">准确率</span>
+    <div class="precision-progress-bar">
+      <div style="margin-left: 2px;overflow: hidden;">
+        <img src="assets/IMG_2555.PNG" [ngStyle]="{right:(100-dataTrain?.precision)+'%'}">
+      </div>
+    </div>
+    <div style="min-width: 60px;">
+      {{dataTrain?.precision}}%
+    </div>
+    <!--
+    <nz-progress [nzPercent]="50" nzStatus="active" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"></nz-progress>
+    -->
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<nz-collapse nzAccordion>
+    <nz-collapse-panel *ngFor="let panel of panels;let key = index" [nzHeader]="panel.name" [nzActive]="panel.active">
+        
+      <div style="max-height: 378px;overflow-y: auto;padding-top: 10px;" class="world" *ngIf="key==0">
+        <ul>
+            <li *ngFor="let item2 of imgArr;let key=index" class="imgLi">
+                <img src="{{item2.src}}" alt="" crossOrigin='anonymous'>
+                <div>{{item2.wordTime}}</div>
+                <p>{{item2.word}}</p>
+            </li>
+        </ul>
+      </div>
+      <div style="max-height: 378px;overflow-y: auto;padding-top: 10px;" class="keyframe" *ngIf="key==1">
+        <ul>
+            <li *ngFor="let item3 of frameArr" class="frameLi">
+                <img src="{{item3.src}}" alt="">
+                <div>{{item3.startTime}}</div>
+            </li>
+        </ul>
+      </div>
+      <div style="max-height: 378px;overflow-y: auto;padding-top: 10px;display: none;" class="scence" *ngIf="key==2">
+        <ul>
+            <li *ngFor="let item4 of scenceArr">
+                <img src="{{item4.src}}" alt="">
+                <div>{{item4.frame}}</div>
+            </li>
+        </ul>
+      </div>
+    </nz-collapse-panel>
+  </nz-collapse>
+  <canvas width="343" height="200" id="canvas1" style="position: absolute;top: 10px;display: none;"></canvas>
+  <video controls type='video/mp4' id="AccorVideo" #AccorVideo [src]="videoUrl" type='video/mp4' [(ngModel)]="videoUrl" ngDefaultControl style="width: 300px;height: 200px;position: absolute;top:100px;border: 1px solid red;display: none;" crossOrigin='anonymous'>
+
+  </video>

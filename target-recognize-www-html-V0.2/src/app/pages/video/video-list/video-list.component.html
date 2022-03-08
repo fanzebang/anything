@@ -1,0 +1,24 @@
+<div class="content">
+    <header>视频列表</header>
+    <br>
+    <div class="left">
+        <ul>
+            <li *ngFor="let item of imageArr;let key = index" >
+                <div class="mask" *ngIf="item.files.progress != '1'" style="color: #fff;text-align: center;line-height:500%;">等待上传...</div>
+                <video [src]="item.files.videoUrl" style="width: 100%;height: 100%;" class="video" (click)="imgclick(key)" (outer)="listClick($event)"></video>
+                <nz-progress [nzPercent]="item.progress"></nz-progress>
+            </li>
+        </ul>
+    </div>
+    <div class="right">
+
+        <div class="header">
+            <input type="text" placeholder='请输入目标名称'>
+            <img src="assets/images/search.png" alt="">
+            </div>
+        <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" 
+            controls  width="100%"
+            data-setup="{}" [src]="videoUrl" type='video/mp4' ngDefaultControl>
+        </video>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<header>关键对象</header>
+<div class="label">
+<span style="color: #fff;">对象:</span>
+<ul >
+    <li *ngFor="let item of keyObj;let key = index">
+        <input type="checkbox" name="checkbox2" id="checkbox{{key}}" checked (click)="checkBox(key)">&nbsp;&nbsp;<label for="checkbox{{key}}" style="color: #fff;">{{item.text}}</label>
+    </li>
+</ul>
+</div>
+<div style="width: 100%; border-bottom: 1px solid #1a2d72;margin-bottom: 10px;position: relative;top: -3px;"></div>
+<ul class="outerUl">
+    <li *ngFor="let item of keyObj let key=index" class='text' [hidden]="!item.checked" id="outer{{key}}">
+        <p>{{item.text}}</p>
+        <ul>
+            <li *ngFor="let item2 of item.keyTime;let key2 = index" class="key_time" id="keytime{{key}}_{{key2}}" (click)="getTime($event)">{{item2}}</li>
+        </ul>
+    </li>
+</ul>

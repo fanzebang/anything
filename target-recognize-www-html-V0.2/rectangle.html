@@ -1,0 +1,50 @@
+<html>
+<header>
+
+</header>
+<body onload="init()">
+
+<canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
+
+<script type="text/javascript">
+
+  var startX, startY, endX, endY;
+  var canvas, ctx;
+  var w, h;
+  var drawing = false;
+
+  function init() {
+    canvas = document.getElementById('can');
+    ctx = canvas.getContext("2d");
+    w = canvas.width;
+    h = canvas.height;
+
+    canvas.addEventListener("mousedown", function (e) {
+      startX = e.clientX - canvas.offsetLeft;
+      startY = e.clientY - canvas.offsetTop;
+
+      // console.log('this.startX = ' + startX + ', this.startY = ' + startY);
+      drawing = true;
+    }, false);
+
+    canvas.addEventListener("mousemove", function (e) {
+
+      endX = e.clientX - canvas.offsetLeft;
+      endY = e.clientY - canvas.offsetTop;
+
+      if (drawing) {
+        // 先清除，再重新画
+        ctx.clearRect(0, 0, w, h);
+
+        ctx.strokeStyle = "#f00";
+        ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+      }
+    }, false);
+
+    canvas.addEventListener("mouseup", function (e) {
+      drawing = false;
+    }, false);
+  }
+</script>
+</body>
+</html>

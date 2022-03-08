@@ -1,0 +1,138 @@
+<div class="flex-row">
+
+<div *ngIf="isVisible" nzTitle="The first Modal"
+class="statistics-top flex-column"
+style="height: 90%;
+width: 90%;
+position: absolute;
+z-index: 9999;
+background: #031129;
+margin: 25px 5%;">
+<div class="statistics-title" style="position: relative;">{{alertWindowTitle}}
+
+  <div class="close" 
+  style="width: 30px;height: 30px;position: absolute;right: 0px;top: 0px;"
+> 
+<i nz-icon nzType="close" nzTheme="outline" (click)="handleCancel()" style="cursor: pointer;"></i>
+</div>
+
+
+</div>
+
+<div class="echart-box"  id="bigCharts">
+
+</div>
+
+  </div>
+
+  <div class="statistics-left flex-column">
+    <div class="statistics-top flex-column" (dblclick)="doubleClick('usePercentEchart')">
+      <div class="statistics-title">使用占比统计 <i nz-icon nzType="expand" nzTheme="outline" style="position: absolute; top: 10px;right: 10px;" (click)="doubleClick('usePercentEchart')" title="窗口观看"></i></div>
+      <div class="echart-box" >
+        <div #usePercentEchart></div>
+      </div>
+    </div>
+
+    <div class="statistics-bottom flex-column" (dblclick)="doubleClick('useTrendEchart')">
+      <div class="statistics-title">使用趋势统计<i nz-icon nzType="expand" nzTheme="outline" style="position: absolute; top: 10px;right: 10px;" (click)="doubleClick('useTrendEchart')" title="窗口观看"></i></div>
+      <div class="echart-box">
+        <div #useTrendEchart></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statistics-main flex-column">
+    <div class="statistics-main-top flex-column" >
+      <div class="statistics-title">当前用户总数</div>
+
+      <div class="echart-box">
+        <div style="height: 100%;position:relative;">
+
+
+       
+          <div #mapEchart style="width: 95%;height: 95%;margin: auto;margin-top: 10px;" id="mapEcharts" ></div>
+          <!-- 暂时用下面的静态图片代替
+       
+          <div
+            style="position:absolute;left: 0;top: 0;right: 0;bottom: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <img src="assets/IMG_2526.PNG" style="object-fit: contain;">
+          </div> -->
+          <div style="position: absolute;right: 20px;bottom: 20%;color: white;border-radius: 5px;background: #006EEA;padding: 10px;" class="mapData">
+            <div style="font-size: 16px;">
+              湖北省
+            </div>
+            <div>
+              私有样本：<span>7820</span>个 
+            </div>
+            <div>
+              定制模型：<span>72463</span>个
+            </div>
+            <div>
+              用户：<span>72496</span>个
+            </div>
+            <div>
+              请求服务：<span>724531</span>次
+            </div>
+          </div>
+
+          <div class="user-num-wrap" id="user-num-wrap">
+             <div class="user-num-box" *ngFor="let item of arr1">
+              <div class="user-num-box-title"></div>
+              {{item}}
+            </div>
+           <!-- <div class="user-num-box">
+              <div class="user-num-box-title"></div>
+              4
+            </div>
+            <div class="user-num-box">
+              <div class="user-num-box-title"></div>
+              6
+            </div>
+            <div class="user-num-box">
+              <div class="user-num-box-title"></div>
+              9
+            </div> -->
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="statistics-main-bottom flex-row">
+      <div class="statistics-main-item flex-column" (dblclick)="doubleClick('targetTypeEchart')">
+        <div class="statistics-title">支持目标类型<i nz-icon nzType="expand" nzTheme="outline" style="position: absolute; top: 10px;right: 10px;" (click)="doubleClick('targetTypeEchart')" title="窗口观看"></i></div>
+        <div class="echart-box">
+          <div #targetTypeEchart></div>
+        </div>
+      </div>
+
+      <div class="statistics-main-item flex-column" (dblclick)="doubleClick('modelNumEchart')">
+        <div class="statistics-title">模型数量<i nz-icon nzType="expand" nzTheme="outline" style="position: absolute; top: 10px;right: 10px;" (click)="doubleClick('modelNumEchart')" title="窗口观看"></i></div>
+
+        <div class="echart-box">
+          <div #modelNumEchart></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statistics-right flex-column">
+    <div class="statistics-top statistics-top-type flex-column" (dblclick)="doubleClick('treeRadialEchart')">
+      <div class="statistics-title">样本类别数量<i nz-icon nzType="expand" nzTheme="outline" style="position: absolute; top: 10px;right: 10px;" (click)="doubleClick('treeRadialEchart')" title="窗口观看"></i></div>
+
+      <div class="echart-box"  id="shu">
+        <div #treeRadialEchart ></div>
+      </div>
+    </div>
+
+    <div class="statistics-bottom flex-column" (dblclick)="doubleClick('searchTopEchart')">
+      <div class="statistics-title">搜索排行<i nz-icon nzType="expand" nzTheme="outline" style="position: absolute; top: 10px;right: 10px;" (click)="doubleClick('searchTopEchart')" title="窗口观看"></i></div>
+
+      <div class="echart-box">
+        <div #searchTopEchart></div>
+      </div>
+    </div>
+  </div>
+</div>

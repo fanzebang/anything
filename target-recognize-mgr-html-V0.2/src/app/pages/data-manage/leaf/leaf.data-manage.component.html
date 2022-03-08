@@ -1,0 +1,111 @@
+<div class="main flex-column" style="height: 100%">
+  <div class="search-form flex-row">
+    <div class="search-form-title">{{sampleOssType?.sampleTypeName}}<span
+      class="search-form-quantity">共{{secondaryTotal}}个</span>
+      <span style="margin-left: 30px;">当前第 {{pageIndex}} 页 共 {{imgNum}} 个</span>
+    </div>
+    <ng-container *ngIf="!isOperateButton">
+      <!--      <button class="btn m-r" (click)="uploadImages()">导入</button>-->
+      <!--
+      <input type="file" #filesInput value="导入" multiple (change)="uploadImages($event)">
+      -->
+      <div class="import-samples-btn-wrap">
+        <button class="upload">导入</button>
+        <input #filesInput type="file" value="本地上传" multiple (change)="uploadImages($event)">
+      </div>
+
+      <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button>
+    </ng-container>
+    <ng-container *ngIf="isOperateButton">
+      <button class="btn m-r" (click)="updateAllChecked()">全选</button>
+      <button class="btn m-r" (click)="lock()">锁定</button>
+      <button class="btn m-r" (click)="download()">下载</button>
+      <button class="btn btn-remove m-r" (click)="delete()">删除</button>
+      <button class="btn btn-batch" (click)="operateMgr(false)">完成</button>
+    </ng-container>
+
+  </div>
+
+  <ng-container *ngIf="!isOperateButton">
+    <div class="picture-item leaf-picture-item" >
+      <div class="picture-box" *ngFor="let item of secondaryData;index as idx;">
+        <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
+        <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
+
+
+        <i nz-icon nzType="clock-circle" nzTheme="fill" style="color: rgb(19, 111, 182);position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 0"></i>
+        <i nz-icon nzType="minus-circle" nzTheme="fill" style="color: rgb(230, 98, 182);position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 1"></i>
+        <i nz-icon nzType="info-circle" nzTheme="fill" style="color: rgb(197, 134, 17);position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 2"></i>
+        <i nz-icon nzType="check-circle" nzTheme="fill" style="color: rgb(22, 187, 63);position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 3"></i>
+        <i nz-icon nzType="close-circle" nzTheme="fill" style="color: red;position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 4"></i>
+
+        <div style="color: red;position: absolute;top: -10px;left: -5px;width: 10px;height: 10px;" *ngIf="item.faceStatus == 1" title="此图片为人脸模板">
+          <svg style="position: relative;top: 7px;" t="1646357872681" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="691" width="20" height="20">
+            <path d="M210.285714 320.091429c20.205714 0 36.571429 16.365714 36.571429 36.571428s-16.365714 36.571429-36.571429 36.571429-36.571429-16.365714-36.571428-36.571429 16.365714-36.571429 36.571428-36.571428m0-36.571429c-40.411429 0-73.142857 32.731429-73.142857 73.142857s32.731429 73.142857 73.142857 73.142857 73.142857-32.731429 73.142857-73.142857-32.731429-73.142857-73.142857-73.142857zM813.714286 320.091429c20.205714 0 36.571429 16.365714 36.571428 36.571428s-16.365714 36.571429-36.571428 36.571429-36.571429-16.365714-36.571429-36.571429 16.365714-36.571429 36.571429-36.571428m0-36.571429c-40.411429 0-73.142857 32.731429-73.142857 73.142857s32.731429 73.142857 73.142857 73.142857 73.142857-32.731429 73.142857-73.142857-32.731429-73.142857-73.142857-73.142857zM512 832.091429c20.205714 0 36.571429 16.365714 36.571429 36.571428s-16.365714 36.571429-36.571429 36.571429-36.571429-16.365714-36.571429-36.571429 16.365714-36.571429 36.571429-36.571428m0-36.571429c-40.411429 0-73.142857 32.731429-73.142857 73.142857s32.731429 73.142857 73.142857 73.142857 73.142857-32.731429 73.142857-73.142857-32.731429-73.142857-73.142857-73.142857z" fill="#248BFF" p-id="692"></path><path d="M301.714286 644.662857m-36.571429 0a36.571429 36.571429 0 1 0 73.142857 0 36.571429 36.571429 0 1 0-73.142857 0Z" fill="#B4D7FE" p-id="693"></path><path d="M483.474286 522.88l-173.714286-84.571429c-2.56-1.188571-5.302857-1.828571-8.045714-1.828571s-5.485714 0.64-8.045715 1.828571l-173.714285 84.571429c-6.308571 3.017143-10.24 9.417143-10.24 16.457143v210.742857c0 7.04 4.022857 13.348571 10.24 16.457143l173.714285 84.571428c2.56 1.188571 5.302857 1.828571 8.045715 1.828572s5.485714-0.64 8.045714-1.828572l173.714286-84.571428c6.217143-3.108571 10.24-9.508571 10.24-16.457143V539.337143c0-7.04-4.022857-13.44-10.24-16.457143zM457.142857 738.651429l-155.428571 75.702857-155.428572-75.702857V550.765714l155.428572-75.702857 155.428571 75.702857v187.885715z" fill="#248BFF" p-id="694"></path><path d="M228.571429 644.662857c0 40.411429 32.731429 73.142857 73.142857 73.142857s73.142857-32.731429 73.142857-73.142857-32.731429-73.142857-73.142857-73.142857-73.142857 32.731429-73.142857 73.142857z m109.714285 0c0 20.205714-16.365714 36.571429-36.571428 36.571429s-36.571429-16.365714-36.571429-36.571429 16.365714-36.571429 36.571429-36.571428 36.571429 16.457143 36.571428 36.571428z" fill="#248BFF" p-id="695"></path><path d="M722.285714 644.662857m-36.571428 0a36.571429 36.571429 0 1 0 73.142857 0 36.571429 36.571429 0 1 0-73.142857 0Z" fill="#B4D7FE" p-id="696"></path><path d="M693.76 166.308571l-173.714286-84.571428c-2.56-1.28-5.302857-1.828571-8.045714-1.828572s-5.485714 0.64-8.045714 1.828572l-173.714286 84.571428c-6.308571 3.017143-10.24 9.417143-10.24 16.457143v210.742857c0 7.04 4.022857 13.348571 10.24 16.457143l173.714286 84.571429c2.56 1.188571 5.302857 1.828571 8.045714 1.828571s5.485714-0.64 8.045714-1.828571l173.714286-84.571429c6.217143-3.108571 10.24-9.508571 10.24-16.457143V182.765714c0-7.04-4.022857-13.44-10.24-16.457143zM512 324.662857c-20.205714 0-36.571429-16.365714-36.571429-36.571428s16.365714-36.571429 36.571429-36.571429 36.571429 16.365714 36.571429 36.571429-16.365714 36.571429-36.571429 36.571428z m155.428571 57.417143l-137.142857 66.742857v-89.965714c31.542857-8.137143 54.857143-36.662857 54.857143-70.765714 0-40.411429-32.731429-73.142857-73.142857-73.142858s-73.142857 32.731429-73.142857 73.142858c0 34.102857 23.314286 62.628571 54.857143 70.765714v89.965714l-137.142857-66.742857V194.194286l155.428571-75.702857 155.428571 75.702857v187.885714z" fill="#248BFF" p-id="697"></path><path d="M512 288.091429m-36.571429 0a36.571429 36.571429 0 1 0 73.142858 0 36.571429 36.571429 0 1 0-73.142858 0Z" fill="#B4D7FE" p-id="698"></path><path d="M356.571429 630.948571c-6.308571 0-12.434286-3.291429-15.817143-9.051428-5.12-8.685714-2.102857-19.931429 6.582857-25.051429l109.714286-64c8.777143-5.12 19.931429-2.102857 25.051428 6.582857s2.102857 19.931429-6.582857 25.051429l-109.714286 64c-2.925714 1.737143-6.125714 2.468571-9.234285 2.468571z" fill="#248BFF" p-id="699"></path><path d="M904.045714 522.88l-173.714285-84.571429c-2.56-1.188571-5.302857-1.828571-8.045715-1.828571s-5.485714 0.64-8.045714 1.828571l-173.714286 84.571429c-6.308571 3.017143-10.24 9.417143-10.24 16.457143v210.742857c0 7.04 4.022857 13.348571 10.24 16.457143l173.714286 84.571428c2.56 1.188571 5.302857 1.828571 8.045714 1.828572s5.485714-0.64 8.045715-1.828572l173.714285-84.571428c6.308571-3.017143 10.24-9.417143 10.24-16.457143V539.337143c0-7.04-4.022857-13.44-10.24-16.457143zM877.714286 738.651429l-155.428572 75.702857-155.428571-75.702857V575.177143l85.12 49.645714c-1.828571 6.308571-2.834286 12.982857-2.834286 19.84 0 40.411429 32.731429 73.142857 73.142857 73.142857s73.142857-32.731429 73.142857-73.142857a73.124571 73.124571 0 0 0-125.074285-51.474286l-86.765715-50.651428L722.285714 475.062857l155.428572 75.702857v187.885715zM685.714286 644.662857c0-20.205714 16.365714-36.571429 36.571428-36.571428s36.571429 16.365714 36.571429 36.571428-16.365714 36.571429-36.571429 36.571429-36.571429-16.365714-36.571428-36.571429z" fill="#248BFF" p-id="700">
+            </path>
+          </svg>
+        </div>
+
+      </div>
+
+  
+
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isOperateButton">
+    <div class="picture-item leaf-picture-item" style="overflow-y: scroll;">
+      <div class="picture-box" *ngFor="let item of secondaryData;index as idx;">
+        <nz-checkbox-group style="position: absolute;left: 2px; " [(ngModel)]="checkOptionsOne[idx]"
+                           (ngModelChange)="updateSingleChecked()">
+        </nz-checkbox-group>
+        <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
+        <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
+
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="search-form flex-row">
+      <nz-pagination 
+        [(nzPageIndex)]="pageIndex"
+        [nzTotal]="secondaryTotal" 
+        [nzPageSize]="300" 
+        nzShowQuickJumper 
+        nzHideOnSinglePage 
+        (nzPageIndexChange)="nzPageIndexChange()">
+    </nz-pagination> 
+  </div>
+
+  <div class="uploading-progress-wrap" [class.hide-progress-panel]="hideUploadingPanel">
+    <div class="flex-row uploading-title">
+      <div>导入</div>
+      <div>
+        <i nz-icon nzType="border" (click)="hideUploadingProgress = false" nzTheme="outline"
+           *ngIf="hideUploadingProgress"></i>
+        <i nz-icon nzType="minus" (click)="hideUploadingProgress = true" nzTheme="outline"
+           *ngIf="!hideUploadingProgress"></i>
+        <i nz-icon nzType="close" nzTheme="outline" (click)="hideUploadingPanel = true"></i>
+      </div>
+    </div>
+    <div class="upload-remark">
+      只能上传jpg/png格式的图片，且大小不能超过10M
+    </div>
+    <div class="uploading-files" [class.fold]="hideUploadingProgress">
+      <div *ngFor="let item of this.uploadingFiles" class="uploading-file">
+        <div class="uploading-file-img">
+          <img [src]="item.file | LocalImgFile | async">
+          <span>{{item.file.name}}</span>
+        </div>
+        <div class="uploading-file-size">{{item.file.size | KB}}</div>
+
+        <div class="uploading-file-progress">
+          <i *ngIf="item.progress === 100" nz-icon nzType="check-circle" nzTheme="outline"></i>
+          <span *ngIf="item.progress > 0 && item.progress < 100">{{item.progress}}%</span>
+          <span *ngIf="item.progress === 0">等待中</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

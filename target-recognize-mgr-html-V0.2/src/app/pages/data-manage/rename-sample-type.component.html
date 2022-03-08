@@ -1,0 +1,15 @@
+<div>
+
+  <form nz-form [formGroup]="addForm">
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="sampleTypeName" [nzXl]="6" [nzMd]="6">
+        分类名称
+      </nz-form-label>
+      <nz-form-control [nzXl]="16" [nzMd]="16">
+        <input nz-input formControlName="sampleTypeName" name="sampleTypeName"/>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</div>

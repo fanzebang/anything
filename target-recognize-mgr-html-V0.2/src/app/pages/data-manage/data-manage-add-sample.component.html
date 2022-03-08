@@ -1,0 +1,35 @@
+<div>
+
+  <form nz-form [formGroup]="addForm">
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="sampleTypeName" [nzXl]="6" [nzMd]="6">
+        分类名称
+      </nz-form-label>
+      <nz-form-control [nzXl]="16" [nzMd]="16">
+        <input nz-input formControlName="sampleTypeName" name="sampleTypeName"/>
+      </nz-form-control>
+    </nz-form-item>
+
+<!--    <nz-form-item>-->
+<!--      <nz-form-label nzRequired [nzXl]="6" [nzMd]="6">-->
+<!--        是否最后一级-->
+<!--      </nz-form-label>-->
+<!--      <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="changeRadio($event)" formControlName="isLeaf"-->
+<!--                      name="isLeaf">-->
+<!--        <label nz-radio nzValue="1">是</label>-->
+<!--        <label nz-radio nzValue="0">否</label>-->
+<!--      </nz-radio-group>-->
+<!--    </nz-form-item>-->
+
+    <!--    <nz-form-item>-->
+    <!--      <nz-form-label nzRequired nzFor="samplePath" [nzXl]="6" [nzMd]="6">-->
+    <!--        分类路径-->
+    <!--      </nz-form-label>-->
+    <!--      <nz-form-control [nzXl]="16" [nzMd]="16">-->
+    <!--        <input nz-input formControlName="samplePath" name="samplePath"/>-->
+    <!--      </nz-form-control>-->
+    <!--    </nz-form-item>-->
+
+  </form>
+</div>

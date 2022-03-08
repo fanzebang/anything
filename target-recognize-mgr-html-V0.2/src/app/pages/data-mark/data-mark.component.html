@@ -1,0 +1,127 @@
+<div class="flex-row">
+
+  <div class="annotation-left flex-row">
+
+
+    <div class="annotation-operates flex-column" style="margin-bottom: 100px;">
+
+      <!--
+      <div class="annotation-operate-item">
+        <img class="img-responsive pointer" src="assets/images/icon01.jpg" alt="操作">
+      </div>
+
+      <div class="annotation-operate-item">
+        <img class="img-responsive pointer" src="assets/images/icon02.jpg" alt="操作">
+      </div>
+      -->
+
+      <!--
+      <div class="annotation-operate-item">
+        <img class="img-responsive pointer" src="assets/images/icon03.jpg" alt="操作">
+      </div>
+      -->
+      <div class="annotation-operate-item" (click)="removeImg()" style="margin-top: 90px;">
+        <img class="img-responsive pointer" src="assets/images/icon05.png" alt="操作" title="删除图片">
+      </div>
+      <div class="annotation-operate-item" (click)="cancelRect()">
+        <img class="img-responsive pointer" src="assets/images/icon04.jpg" alt="操作" title="清除标注">
+      </div>
+      <div class="annotation-operate-item" (click)="setImgSize()">
+        <img class="img-responsive pointer" [src]="setImgSizeInfo.src" alt="操作" [title]="setImgSizeInfo.title">
+      </div>
+      <div class="annotation-operate-item" (click)="saveRect()">
+        <img class="img-responsive pointer" src="assets/images/icon05.jpg" alt="操作" title="保存图片(快捷键：ctrl+s)">
+      </div>
+      <!--
+      <div class="annotation-operate-item">
+        <img class="img-responsive pointer" src="assets/images/icon06.jpg" alt="操作">
+      </div>
+      <div class="annotation-operate-item">
+        <img class="img-responsive pointer" src="assets/images/icon07.jpg" alt="操作">
+      </div>
+      -->
+    </div>
+
+    <div class="anootation-area flex-column">
+      <div class="anootation-area-btns flex-row">
+        <button class="anootation-area-btn-item" [class.active]="markMode === 'manual'" (click)="changeMarkMode('manual')">
+          手动标注
+        </button>
+        <button class="anootation-area-btn-item" [class.active]="markMode === 'auto'" (click)="changeMarkMode('auto')">
+          人机协同标注
+        </button>
+      </div>
+
+     
+      <div class="anootation-area-operate canvas-group" style="width:100%;left: 0;">
+
+        
+    <div class="annotation-operate-item" style="line-height: 50;border: none;position: absolute;left:0;z-index: 9999;">
+      <img class="img-responsive pointer" src="assets/images/pre.png"  (click)="prevAllocFile()"  alt="操作" title="上一张(快捷键：左方向键)">
+    </div>
+    <div class="annotation-operate-item" style="line-height: 50;position: absolute;right: 0;border: none;z-index: 9999;">
+      <img class="img-responsive pointer" src="assets/images/next.png" (click)="nextAllocFile()"  alt="操作" title="下一张(快捷键：右方向键)">
+    </div>
+        <div class="canvas-container ai-label" id="aiLabel"  style="width: 85%;left:7.5%;border: 1px solid #fff;">
+        </div>
+<!-- 
+        <div class="canvas-container">
+          <canvas class="mark-canvas" #imgCanvasElement ></canvas>
+        </div>
+        <div class="canvas-container">
+          <canvas class="mark-canvas" #drawCanvasElement></canvas>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation-right flex-column">
+    <div class="annotation-classifies flex-column">
+      <div class="annotation-title">分类</div>
+      <div class="classifies" style="overflow:scroll">
+        <div class="classify-item flex-row" *ngFor="let fileSample of drawingRects;index as idx;">
+          <span class="classify-item-desc">{{fileSample.samplePath}}</span>
+          <span class="amanisky amani-edit" (click)="editRect(idx,fileSample)"></span>
+          <span class="amanisky amani-delete" (click)="delRect(idx)"></span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="annotation-uninterested flex-column" style="height: 200px;">
+      <div class="annotation-title">设置不感兴趣区域</div>
+      <div class="uninterested" style="padding: 10px;text-align: center;">
+        <button nz-button nzType="default" [ngClass]="{'isuninterested': uninterested,'interested':!uninterested}" (click)="changeUninterested()">不感兴趣</button>
+      </div>
+    </div>
+    <div class="annotation-images flex-column">
+      <div class="annotation-title">图像</div>
+      <div class="annotation-images-box flex-row">
+        <div class="annotation-image-item" [class.active-allot-file]="currentAllotFile?.id === allotFile.id"
+             *ngFor="let allotFile of allotFiles;let i = index" (click)="selectAllocFile(i)">
+             <!-- | ossPath -->
+          <img style="width: 100%;height: 100%" [src]="allotFile.file.imgSrc">
+        </div>
+      </div>
+    </div>
+
+    <div class="annotation-markData flex-column">
+ <div class="annotation-title">标注数据</div>
+      <div style="padding: 10px;" class="content">
+        <div>
+          <span class="subTitle">待标注图片数量:</span><span class="data">25</span>
+        </div>
+        <div>
+          <span class="subTitle">已标注图片数量:</span><span  class="data">25</span>
+        </div>
+        <div class="progressBox">
+          <span class="subTitle">占比:</span><p id="markCharts"><nz-progress [nzPercent]="50" nzStatus="active"></nz-progress></p>
+        </div>
+        <div class="progressBox">
+          <span class="subTitle">进度:</span><p id="markProgress"><nz-progress [nzPercent]="50" nzStatus="active"></nz-progress></p>
+        </div>
+      </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="main flex-column">
+  <div class="search-form flex-row">
+    <!--    <input class="keyword m-r" type="text">-->
+    <button class="btn m-r">锁定</button>
+    <!--    <button class="btn m-r">移动</button>-->
+    <button class="btn btn-remove">删除</button>
+  </div>
+
+  <div class="detail flex-column">
+    <div class="detail-image flex-row">
+      <img class="pre pointer" (click)="lastImage()" src="assets/images/pre.png" alt="上一张">
+
+      <div class="detail-box flex-column">
+        <div class="target-image flex-row">
+          <img class="img-responsive"
+               [src]="sampleOssFile.ossKey | ossPath"
+               alt="图片">
+        </div>
+
+        <div class="target-quantity">80 / 100</div>
+      </div>
+
+      <img class="next pointer" (click)="nextImage()" src="assets/images/next.png" alt="下一张">
+    </div>
+
+    <div class="detail-info flex-row">
+      <div class="detail-info-box flex-column m-r">
+        <div class="detail-info-type flex-row">
+          <span class="detail-info-param">图形类别</span>
+          <span class="detail-info-value">驱逐舰</span>
+        </div>
+
+        <div class="detail-info-type flex-row">
+          <span class="detail-info-param">图片尺寸</span>
+          <span class="detail-info-value">{{sampleOssFile.height + '*' + sampleOssFile.width}}</span>
+        </div>
+
+        <div class="detail-info-type flex-row">
+          <span class="detail-info-param">是否标注</span>
+          <span class="is_mark">是</span>
+        </div>
+
+        <div class="detail-info-type flex-row">
+          <span class="detail-info-param">上传时间</span>
+          <span class="detail-info-value">{{sampleOssFile.createdTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        </div>
+
+        <div class="detail-info-type flex-row">
+          <span class="detail-info-param">上传作者</span>
+          <span class="detail-info-value">Json</span>
+        </div>
+      </div>
+
+      <div class="detail-info-box p-a">
+        <div class="echarts">echarts 统计图</div>
+        <div>
+          <!--
+          <div style="height: 240px;" echarts [options]="lineChartOption" class="demo-chart"
+               (chartInit)="onChartInit($event)"></div>
+               -->
+          <div style="height: 240px;" #lineEchart class="demo-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

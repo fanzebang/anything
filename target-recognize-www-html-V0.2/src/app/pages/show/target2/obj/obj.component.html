@@ -1,0 +1,10 @@
+<ul>
+    <li *ngFor="let item of list" class="outerLi">
+        <h3>{{item.name}}</h3>
+        <ul class="label">
+            <li *ngFor="let item2 of item.key" (click)="getTime($event)" >
+                {{item2}}"
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,16 @@
+<div class="clearfix">
+  <nz-upload
+    [nzCustomRequest]="uploadDeviceImageTwo"
+    [nzBeforeUpload]="beforeImageUpload"
+    (nzChange)="handleImageChange($event)"
+    nzListType="picture-card"
+    [(nzFileList)]="fileList"
+    [nzShowButton]="fileList.length < 100"
+    [nzRemove]="removeHandle"
+    [nzPreview]="handlePreview"
+    [nzMultiple]="true"
+  >
+    <i nz-icon nzType="plus"></i>
+    <div class="ant-upload-text">上传文件</div>
+  </nz-upload>
+</div>

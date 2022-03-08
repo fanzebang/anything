@@ -1,0 +1,264 @@
+<div class="flex-row">
+  <div class="tree-box flex-column">
+    <div class="tree-top" style="text-align:left;">
+      <span class="tree-top-title">所有分类</span>
+      <span class="tree-top-add" (click)="editSampleType()"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
+      <span class="tree-top-add" (click)="addSampleType()"><i nz-icon nzType="plus" nzTheme="outline"></i></span>
+      <span class="tree-top-add" (click)="delSampleType()"><i nz-icon nzType="minus" nzTheme="outline"></i></span>
+    </div>
+
+    <div style="padding: 10px; overflow: scroll;">
+      <nz-tree style="font-size:18px; color: #65CAFF ;line-height:28px;" [nzData]="visibleLight" [nzShowIcon]="false"
+               nzShowLine nzAsyncData (nzClick)="nzEvent($event)"
+               (nzExpandChange)="nzEvent($event)" #nzTreeComponent></nz-tree>
+      <nz-tree style="font-size:18px; color: #65CAFF ;line-height:28px;" [nzData]="sar" [nzShowIcon]="false" nzShowLine
+               nzAsyncData (nzClick)="nzEvent($event)"
+               (nzExpandChange)="nzEvent($event)" #nzTreeComponentSar></nz-tree>
+      <nz-tree style="font-size:18px; color: #65CAFF ;line-height:28px;" [nzData]="remoteSense" [nzShowIcon]="false"
+               nzShowLine nzAsyncData (nzClick)="nzEvent($event)"
+               (nzExpandChange)="nzEvent($event)" #nzTreeComponentRemote></nz-tree>
+      <nz-tree style="font-size:18px; color: #65CAFF ;line-height:28px;" [nzData]="infrared" [nzShowIcon]="false"
+               nzShowLine nzAsyncData (nzClick)="nzEvent($event)"
+               (nzExpandChange)="nzEvent($event)" #nzTreeComponentInfrared></nz-tree>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <router-outlet></router-outlet>
+
+    <!--
+    <div class="analyze flex-row">
+      <div class="analyze-item">
+        <div class="analyze-item-title">类别</div>
+        <div class="analyze-item-value">{{statInfo?.largeTypeNum}}<span
+          class="analyze-item-key">大类</span>{{statInfo?.smallTypeNum}}<span
+          class="analyze-item-key">小类</span></div>
+      </div>
+      <div class="analyze-item">
+        <div class="analyze-item-title">数量</div>
+        <div class="analyze-item-value">{{statInfo?.totalNum}}<span class="analyze-item-key">张</span></div>
+      </div>
+      <div class="analyze-item">
+        <div class="analyze-item-title">标注</div>
+        <div class="analyze-item-value">{{statInfo?.markNum}}<span class="analyze-item-key">张</span></div>
+      </div>
+      <div class="analyze-item">
+        <div class="analyze-item-title">模型</div>
+        <div class="analyze-item-value">147<span class="analyze-item-key">类</span>253<span
+          class="analyze-item-key">个</span></div>
+      </div>
+      <div class="analyze-item">
+        <div class="analyze-item-title">用户</div>
+        <div class="analyze-item-value">{{statInfo?.totalUserNum}}<span class="analyze-item-key">个</span></div>
+      </div>
+    </div>
+    -->
+
+    <!--
+    <ng-container *ngIf="isEndType">
+      <div class="pictures flex-row">
+        <div class="picture-left picture-bg-y flex-column">
+          <div class="picture-left-top picture-bg-x flex-column">
+            <div class="picture-title">{{titleData[0]?.origin.data.sampleTypeName}}<span
+              class="picture-quantity">(共1656个)</span></div>
+            <div class="picture-item">
+              <ng-container *ngFor="let item of dataSet;index as idx;">
+                <img *ngIf="item.samplePath.indexOf(titleData[0]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                     [src]="item.ossKey | ossPath"
+                     alt="图片">
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="picture-left-bottom flex-column">
+            <div class="picture-title">{{titleData[1]?.origin.data.sampleTypeName}}<span
+              class="picture-quantity">(共1656个)</span></div>
+
+            <div class="picture-item">
+              <ng-container *ngFor="let item of dataSet;index as idx;">
+                <img *ngIf="item.samplePath.indexOf(titleData[1]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                     [src]="item.ossKey | ossPath"
+                     alt="图片">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="picture-right flex-column">
+          <div class="picture-right-top picture-bg-x flex-row">
+            <div class="picture-right-top-item flex-column picture-bg-y">
+              <div class="picture-title">{{titleData[2]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[2]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="picture-right-top-item flex-column">
+              <div class="picture-title">{{titleData[3]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[3]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+          <div class="picture-right-middle picture-bg-x flex-row">
+            <div class="picture-right-middle-item flex-column picture-bg-y">
+              <div class="picture-title">{{titleData[4]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[4]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="picture-right-middle-item flex-column picture-bg-y">
+              <div class="picture-title">{{titleData[5]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[5]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="picture-right-middle-item flex-column">
+              <div class="picture-title">{{titleData[6]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[6]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="picture-right-bottom flex-row">
+            <div class="picture-right-bottom-item flex-column picture-bg-y">
+              <div class="picture-title">{{titleData[7]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[7]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="picture-right-bottom-item flex-column picture-bg-y">
+              <div class="picture-title">{{titleData[8]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[8]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="picture-right-bottom-item flex-column picture-bg-y">
+              <div class="picture-title">{{titleData[9]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[9]?.origin.data.sampleTypeName+'/')!=-1" class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="picture-right-bottom-item flex-column">
+              <div class="picture-title">{{titleData[10]?.origin.data.sampleTypeName}}<span class="picture-quantity">(共1656个)</span>
+              </div>
+
+              <div class="picture-item">
+                <ng-container *ngFor="let item of dataSet;index as idx;">
+                  <img *ngIf="item.samplePath.indexOf(titleData[10]?.origin.data.sampleTypeName+'/')!=-1"
+                       class="picture"
+                       [src]="item.ossKey | ossPath"
+                       alt="图片">
+                </ng-container>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    -->
+
+    <!--等于true 的时候表示是最后一级-->
+    <!--
+    <ng-container *ngIf="!isEndType">
+      <div class="main flex-column">
+        <div class="search-form flex-row">
+          <div class="search-form-title">{{secondaryTitle}}<span class="search-form-quantity">{{secondaryTotal}}个</span>
+          </div>
+          <ng-container *ngIf="!isOperateButton">
+            <button class="btn m-r" (click)="uploadImages()">导入</button>
+            <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button>
+          </ng-container>
+          <ng-container *ngIf="isOperateButton">
+            <button class="btn m-r" (click)="updateAllChecked()">全选</button>
+            <button class="btn m-r" (click)="lock()">锁定</button>
+            <button class="btn btn-remove m-r" (click)="delete()">删除</button>
+            <button class="btn btn-batch" (click)="operateMgr(false)">完成</button>
+          </ng-container>
+
+        </div>
+
+        <ng-container *ngIf="!isOperateButton">
+          <div class="picture-item">
+            <div class="picture-box" *ngFor="let item of secondaryData;index as idx;">
+              <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
+              <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="isOperateButton">
+          <div class="picture-item">
+
+            <div class="picture-box" *ngFor="let item of secondaryData;index as idx;">
+              <nz-checkbox-group style="position: absolute;left: 2px; " [(ngModel)]="checkOptionsOne[idx]"
+                                 (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+              <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
+              <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
+
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    -->
+
+
+  </div>
+</div>
