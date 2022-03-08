@@ -60,9 +60,11 @@ creatNzModal(that:any,idx:any,fileSample:any){
           
      
           var samplePath:any;
+          let ix:any = 0
           // const sampleId = markSampleTreeComponent.classListInfo[0].id;
           $.each(markSampleTreeComponent.classListInfo,function(i,n){
             if(n.id == sampleId){
+              ix = i
               samplePath = markSampleTreeComponent.classListInfo[i].samplePath
             }
           })
@@ -80,8 +82,8 @@ creatNzModal(that:any,idx:any,fileSample:any){
            // 删除对应text
          
      
-           markSampleTreeComponent.classListInfo[0].relatedTextId = fileSample.markData.relatedTextId
-           fileSample.markData = markSampleTreeComponent.classListInfo[0]
+           markSampleTreeComponent.classListInfo[ix].relatedTextId = fileSample.markData.relatedTextId
+           fileSample.markData = markSampleTreeComponent.classListInfo[ix]
            that.drawingRects[idx].id = fileSample.markData.id
            that.gMapArr.layers[2].removeTextById(fileSample.markData.relatedTextId[idx]);
 

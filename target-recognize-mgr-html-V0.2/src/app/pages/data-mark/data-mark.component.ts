@@ -488,6 +488,7 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
       }
     })
 
+    console.log(this.currentAllotFile,this.drawingRects)
  
     this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_mark_status`, reqBody, {
       params: {
