@@ -2,9 +2,11 @@ import {Pipe, PipeTransform} from "@angular/core";
 import {environment} from "../environments/environment";
 import {DomSanitizer} from "@angular/platform-browser";
 import axios from "axios";
+
 @Pipe({name: 'ossPath'})
 export class OssPathPipe implements PipeTransform {
-  transform(ossKey: string): string {
+  transform(ossKey: any): string {
+
     return `${localStorage.getItem('targetRecognizePath')}/` + ossKey;
   }
 }
@@ -13,6 +15,7 @@ export class OssPathPipe implements PipeTransform {
 @Pipe({name: 'sampleOssPath'})
 export class SampleOssPathPipe implements PipeTransform {
   transform(ossKey: string): string {
+   
     return `${localStorage.getItem('sampleResourcePath')}/` + ossKey;
   }
 }
@@ -34,11 +37,10 @@ export class SceneTypePipe implements PipeTransform {
   }
 }
 
+
 @Pipe({name: 'safe'})
 export class SafePipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {
-  }
-
+  constructor(private sanitizer: DomSanitizer) {}
   transform(url) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
@@ -56,5 +58,16 @@ export class AdminUrlPipe implements PipeTransform {
     return `${localStorage.getItem("mgrPath")}#${bearer}#${sampleResourcePath}`;
 
     // return `http://localhost:4201/sso#${bearer}#${sampleResourcePath}`;
+  }
+}
+
+@Pipe({name:'videoInfo'})
+export class VideoInfoPipe implements PipeTransform {
+
+  transform(videoInfo:any) {
+
+
+    return `${videoInfo.ext2}--${videoInfo.ext4} -- ${videoInfo.ext5}`
+
   }
 }

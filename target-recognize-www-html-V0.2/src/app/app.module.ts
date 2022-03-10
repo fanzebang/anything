@@ -20,7 +20,7 @@ import {DragDropUploadDirective} from "./directives/drag-drop-upload.directive";
 import {NzMessageModule, NzModalModule, NzSpinModule} from "ng-zorro-antd";
 import {DetectState} from "./state/detect.state";
 import {WebsocketService} from "./core/websocket.service";
-import {OssPathPipe, SampleOssPathPipe, SceneTypePipe, SafePipe, AdminUrlPipe} from "./app.pipes";
+import {OssPathPipe, SampleOssPathPipe, SceneTypePipe, SafePipe, AdminUrlPipe,VideoInfoPipe} from "./app.pipes";
 import {RecognizeState} from "./state/recognize.state";
 import {VideoState} from "./state/video.state";
 import {FfdecWasmLoaderService} from "./ffdec-wasm-loader.service";
@@ -60,7 +60,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 @NgModule({
   declarations: [
     AppComponent, HomeComponent, DetectComponent, PersonageComponent, WarshipComponent, JetComponent, SsoComponent,
-    DragDropUploadDirective, OssPathPipe, SceneTypePipe, SafePipe, VideoCanvasComponent, SampleOssPathPipe, AdminUrlPipe, VideoComponent, VideoListComponent, AccordionComponent, KeyobjectComponent, LabelComponent, ChartComponent, ModelComponent, TargetComponent, Target2Component, ObjComponent, WorldComponent, KeyComponent, SenceComponent, TimeComponent, Target2LabelComponent, Target1Component, NewsComponent
+    DragDropUploadDirective, OssPathPipe, SceneTypePipe, SafePipe, VideoCanvasComponent, SampleOssPathPipe, AdminUrlPipe,VideoInfoPipe, VideoComponent, VideoListComponent, AccordionComponent, KeyobjectComponent, LabelComponent, ChartComponent, ModelComponent, TargetComponent, Target2Component, ObjComponent, WorldComponent, KeyComponent, SenceComponent, TimeComponent, Target2LabelComponent, Target1Component, NewsComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +81,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
     },
     WebsocketService, FfdecWasmLoaderService, VideoService,
-    OssPathPipe,ServiceService
+    OssPathPipe,ServiceService,VideoInfoPipe
   ],
   bootstrap: [AppComponent]
 })

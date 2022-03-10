@@ -3,7 +3,7 @@ import { number } from 'echarts';
 import { HttpClient,HttpHeaders } from "@angular/common/http";
 import { ServiceService } from "../service.service"
 import {environment} from "../../../../environments/environment"
-
+import {OssPathPipe} from "../../../app.pipes"
 
 declare var Swiper:any;
 declare var $:any;
@@ -26,7 +26,7 @@ export class Target2Component implements OnInit {
 public swiper:any
   public itemSelect:number = 0;
 
-  constructor(public ServiceService:ServiceService,public http:HttpClient) { }
+  constructor(public ServiceService:ServiceService,public http:HttpClient,public OssPathPipe:OssPathPipe) { }
 
   ngOnInit(): void {
 
@@ -38,7 +38,11 @@ public swiper:any
 
   ngAfterViewInit(): void {
     this.getVideoPic()
-
+$(".content .top .left video").mouseover(function(){
+  $(".content .top .left .video-info").animate({top:"0"},200)
+}).mouseleave(function(){
+  $(".content .top .left .video-info").animate({top:"-75px"},200)
+})
 
     
   }
@@ -119,6 +123,9 @@ this.http.post(api,{}).subscribe((res:any)=>{
       dataArr.push({
         videoSrc:url+'/'+dataIndex.targetPath,
         imgSrc:'',
+        ext2:dataIndex.ext2,
+        ext4:dataIndex.ext4,
+        ext5:dataIndex.ext5,
         items:[]
       })
       dataArr.videoSrc = dataIndex.url+'/'+dataIndex.targetPath
@@ -223,9 +230,9 @@ this.http.post(api,{}).subscribe((res:any)=>{
           )
     }
     dataArr.forEach(element => {
-      this.videoArr .push(element)
+      this.videoArr.push(element)
     });
-
+console.log(this.videoArr)
     setTimeout(() => {
       this.initSwiper()
       }, 200);
