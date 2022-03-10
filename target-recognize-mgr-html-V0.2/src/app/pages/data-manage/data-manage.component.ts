@@ -331,32 +331,53 @@ export class DataManageComponent implements OnInit {
             this.http.post(`${environment.API_URL}/v1/sample-oss-types/`, formValue).subscribe((result: HttpResult<SampleOssType>) => {
               //重新加载树 通过选择的key去加载树
               if (HttpResult.succeed(result.code)) {
-                debugger;
+                // debugger;
+                
                 // switch (this.sampleUpId) {
                 //   case 1:
-                this.loadVisibleLightTree();
+                //this.loadVisibleLightTree();
                 //     addModal.close();
                 //     return;
                 //   case 2:
-                this.loadRemoteSenseTree();
+                //this.loadRemoteSenseTree();
                 //     addModal.close();
                 //     return;
                 //   case 4:
-                this.loadSarTree();
+                //this.loadSarTree();
                 //     addModal.close();
                 //     return;
                 //   case 3:
-                this.loadInfraredTree();
+                //this.loadInfraredTree();
                 addModal.close();
                 //     return;
                 // }
-                console.log(result.data.isLeaf + 'issss');
-                this.nzTreeComponent.getTreeNodeByKey(this.sampleUpId + '').addChildren([{
-                  title: result.data.sampleTypeName,
+                // console.log(result.data.isLeaf + 'issss');
+                // this.nzTreeComponent.getTreeNodeByKey(this.sampleUpId + '').addChildren([{
+                //   title: result.data.sampleTypeName,
+                //   key: result.data.id + '',
+                //   isLeaf: result.data.isLeaf,
+                // }]);
+
+                // this.currentNode. ([{
+                //   markTitle: samples.data.sampleTypeName,
+                //   title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+                //   key: samples.data.id + '',
+                //   data: samples.data,
+                //   isLeaf: samples.data.isLeaf,
+                //   id:samples.data.id
+                // }])
+                if (this.currentNode.isLeaf) {
+                  this.currentNode.isLeaf = false;
+                }
+                this.currentNode.addChildren([new NzTreeNode({
+                  markTitle: result.data.sampleTypeName,
+                  title: result.data.sampleTypeName + '    ' + result.data.imageCount,
                   key: result.data.id + '',
+                  data: result.data,
                   isLeaf: result.data.isLeaf,
-                }]);
-                addModal.close();
+                  id: result.data.id
+                })]);
+                // addModal.close();
               } else {
                 this.nzMessage.error('新增失败！');
               }
