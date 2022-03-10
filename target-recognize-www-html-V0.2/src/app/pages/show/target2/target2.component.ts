@@ -49,7 +49,6 @@ $(".content .top .left video").mouseover(function(){
 
 
   changeLi(key:any){
-    console.log(key,this.itemSelect)
     if(key == this.itemSelect){
         return
     }else{
