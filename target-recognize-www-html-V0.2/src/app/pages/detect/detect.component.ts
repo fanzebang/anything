@@ -94,8 +94,36 @@ export class DetectComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private http: HttpClient, private nzMessage: NzMessageService,
               private route: ActivatedRoute, private store: Store,private ws:WebsocketService,) {
 
-   
-                
+
+      this.route.paramMap.subscribe((paramMap) => {
+    
+        if (paramMap.has('borderShow')) {
+          this.searchClass = paramMap.get('borderShow')
+          console.log(this.searchClass)
+          if(this.searchClass == "5"){
+
+            $(".content-right") .css("display","none")
+          }
+        }
+        if (paramMap.has('detectId')) {
+          // 图片的解析
+          const detectId = paramMap.get('detectId');
+          this.imgId = detectId
+          this.loadDetectHistory(detectId);
+          if(paramMap.has('homeToDetect')){
+            this.ishomeToDetect = true
+            setTimeout(()=>{
+              setTimeout(()=>{
+                this.drwReact(this.currentDetectResult.targetJson[0])
+              },1000)
+              // $(".bigImg img").css("display","block")
+            },200)
+          }
+        }else {
+          // 视频的解析
+        }
+  
+      });
    }
 
 
@@ -113,27 +141,16 @@ export class DetectComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  
-    const startTime = new Date().getTime();
-    this.detectingInterval = setInterval(() => {
-      // 重复循环显示loading的
-      if (this.detectingSceneType >= 3) {
-        this.detectingSceneType = 0;
-      } else {
-        this.detectingSceneType++;
-      }
-      this.currentDetectResult.sceneType = this.detectingSceneType + '';
-    if (new Date().getTime() - startTime > 60000) {
-        // 超过1分钟就不loading了
-        clearInterval(this.detectingInterval)
-      }
-    }, 200);
-    // this.detectingInterval()
-    this.route.paramMap.subscribe((paramMap) => {
 
+    this.route.paramMap.subscribe((paramMap) => {
+    
       if (paramMap.has('borderShow')) {
         this.searchClass = paramMap.get('borderShow')
-          console.log(this.searchClass)
+        console.log(this.searchClass)
+        if(this.searchClass == "5"){
+
+          $(".content-right") .css("display","none")
+        }
       }
       if (paramMap.has('detectId')) {
         // 图片的解析
@@ -154,6 +171,23 @@ export class DetectComponent implements OnInit, OnDestroy {
       }
 
     });
+  
+    const startTime = new Date().getTime();
+    this.detectingInterval = setInterval(() => {
+      // 重复循环显示loading的
+      if (this.detectingSceneType >= 3) {
+        this.detectingSceneType = 0;
+      } else {
+        this.detectingSceneType++;
+      }
+      this.currentDetectResult.sceneType = this.detectingSceneType + '';
+    if (new Date().getTime() - startTime > 60000) {
+        // 超过1分钟就不loading了
+        clearInterval(this.detectingInterval)
+      }
+    }, 200);
+    // this.detectingInterval()
+  
 
 
     this.videoSubscription = this.video$.subscribe((videoStateModel) => {
@@ -211,11 +245,13 @@ var that = this
 //     }
 //   })
 
+
+
   setTimeout(()=>{
 
     that.borderShowHidden()
 
-  },2000)
+  },500)
 //  console.log(detectResult)
 
 
@@ -306,7 +342,6 @@ borderShowHidden(){
           $(".effect").empty() 
         },100)
       }else if(this.searchClass == "5"){
-
         this.isPic = false
         $(".content-bottom").css("min-height","100%")
         $(".effect-content").css("flex","none")
