@@ -93,15 +93,12 @@ export class DetectComponent implements OnInit, OnDestroy {
   }
   constructor(private router: Router, private http: HttpClient, private nzMessage: NzMessageService,
               private route: ActivatedRoute, private store: Store,private ws:WebsocketService,) {
-
-
       this.route.paramMap.subscribe((paramMap) => {
     
         if (paramMap.has('borderShow')) {
           this.searchClass = paramMap.get('borderShow')
-          console.log(this.searchClass)
+         
           if(this.searchClass == "5"){
-
             $(".content-right") .css("display","none")
           }
         }
@@ -116,13 +113,37 @@ export class DetectComponent implements OnInit, OnDestroy {
               setTimeout(()=>{
                 this.drwReact(this.currentDetectResult.targetJson[0])
               },1000)
-              // $(".bigImg img").css("display","block")
             },200)
           }
-        }else {
-          // 视频的解析
+        }else if(paramMap.has('textSearch')){
+          
+          let imgtext = paramMap.get('textSearch')
+          console.log()
+          // 文字搜图
+
+          this.http.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
+            
+          }).subscribe((result:any) => {
+            if (HttpResult.succeed(result.code)) {
+             var that = this
+              $(".content-right").css("display","none")
+              $(".effect").css("display","none")
+              $(".similar-title")[0].innerHTML ="查询到的图片"
+              $(".content-bottom").css("overflow","auto")
+              $(".content-bottom").css("min-height","100%")
+              $(".similar").css("min-height","100%")
+              $.each(result.data,function(i,n){
+                that.similarTargets.push({
+                  ossKey: n.split("sample-resource/")[1]
+                })
+              })    
+            }
+          setTimeout(()=>{
+            ImagePreview.removed()
+            ImagePreview.init({id:$("#similarImg img")})
+          },300)
+          });
         }
-  
       });
    }
 
@@ -142,35 +163,34 @@ export class DetectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.route.paramMap.subscribe((paramMap) => {
+    // this.route.paramMap.subscribe((paramMap) => {
     
-      if (paramMap.has('borderShow')) {
-        this.searchClass = paramMap.get('borderShow')
-        console.log(this.searchClass)
-        if(this.searchClass == "5"){
+    //   if (paramMap.has('borderShow')) {
+    //     this.searchClass = paramMap.get('borderShow')
+    //     if(this.searchClass == "5"){
 
-          $(".content-right") .css("display","none")
-        }
-      }
-      if (paramMap.has('detectId')) {
-        // 图片的解析
-        const detectId = paramMap.get('detectId');
-        this.imgId = detectId
-        this.loadDetectHistory(detectId);
-        if(paramMap.has('homeToDetect')){
-          this.ishomeToDetect = true
-          setTimeout(()=>{
-            setTimeout(()=>{
-              this.drwReact(this.currentDetectResult.targetJson[0])
-            },1000)
-            // $(".bigImg img").css("display","block")
-          },200)
-        }
-      }else {
-        // 视频的解析
-      }
+    //       $(".content-right") .css("display","none")
+    //     }
+    //   }
+    //   if (paramMap.has('detectId')) {
+    //     // 图片的解析
+    //     const detectId = paramMap.get('detectId');
+    //     this.imgId = detectId
+    //     this.loadDetectHistory(detectId);
+    //     if(paramMap.has('homeToDetect')){
+    //       this.ishomeToDetect = true
+    //       setTimeout(()=>{
+    //         setTimeout(()=>{
+    //           this.drwReact(this.currentDetectResult.targetJson[0])
+    //         },1000)
+      
+    //       },200)
+    //     }
+    //   }else {
+    //     // 视频的解析
+    //   }
 
-    });
+    // });
   
     const startTime = new Date().getTime();
     this.detectingInterval = setInterval(() => {
@@ -186,9 +206,6 @@ export class DetectComponent implements OnInit, OnDestroy {
         clearInterval(this.detectingInterval)
       }
     }, 200);
-    // this.detectingInterval()
-  
-
 
     this.videoSubscription = this.video$.subscribe((videoStateModel) => {
       if (videoStateModel.video != null) {
@@ -197,7 +214,6 @@ export class DetectComponent implements OnInit, OnDestroy {
     });
 
     this.recognizeSubscription = this.recognize$.subscribe((recognizeStateModel) => {
-    
       if (recognizeStateModel == null || recognizeStateModel.recognizeJson == null) {
         return;
       }
@@ -212,49 +228,16 @@ export class DetectComponent implements OnInit, OnDestroy {
       }
       if (this.currentDetectResult && this.currentDetectResult.id === recognizeData.id) {
         this.currentDetectResult = recognizeData;
-    
-        // this.selectedTarget = recognizeData.piecesOssKey[0];
-
-        // const targetJson = this.currentDetectResult.targetJson;
-        // this.drawTargetsPolygon(targetJson);
-        //
-        // if (targetJson.length > 0) {
-        //   this.selectedTargetPolygon = targetJson[0];
-        // }
-        // setTimeout(() => {
-        // 这里就是处理的事件
         this.showDetectResult();
-        // }, 2000);
       }
     });
 
 
-    console.log(this.recognizeSubscription)
 
   }
 
 ngAfterViewInit(): void{
 var that = this
-// let detectResult = JSON.parse(JSON.parse(localStorage.getItem("detectResult"))[this.pageIndex])
-//   window.addEventListener('storage', event => {
-//     if(event.key === 'detectResult') {
-//       alert(1111)
-//       setTimeout(()=>{
-//         that.borderShowHidden()
-//         },500)
-//     }
-//   })
-
-
-
-  setTimeout(()=>{
-
-    that.borderShowHidden()
-
-  },500)
-//  console.log(detectResult)
-
-
 
 
 }
@@ -292,19 +275,6 @@ var that = this
         if (this.total > 0) {
           this.currentDetectResult = this.detectHistory[0];
           this.showDetectResult();
-
-          
-
-          // this.drawMarkedLines(this.currentDetectResult);
-          // // this.selectedTarget = this.currentDetectResult.piecesOssKey[0];
-          //
-          // const targetJson = this.currentDetectResult.targetJson;
-          // this.drawTargetsPolygon(targetJson);
-          //
-          // if (targetJson.length > 0) {
-          //   this.selectedTargetPolygon = targetJson[0];
-          // }
-
         }
 
         
@@ -334,7 +304,6 @@ borderShowHidden(){
           $(".effect").empty() 
      
       }else if(detectResult.sceneType != "1"  && this.searchClass == "3"){
-        // console.log(result.data[0].samplePath.indexOf("遥感") , this.searchClass)
         this.searchClassIsRight = false
         setTimeout(()=>{
           $(".similar-content").empty()
@@ -348,15 +317,12 @@ borderShowHidden(){
         $(".similar-content").css("flex","none")
         $(".content-bottom").css("min-height","100%")
         $(".effect").css("max-height","30%")
-        // $("#similarImg").css("min-height","10%")
         $(".similar").css("overflow","auto")
       }
   
     }
 
     this.baiKeUrl = detectResult.baiKeUrl 
-    // $("#ifmBox iframe").eq(0).attr("src",this.baiKeUrl)
-
     setTimeout(()=>{
       ImagePreview.removed()
       ImagePreview.init({id:$("#similarImg img")})
@@ -661,7 +627,7 @@ drawTargetsPolygon(targetJson: Array<{
   kmsSearch(historyId: string, name: string): void {
     const params = new HttpParams().append('historyId', historyId).append('name', name);
     this.http.get(`${environment.API_URL}/v1/kms/detect-kms`, {params}).subscribe((result: any) => {
-
+      this.borderShowHidden()
       this.kms = result.data;
       let baiKeUrl1= this.kms[0].url;
       let sfUrl = this.kms[0].sfUrl;

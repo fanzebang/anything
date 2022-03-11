@@ -9,6 +9,7 @@ import {VideoAction} from '../../state/video.action';
 import {OssPathPipe} from "../../app.pipes";
 import { VideoService } from 'src/app/video.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { fromEvent } from 'rxjs';
 import axios from 'axios';
 declare var $:any;
 declare var WinBox:any;
@@ -180,7 +181,7 @@ public serverList:any=[
 
 labeArr:any = []
 isAllEqualType:any
-
+keyboardSubscription:any
   constructor(private http: HttpClient, private store: Store, private router: Router, private nzModal: NzModalService,
               private ossPathPipe: OssPathPipe,private videoService:VideoService,private message:NzMessageService) {
                 localStorage.removeItem('videoData')
@@ -216,6 +217,16 @@ isAllEqualType:any
 
   this.loadHotspot();
   this.loadAllImageCount();
+
+this.keyboardSubscription = fromEvent(window, 'keydown').subscribe((event: any) => {
+
+  if(event.keyCode == 13){
+
+    this.searchImg()
+
+  }
+
+})
 
 
   }
@@ -1033,6 +1044,16 @@ isAllEqual(array:[string],fileListArr2):any{
     });
   }
 
+searchImg(){
+    if(!$(".search-img").val()){
+      this.message.error("请输入文字后查询", {
+        nzDuration: 3000
+      });
+    }else{
+      this.router.navigate(['/detect', {textSearch:$(".search-img").val(),borderShow:6}]);
+    }
+
+}
 
 
   detectHotspot(ossKey) {
@@ -1456,5 +1477,6 @@ dataAna(): void {
   ngOnDestroy(): void {
     $(".wb-close").click()
     clearInterval(this.winboxData.interVal)
+    this.keyboardSubscription.unsubscribe()
   }
 }
