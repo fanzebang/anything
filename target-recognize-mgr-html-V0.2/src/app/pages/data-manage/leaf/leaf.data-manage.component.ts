@@ -81,7 +81,6 @@ export class LeafDataManageComponent implements OnInit {
         this.allSelect = false
       });
   }
-
   nzPageIndexChange(){
     this.loadSecondaryImage(this.sampleUpId)
   }
