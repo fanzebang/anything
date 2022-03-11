@@ -266,7 +266,7 @@ export class DataManageComponent implements OnInit {
         params = new HttpParams().append('sampleTypeName', id);
       }
  
-      this.http.get(`${environment.API_URL}/v1/sample-oss-types/`, {params: params}).subscribe((result: HttpResult<any>) => {
+      this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
           const data = result.data.map((samples: any) => {
        
@@ -328,7 +328,7 @@ export class DataManageComponent implements OnInit {
         nzOnOk: (addComponent: DataManageAddSampleComponent) => {
           const formValue = addComponent.getAddFormValue();
           if (formValue) {
-            this.http.post(`${environment.API_URL}/v1/sample-oss-types/`, formValue).subscribe((result: HttpResult<SampleOssType>) => {
+            this.http.post(`${environment.API_URL}/v1/sample-oss-types`, formValue).subscribe((result: HttpResult<SampleOssType>) => {
               //重新加载树 通过选择的key去加载树
               if (HttpResult.succeed(result.code)) {
                 // debugger;
@@ -366,9 +366,6 @@ export class DataManageComponent implements OnInit {
                 //   isLeaf: samples.data.isLeaf,
                 //   id:samples.data.id
                 // }])
-                if (this.currentNode.isLeaf) {
-                  this.currentNode.isLeaf = false;
-                }
                 this.currentNode.addChildren([new NzTreeNode({
                   markTitle: result.data.sampleTypeName,
                   title: result.data.sampleTypeName + '    ' + result.data.imageCount,
@@ -377,6 +374,35 @@ export class DataManageComponent implements OnInit {
                   isLeaf: result.data.isLeaf,
                   id: result.data.id
                 })]);
+                if (this.currentNode.isLeaf) {
+                  this.currentNode.isLeaf = false;
+                } else {
+                  let params;
+                  var id = this.sampleUpId + '';
+                  if (!isNaN(parseInt(id))) {
+                    params = new HttpParams().append('sampleUpId', id);
+                  } else {
+                    params = new HttpParams().append('sampleTypeName', id);
+                  }
+                  this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
+                    if (HttpResult.succeed(result.code)) {
+                      const data = result.data.map((samples: any) => {
+                    
+                        return new NzTreeNode({
+                          markTitle: samples.data.sampleTypeName,
+                          title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+                          key: samples.data.id + '',
+                          data: samples.data,
+                          isLeaf: samples.data.isLeaf,
+                          id:samples.data.id
+                        });
+                      });
+                      this.titleData = data;
+                      this.currentNode.clearChildren();
+                      this.currentNode.addChildren(data);
+                    }
+                  });
+                }
                 // addModal.close();
               } else {
                 this.nzMessage.error('新增失败！');
