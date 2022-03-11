@@ -9,6 +9,7 @@ import ECharts = echarts.ECharts;
 import {Observable} from 'rxjs';
 import axios from 'axios';
 import { DataManageService } from '../data-manage.service';
+import { de } from 'date-fns/locale';
 declare var $:any
 @Component({
   templateUrl: './detail.data-manage.component.html',
@@ -59,8 +60,10 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
           this.sampleOssFiles = result.data;
           this.countImg = result.data.length
           let str = $(".search-form-title")[0].innerText
-          let str1 = str.split(" —— ")[0]
-          this.dataManageService.delect(this.countImg,str1)
+          let str1 = str.slice(0, str.indexOf(str.match('共[0-9]+个结果|共个结果')[0]))
+          if (str1.length > 0) {
+            this.dataManageService.delect(this.countImg,str1)
+          }
           for (let i = 0; i < result.data.length; i++) {
             if (result.data[i].id === this.imageId) {
               // debugger;

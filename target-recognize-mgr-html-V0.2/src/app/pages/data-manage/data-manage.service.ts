@@ -19,6 +19,7 @@ export class DataManageService {
 
     this.num = data1;
     this.name = data2;
+    
     $.each($(`nz-tree-node-title span`),function(i,n){
  
       if(n.innerText.indexOf(data2) != -1){

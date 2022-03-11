@@ -70,8 +70,10 @@ export class LeafDataManageComponent implements OnInit {
         this.secondaryTotal = result.data.total;
         this.imgNum = this.secondaryData.length
         let str = $(".search-form-title")[0].innerText
-        let str1 = str.slice(0, str.indexOf(str.match('共[0-9]+个当前第 [0-9]+ 页')[0]))
-        this.dataManageService.delect(this.secondaryTotal,str1)
+        let str1 = str.slice(0, str.indexOf(str.match('共[0-9]+个')[0]))
+        if(str1.length > 0) {
+          this.dataManageService.delect(this.secondaryTotal, str1)
+        }
         const box = this.secondaryData.map((s) => {
           return [{label: '', value: s.id, checked: false, typeId: s.sampleTypeId}];
         });
