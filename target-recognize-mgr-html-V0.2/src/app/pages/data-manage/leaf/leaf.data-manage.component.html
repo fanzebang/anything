@@ -1,8 +1,8 @@
 <div class="main flex-column" style="height: 100%">
   <div class="search-form flex-row">
-    <div class="search-form-title">{{sampleOssType?.sampleTypeName}}<span
+    <div class="search-form-title">{{sampleOssType?.sampleTypeName}} —— <span
       class="search-form-quantity">共{{secondaryTotal}}个</span>
-      <span style="margin-left: 30px;">当前第 {{pageIndex}} 页 共 {{imgNum}} 个</span>
+      <span style="margin-left: 30px;">当前第 {{pageIndex}} 页共 {{imgNum}} 个</span>
     </div>
     <ng-container *ngIf="!isOperateButton">
       <!--      <button class="btn m-r" (click)="uploadImages()">导入</button>-->

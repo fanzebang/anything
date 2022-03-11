@@ -32,14 +32,11 @@ export class LeafDataManageComponent implements OnInit {
   @ViewChild('filesInput')
   filesInputElm: ElementRef;
   // files: ProgressDto[] = [];
-
   hideUploadingProgress = true;
   hideUploadingPanel = true;
   // uploadingFiles: File[] = [];
   uploadingFiles: Array<{ file: File, progress: number }> = [];
-
   @Select(RenameSampleOssTypeState) sampleOssTypeName$: Observable<RenameSampleOssTypeStateModel>;
-
   constructor(private route: ActivatedRoute, private http: HttpClient, private nzMessage: NzMessageService,
               private nzModal: NzModalService, private router: Router,public dataManageService:DataManageService) {
   }
@@ -47,7 +44,7 @@ export class LeafDataManageComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(
       (params: ParamMap) => {
-        if (params.has('sampleUpId')) {
+        if (params.has('sampleUpId')){
           this.sampleUpId = +params.get('sampleUpId');
           this.loadSecondaryImage(this.sampleUpId);
           this.loadSampleType(this.sampleUpId);
@@ -55,7 +52,6 @@ export class LeafDataManageComponent implements OnInit {
       },
     );
     this.sampleOssTypeName$.subscribe(renameModel => {
-      console.log('renameModel is :', renameModel);
       if (renameModel.name) {
         this.sampleOssType.sampleTypeName = renameModel.name;
       }
@@ -67,16 +63,14 @@ export class LeafDataManageComponent implements OnInit {
   }
 
   loadSecondaryImage(sampleUpId: number): void {
-    // alert("aaaa")
-    //this.sampleUpId = sampleUpId
-    const params = new HttpParams().append('typeId', sampleUpId + '').append('pageSize', 300 + '').append('pageIndex', this.pageIndex + '');//.append('pageSize', 300 + '')
+    const params = new HttpParams().append('typeId', sampleUpId + '').append('pageSize', 300 + '').append('pageIndex', this.pageIndex + '');
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getOssFilesByTypeId`, {params})
       .subscribe((result: HttpResult<ApiPage<SampleOssFile>>) => {
         this.secondaryData = result.data.records;
         this.secondaryTotal = result.data.total;
         this.imgNum = this.secondaryData.length
         let str = $(".search-form-title")[0].innerText
-        let str1 = str.slice(0,str.length-1).match(/[\u4e00-\u9fa5]+/)[0]
+        let str1 = str.split(" —— ")[0]
         this.dataManageService.delect(this.secondaryTotal,str1)
         const box = this.secondaryData.map((s) => {
           return [{label: '', value: s.id, checked: false, typeId: s.sampleTypeId}];
@@ -101,9 +95,7 @@ export class LeafDataManageComponent implements OnInit {
   }
 
   amplify(imageId: number): void {
-    // this.router.navigate(['leaf', {'sampleUpId': event.node.key}], {relativeTo: this.route});
     this.router.navigate(['../detail', {imageId}], {relativeTo: this.route});
-    // console.log('我需要跳转路由  sampleOssId is' + sampleOssId);
   }
 
   /**
@@ -131,14 +123,12 @@ export class LeafDataManageComponent implements OnInit {
       this.allChecked = true;
       this.allSelect = true
     }
-  
   }
 
   /**
    * 单选
    */
   updateSingleChecked(): void {
-
     this.allSelect = false
     if (this.checkOptionsOne.every(item => !item.checked)) {
       this.allChecked = false;
@@ -149,17 +139,14 @@ export class LeafDataManageComponent implements OnInit {
     } else {
       this.indeterminate = true;
     }
-   
   }
 
   /**
    * 获取选中的图片
    */
   getChooseImage(): string {
-      // console.log(this.checkOptionsOne)
       let ids:any = []
       $.each(this.checkOptionsOne,function(i,n){
-        // console.log(n[0].checked)
         if(n[0].checked){
           ids.push(n[0].value)
         }
@@ -220,7 +207,6 @@ export class LeafDataManageComponent implements OnInit {
   }
 
   download():void{
-
     const ids = this.getChooseImage();
     const sampleTypeId = this.getChooseTypeId();
     if (ids === '' && sampleTypeId === '') {
