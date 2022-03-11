@@ -8,14 +8,15 @@ import ECharts = echarts.ECharts;
 // import echarts from 'node_modules/echarts/index.js';
 import {Observable} from 'rxjs';
 import axios from 'axios';
-
+import { DataManageService } from '../data-manage.service';
+declare var $:any
 @Component({
   templateUrl: './detail.data-manage.component.html',
   styleUrls: ['./detail.data-manage.component.less']
 })
 export class DetailDataManageComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, private http: HttpClient, private nzMessage: NzMessageService,
-              private nzModal: NzModalService, private router: Router) {
+              private nzModal: NzModalService, private router: Router,private dataManageService:DataManageService) {
   }
 
   @ViewChild('lineEchart')
@@ -30,7 +31,7 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
   user: User;
   isFaceModel:any = false;
   isExist:any = false;
-
+  countImg:any
   ngOnInit(): void {
     // 从路由中获取当前图片这一层级的
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -56,6 +57,10 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
       .subscribe((result: HttpResult<SampleOssFile[]>) => {
         if (HttpResult.succeed(result.code)) {
           this.sampleOssFiles = result.data;
+          this.countImg = result.data.length
+          let str = $(".search-form-title")[0].innerText
+          let str1 = str.split(" —— ")[0]
+          this.dataManageService.delect(this.countImg,str1)
           for (let i = 0; i < result.data.length; i++) {
             if (result.data[i].id === this.imageId) {
               // debugger;
@@ -313,6 +318,15 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
       .subscribe((result: HttpResult<SampleOssFile[]>) => {
         if (HttpResult.succeed(result.code)) {
           this.nzMessage.success('删除成功');
+          this.loadImages()
+      this.http.get(`${environment.API_URL}/v1/sample-oss-file/${this.imageId}`)
+      .subscribe((result: HttpResult<SampleOssFile[]>) => {
+        if (HttpResult.succeed(result.code)) {
+          
+          console.log(this.sampleOssType,result.data.length) 
+        }
+      });
+        
           for (let i = 0; i < this.sampleOssFiles.length; i++) {
             if (this.sampleOssFiles[i].id === this.imageId) {
               if (i === 0 && this.sampleOssFiles.length === 1) {
@@ -347,6 +361,9 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
               }
             }
           }
+
+
+
         } else {
           this.nzMessage.error(result.message);
         }
