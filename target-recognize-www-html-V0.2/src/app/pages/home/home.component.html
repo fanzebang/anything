@@ -1,5 +1,5 @@
 <nz-spin [nzSpinning]="isSpinning" style="overflow:hidden;height: 100%;">
-  <div class="home">
+  <div class="home" style="overflow-x: hidden;overflow-y: scroll;">
     <div id="backstore" style="display: none">
       <div id="dataContent">
         <div id="modal-container" >
@@ -27,7 +27,7 @@
               </div>
               <div class="digital">
                 <div class="digital-form" >
-                    <div class="digital-form-status">
+                   <div class="digital-form-status">
                     <span>分析状态：</span>
                     <nz-select [(ngModel)]="winboxData.modalData.list.status" nzSize="small">
                       <nz-option nzValue="" nzLabel="全部"></nz-option>
