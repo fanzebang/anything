@@ -34,7 +34,13 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
     isBigImg : false,
     src : "assets/images/icon06.png",
     title:'原比例查看图片'
-  } 
+  }
+  
+  markcountData:any = {
+      stayMarkNum:25,
+      MarkedNum:25,
+      MarkProgress:50,
+  }
 
   startX: number;
   startY: number;
@@ -61,13 +67,37 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+  
     this.loadSampleFiles();
+    this.reqMarkCountData();
    this.intervalLoadSampleFiles = setInterval(()=>{
       var thisTime:any = new Date()
       if((thisTime -this.listenTime)/1000 >= 1*60*10){
         this.loadSampleFiles();
       }
+     
     },1000)
+  
+  }
+
+  private reqMarkCountData(){
+
+    axios.post(`${environment.API_URL}/v1/mark-detect/markStatistics`,{},{
+      headers: {
+        'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+        'TR-Role': 'TR-User'
+      }
+    })
+    .then((result:any)=>{
+      if(result.data.code == 1){
+        let prseData =  JSON.parse(result.data.data)
+        this.markcountData.stayMarkNum = prseData.NotMark
+        this.markcountData.MarkedNum = prseData.isMark
+        this.markcountData.MarkProgress =  ((this.markcountData.MarkedNum/(this.markcountData.MarkedNum+this.markcountData.stayMarkNum))*100).toFixed(1)
+      
+      }
+      
+    })
 
   }
 
@@ -390,12 +420,15 @@ $.each(this.allotFiles,function(i,x){
             samplePath:result.data.data[0].samplePath,
             markData:result.data.data[0]
           })
+        }else{
+          that.drawingRects.push({
+            id:x.file.id,
+            samplePath:x.file.samplePath,
+            markData:x
+          })
         }
       })
     }
-
-   
-
    }
 })
 
@@ -519,7 +552,7 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
           $("#aiLabel").empty()
           this.loadSampleFiles();
         }
-
+        this.reqMarkCountData();
       }
     });
     this.listenTime = new Date()
@@ -568,6 +601,8 @@ removeImg(){
         }else{
           this.loadSampleFiles();
         }
+
+        this.reqMarkCountData()
       }else{
         this.nzMessage.error("删除失败");
       } 

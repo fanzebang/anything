@@ -110,16 +110,23 @@
  <div class="annotation-title">标注数据</div>
       <div style="padding: 10px;" class="content">
         <div>
-          <span class="subTitle">待标注图片数量:</span><span class="data">25</span>
+          <span class="subTitle">待标注图片数量:</span><span class="data">{{markcountData.stayMarkNum}}</span>
         </div>
         <div>
-          <span class="subTitle">已标注图片数量:</span><span  class="data">25</span>
+          <span class="subTitle">已标注图片数量:</span><span  class="data">{{markcountData.MarkedNum}}</span>
         </div>
         <div class="progressBox">
-          <span class="subTitle">占比:</span><p id="markCharts"><nz-progress [nzPercent]="50" nzStatus="active"></nz-progress></p>
+          <span class="subTitle">占比:</span><p id="markCharts" style="position: relative;">
+            <nz-progress nz-tooltip
+            [nzSteps]="10"
+            [nzPercent]="markcountData.MarkProgress"
+            nzStrokeColor="#52c41a"
+            [nzSuccessPercent]="60"></nz-progress>
+            <span style="position: absolute;top: 5px;right: -5px;color: #fff;">{{markcountData.stayMarkNum}}:{{markcountData.MarkedNum}}</span>
+          </p>
         </div>
         <div class="progressBox">
-          <span class="subTitle">进度:</span><p id="markProgress"><nz-progress [nzPercent]="50" nzStatus="active"></nz-progress></p>
+          <span class="subTitle">进度:</span><p id="markProgress" style="position: relative;"><nz-progress [nzPercent]="markcountData.MarkProgress" nzStrokeColor="#52c41a" nzStatus="active"></nz-progress> <span style="position: absolute;top: 5px;right: -5px;color: #fff;">{{markcountData.MarkProgress}}%</span></p>
         </div>
       </div>
       </div>
