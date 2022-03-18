@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+
   var heard:any = location.search;
   var access_token:any = heard.substring(1).split("=")[0]
   var pointLogin:any = heard.substring(1).split("=")

@@ -117,16 +117,16 @@
         </div>
         <div class="progressBox">
           <span class="subTitle">占比:</span><p id="markCharts" style="position: relative;">
-            <nz-progress nz-tooltip
-            [nzSteps]="10"
+            <nz-progress 
+          
             [nzPercent]="markcountData.MarkProgress"
             nzStrokeColor="#52c41a"
-            [nzSuccessPercent]="60"></nz-progress>
-            <span style="position: absolute;top: 5px;right: -5px;color: #fff;">{{markcountData.stayMarkNum}}:{{markcountData.MarkedNum}}</span>
+            ></nz-progress>
+            <span style="position: absolute;top: 5px;right: -8px;color: #fff;">{{markcountData.stayMarkNum}}:{{markcountData.MarkedNum}}</span>
           </p>
         </div>
         <div class="progressBox">
-          <span class="subTitle">进度:</span><p id="markProgress" style="position: relative;"><nz-progress [nzPercent]="markcountData.MarkProgress" nzStrokeColor="#52c41a" nzStatus="active"></nz-progress> <span style="position: absolute;top: 5px;right: -5px;color: #fff;">{{markcountData.MarkProgress}}%</span></p>
+          <span class="subTitle">进度:</span><p id="markProgress" style="position: relative;"><nz-progress [nzPercent]="markcountData.MarkProgress" nzStrokeColor="#52c41a" nzStatus="active"></nz-progress> <span style="position: absolute;top: 5px;right: -8px;color: #fff;">{{markcountData.MarkProgress}}%</span></p>
         </div>
       </div>
       </div>

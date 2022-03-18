@@ -27,13 +27,18 @@ export class MarkSampleTreeComponent implements OnInit {
   constructor(private http: HttpClient,private dataMarkService:DataMarkService) {
   }
 
+
+
   ngOnInit(): void {
       let markData = JSON.parse(localStorage.getItem("markData"))
+    
       let imgId
       try{
         imgId= markData.file.sampleTypeId
+       this.classValue = markData.file.samplePath
       }catch(e){
         imgId= markData.id
+        this.classValue = markData.sampleTypeName
       }
    
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`).subscribe((result: HttpResult<any>) => {

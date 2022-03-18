@@ -491,6 +491,8 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
 
  
   saveRect(){
+
+ 
     if (this.gMapArr.layers[1].features.length < 1) {
       this.nzMessage.error("请先标注");
       return;
@@ -510,6 +512,21 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
       let xmax = parseInt(rect.shape.x) + parseInt(rect.shape.width);
       let ymax = parseInt(rect.shape.x) + parseInt(rect.shape.height);
     
+      // try{
+      //   reqBody[that.drawingRects[i].id] = {
+      //     "xmin": xmin,
+      //     "ymin": ymin,
+      //     "xmax": xmax,
+      //     "ymax": ymax
+      //   }
+      // }catch(e){
+      //   reqBody[that.currentAllotFile.file.sampleTypeId] = {
+      //     "xmin": xmin,
+      //     "ymin": ymin,
+      //     "xmax": xmax,
+      //     "ymax": ymax
+      //   }
+      // }
       if(that.drawingRects[i].id){
         reqBody[that.drawingRects[i].id] = {
           "xmin": xmin,
@@ -553,6 +570,8 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
           this.loadSampleFiles();
         }
         this.reqMarkCountData();
+      }else{
+        this.nzMessage.error("保存失败,数据库中未查询到当前分类名");
       }
     });
     this.listenTime = new Date()
@@ -650,6 +669,7 @@ removeImg(){
     this.gMapArr.layers[2].removeTextById(this.gMapArr.layers[2].texts[idx].id);
   }
   editRect(idx: number,fileSample:any) {
+    this.drawingRects[idx].markData.rects = []
     localStorage.setItem("markData",JSON.stringify(this.drawingRects[idx].markData))
     //oo
     this.gMapArr.getActiveFeature()

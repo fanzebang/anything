@@ -332,7 +332,7 @@ export default {
 						r.element.setAttribute("text-anchor", "middle"),
 						r.element.textContent = p.fontToUpperCase ? e.label.toUpperCase() : e.label,
 						r.link = document.createElementNS(E, "a"),
-						r.link.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", e.url),
+						r.link.setAttributeNS("", "xlink:href", e.url),
 						r.link.setAttribute("target", e.target),
 						r.link.addEventListener("mouseover", f, !0),
 						r.link.addEventListener("mouseout", h, !0),
@@ -477,7 +477,7 @@ export default {
 						cy: 0
 					},
 					k = Math.PI / 180,
-					E = "http://www.w3.org/2000/svg";
+					E = "";
 					window.requestAnimFrame = function() {
 						return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
 						function(t) {

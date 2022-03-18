@@ -28,7 +28,6 @@ export default {
      login(url,type,data){
 
        
-        // var ip = "http://microismile.cn:38084"
 
         if(type == "post"){
 
@@ -54,7 +53,6 @@ export default {
 
 
     getList(url,type,data){
-        // var ip = "http://microismile.cn:38084"
         axios.interceptors.response.use(
             (response) => {
                 if(response.data.code == 401){
@@ -92,7 +90,6 @@ export default {
 
     Upload(url,type,data,onUploadProgress){
 
-        // var ip = "http://microismile.cn:38084"
         if(type == "post"){
 
             return   axios.post(this.ip+url,data,{

@@ -279,7 +279,9 @@ batchDiscern(isDetailOpen:any){
 
   })
   .catch(e=>{
-    console.log(e)
+    if(e.response.status == 401){
+      this.router.navigate(['/login']);
+    }
   })
 }
 
@@ -299,7 +301,9 @@ batchDiscernById(id){
     
   })
   .catch(e=>{
-    console.log(e)
+    if(e.response.status == 401){
+      this.router.navigate(['/login']);
+    }
   })
 }
 
@@ -324,7 +328,9 @@ setanothername(){
   }
   })
   .catch(e=>{
-    console.log(e)
+    if(e.response.status == 401){
+      this.router.navigate(['/login']);
+    }
   })
   // alert(this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue])
 }
@@ -1035,8 +1041,6 @@ isAllEqual(array:[string],fileListArr2):any{
   }
 
   loadHotspot() {
-
-
     this.http.get(`${environment.API_URL}/v1/hotspots`).subscribe((result: HttpResult<string[]>) => {
       if (HttpResult.succeed(result.code)) {
         this.hotspots = result.data;
@@ -1140,13 +1144,17 @@ searchImg(){
             $("#dataContent .historyAna").animate({'top':'80px'}, 500 );
           }
         })
-        .catch(e=>{
-          console.log(e)
+          .catch(e=>{
+          if(e.response.status == 404){
+            this.router.navigate(['/login']);
+          }
         })
       }
     })
     .catch(e=>{
-      console.log(e)
+      if(e.response.status == 401){
+        this.router.navigate(['/login']);
+      }
     })
 
   }
@@ -1193,7 +1201,9 @@ this.winboxData.history = data.data.data.records
 
 
     .catch(e=>{
-      console.log(e)
+      if(e.response.status == 401){
+        this.router.navigate(['/login']);
+      }
     })
  }
 
@@ -1209,7 +1219,6 @@ requsetProgress(){
           let requestData = JSON.parse(data.data.data)
           if(requestData.flag != "0000"){
             $("#dataContent .fenxiButton").css("display","none")
-     
             this.winboxData.tastkId = requestData.list[0].id
             this.requsetProgress1()
           }else{
@@ -1218,14 +1227,22 @@ requsetProgress(){
           }
         })
         .catch(e=>{
-          console.log(e)
+          if(e.response.status == 401){
+            this.router.navigate(['/login']);
+          }
         })
   }
 
 requsetProgress1(){
+
+
+
   this.winboxData.interVal =  setInterval(()=>{
       if(this.winboxData.tastkId){
         $("#dataContent .fenxiButton").css("display","none")
+
+   
+
         axios.post(`${environment.API_URL}/v1/label_task/queryProgressOfBatchImg?id=${this.winboxData.tastkId}`, {
           id: this.winboxData.tastkId
         },{
@@ -1251,15 +1268,34 @@ requsetProgress1(){
             this.winboxData.tastkId = ''
             this.dataAnaStatus = ''
 
-             this.winboxData.accuracyRate = (requestData.accuracyRate*100).toFixed(2)+'%' || 0
-             this.winboxData.errorRate = (requestData.errorRate*100).toFixed(2)+'%' || 0
-             this.winboxData.lossRate = (requestData.lossRate*100).toFixed(2)+'%' || 0
+            if(this.winboxData.accuracyRate){
+              this.winboxData.accuracyRate = (requestData.accuracyRate*100).toFixed(2)+'%'
+            }else{
+              this.winboxData.accuracyRate = 0
+            }
+            if(this.winboxData.errorRate){
+              this.winboxData.errorRate = (requestData.errorRate*100).toFixed(2)+'%'
+            }else{
+              this.winboxData.errorRate = 0
+            }
+             
+            // if(this.winboxData.progress){
+            //   this.winboxData.progress = (requestData.progress*100).toFixed(2)+'%'
+            // }else{
+            //   this.winboxData.progress = 0
+            // }
+             
+             
+            //  this.winboxData.errorRate = (requestData.errorRate*100).toFixed(2)+'%' || 0
+            //  this.winboxData.lossRate = (requestData.lossRate*100).toFixed(2)+'%' || 0
           }
           this.winboxData.count = requestData.imgCount
           this.winboxData.progress = (requestData.progress*100).toFixed(2)
         })
-        .catch(e=>{
-          console.log(e)
+          .catch(e=>{
+          if(e.response.status == 401){
+            this.router.navigate(['/login']);
+          }
         })
       }else{
         this.requsetProgress()
@@ -1391,7 +1427,9 @@ errorCorrectionRequest(){
     $("#CorrectionErrorBox > div.wb-header > div.wb-icon > span.wb-close").click()
   })
   .catch(e=>{
-    console.log(e)
+    if(e.response.status == 401){
+      this.router.navigate(['/login']);
+    }
   })
 }
 
