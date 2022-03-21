@@ -258,10 +258,12 @@ export default {
                        
                     }
                     .el-input__inner{
+                      color: #fff;
                         background-color: transparent !important;
                          border: 1px solid #2e5fcd;
                     }
                     .el-textarea__inner{
+                      color: #fff;
                         background-color: transparent !important;
                         border: 1px solid #2e5fcd;
                     }

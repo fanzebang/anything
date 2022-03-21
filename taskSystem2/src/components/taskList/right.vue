@@ -540,10 +540,12 @@ listData(data){
       .el-form-item {
         margin-right: 150px;
         .el-input__inner{
+               color: #fff;
             background:none;
             border: 1px solid #346ad3;
             width: 360px;
             input{
+                   color: #fff;
             background:none; 
             }
             i{
@@ -599,7 +601,7 @@ listData(data){
     }
   }
 
-    .table /deep/  .el-table--enable-row-transition .el-table__body td, .el-table .cell{
+    .table ::v-deep .el-table--enable-row-transition .el-table__body td, .el-table .cell{
     background-color: transparent;
     }
     .el-table::before {//去除底部白线

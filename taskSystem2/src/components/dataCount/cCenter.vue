@@ -519,6 +519,7 @@ initEcharts() {
             }
         }
         .el-range-editor .el-range-input{
+                 color: #fff;
             background: none !important;
         }
         .count{

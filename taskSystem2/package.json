@@ -11,12 +11,10 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
-    "bignumber.js": "^9.0.1",
+    "bignumber.js": "^9.0.2",
     "echarts": "^5.2.2",
     "element-ui": "^2.15.5",
     "json-bigint": "^1.0.0",
-    "node-sass": "^4.14.1",
-    "sass-resources-loader": "^2.2.4",
     "vue": "^2.5.2",
     "vue-jsonp": "^2.0.0",
     "vue-router": "^3.0.1"
@@ -46,6 +44,7 @@
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
+    "sass": "^1.26.5",
     "sass-loader": "^7.3.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",

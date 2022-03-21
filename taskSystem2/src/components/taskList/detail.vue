@@ -412,14 +412,17 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
                        
                     }
                     .el-input__inner{
+                           color: #fff;
                         background-color: transparent !important;
                          border: 1px solid #2e5fcd;
                     }
                     .el-textarea__inner{
+                           color: #fff;
                         background-color: transparent !important;
                         border: 1px solid #2e5fcd;
                     }
                      .el-date-editor .el-range-input{
+                          color: #fff;
                             background: none;
                         
                         }

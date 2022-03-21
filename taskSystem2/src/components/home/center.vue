@@ -2,7 +2,7 @@
     <div class="center">
         <ul>
             <li v-for="item in centerObj.classList">
-                    
+
                 <div>
                     <div class="left_top borderBox"></div>
                     <div class="right_top borderBox"></div>
