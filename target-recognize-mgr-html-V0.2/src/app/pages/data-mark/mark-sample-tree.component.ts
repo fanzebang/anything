@@ -25,6 +25,8 @@ export class MarkSampleTreeComponent implements OnInit {
   classList:any = []
   classListInfo:any = []
   constructor(private http: HttpClient,private dataMarkService:DataMarkService) {
+
+    this.dataMarkService.isTree = true;
   }
 
 
@@ -61,8 +63,8 @@ export class MarkSampleTreeComponent implements OnInit {
   }
 
   expandSampleNode(event: any,type:any) {
-    if (event.eventName === 'expand' && type == "handClick") {
   
+    if (event.eventName === 'expand' && type == "handClick") {
       if (event.node.isExpanded && event.node.children.length === 0) {
         // 异步加载下个节点
         this.loadChildrenSamples(event.node.key).subscribe((result: HttpResult<any>) => {
@@ -254,10 +256,30 @@ var that = this
     });
   }
 
-  selectSample(event: any,type:any): void {
-    if(!type){
+  changeSelected(nodes:any){
+    var that = this;
+    $.each(nodes,function(i,n){
+      n.selected = false
+      if(n.children && n.children.length !=0){
+        that.changeSelected(n.children)
+      }
+  })
+  }
+
+
+  changeNodeSelected(nodes:any,event:any){
+    this.changeSelected(nodes)
+   // 只有一个选中的  
+    event.node.origin.selected = true
+  }
+
+
+  selectSample(event: any,type:any): void { 
+    if(!type){ 
       this.selectedSampleId = event.node.key;
       this.selectedSamplePath = event.node.origin.samplePath;
+      console.log(this.selectedSampleId,this.selectedSamplePath)
+      this.changeNodeSelected(this.nodes,event)
     }else{
       this.selectedSampleId = type[0]+"";
       this.selectedSamplePath = type[1];
@@ -266,10 +288,8 @@ var that = this
       arr = arr.map((data)=>{
           return data+""
       })
-
       for (let index = 0; index < arr.length; index++) {
         const element = arr[index];
-   
         this.defaultExpandedKeys.push(element)
       }
       this.defaultSelectedKeys.push(this.selectedSampleId);
@@ -277,6 +297,7 @@ var that = this
     }
 
     var arr = [this.nodes[this.defaultExpandedKeys[0]-1]];
+    
     this.nodes = arr
 
 
@@ -315,7 +336,7 @@ selectClass(val:string){
       that.selectedSampleId = n.id
     }
   })
-  
+ this.dataMarkService.isTree = false;
   this.dataMarkService.nzModal.openModals[0].triggerOk()
 }
 

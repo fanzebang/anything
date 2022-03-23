@@ -76,9 +76,9 @@
     </div>
     <div class="audit-pictures">
       <div class="audit-picture-item flex-row" *ngFor="let markedRect of markedRects;let key = index" [ngClass]="{'audit-picture-item-active': key == selectClassIndex}" (click)="changeClassIndex(key)">
-        <div class="audit-picture-item-photo">
-          <!-- <img style="width: auto;height: 100px" [src]="markedRect.rect | MarkedRectImage : currentSampleFile | async"> -->
-          <img style="width: 100%" [src]="currentSampleFile?.ossKey | ossPath">
+        <div class="audit-picture-item-photo" style="flex-basis: auto;">
+          <img style="width: auto;height: 100px" [src]="markedRect.rect | MarkedRectImage : currentSampleFile | async">
+          <!-- <img style="width: 100%" [src]="currentSampleFile?.ossKey | ossPath"> -->
         </div>
         <div class="audit-picture-item-text flex-row">类型：<span>{{markedRect.typeId | SampleTypeIdPath | async}}</span></div>
         <div class="audit-picture-item-text flex-row classId" style="display: none;">id:<span>{{markedRect.typeId}}</span></div>
@@ -88,7 +88,6 @@
         <div class="audit-picture-item-photo">
           <img class="img-responsive" src="assets/images/img02.jpg" alt="图片">
         </div>
-
         <div class="audit-picture-item-text flex-row">类型：可见光/舰船/军舰/驱逐舰</div>
       </div>
       -->

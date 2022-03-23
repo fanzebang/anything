@@ -7,6 +7,7 @@ import {MarkSampleTreeComponent} from "./mark-sample-tree.component";
 import { fromEvent } from 'rxjs';
 import {DataMarkService} from "./data-mark.service"
 import axios from 'axios';
+import { Expression } from '@angular/compiler';
 
 declare var AILabel:any;
 declare var $:any
@@ -105,7 +106,6 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
  private listenKeyboard() {
 
     this.keyboardSubscription = fromEvent(window, 'keydown').subscribe((event: any) => {
-     
       if(event.keyCode == 39){
         this.nextAllocFile()
       }else if(event.keyCode == 37){
@@ -113,15 +113,34 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
       }else if(event.keyCode == 32){
         this.gMapArr.setMode("PAN")
       }else if(event.keyCode  == 46){
-        if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
-          this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
-        }else if(this.gMapArr.getActiveFeature().props.name == "123"){
-          let idx = this.gMapArr.getActiveFeature().id.split("_")[1]*1
-          this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
-          this.drawingRects.splice(idx, 1);
-          // // 删除对应text
-          this.gMapArr.layers[2].removeTextById(this.gMapArr.layers[2].texts[idx].id);
+        try{
+          if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
+
+            this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
+  
+          }else if(this.gMapArr.getActiveFeature().props.name == "123"){
+  
+            var that = this
+            let idx:number; 
+            let textId = this.gMapArr.getActiveFeature().props.textId;
+          
+            $.each(that.drawingRects,function(i,n){
+            
+              if(that.drawingRects[i].relatedTextId == textId){
+                idx = i
+               
+              }
+           
+            })
+       
+            this.delRect(idx)
+     
+  
+          }
+        }catch(e){
+          console.log(e)
         }
+    
       }
       if(event.ctrlKey){
         if(event.keyCode == 83){
@@ -312,6 +331,7 @@ const gFirstTextLayer = new AILabel.Layer.Text(
 this.gMapArr.addLayer(gFirstTextLayer);
 this.gMapArr.events.on('drawDone', (type:any, data:any, data1:any) => {
   var feature:any;
+  console.log()
   const relatedTextId = `label-text-id-${+new Date()}`;
   const relatedDeleteMarkerId = `label-marker-id-${+new Date()}`;
 if (type === 'RECT') {
@@ -329,7 +349,7 @@ if (type === 'RECT') {
           data, // shape
           {name: 'uninterested',textId: relatedTextId}, // props
           {strokeStyle: '#031129', fillStyle: '#031129', globalAlpha: 1, lineWidth: 1, fill: true, stroke: true} // style
-      );
+        );
       }
 
   that.gfeatureLayer.addFeature(feature);
@@ -418,13 +438,15 @@ $.each(this.allotFiles,function(i,x){
           that.drawingRects.push({
             id:result.data.data[0].id,
             samplePath:result.data.data[0].samplePath,
-            markData:result.data.data[0]
+            markData:result.data.data[0],
+            relatedTextId
           })
         }else{
           that.drawingRects.push({
             id:x.file.id,
             samplePath:x.file.samplePath,
-            markData:x
+            markData:x,
+            relatedTextId
           })
         }
       })
@@ -662,12 +684,20 @@ removeImg(){
     }
   }
   delRect(idx: number) {
+   
     console.log(idx,this.gMapArr.layers[1].features)
-    this.drawingRects.splice(idx, 1);
     this.gfeatureLayer.removeFeatureById(this.gMapArr.layers[1].features[idx].id);
+
     // 删除对应text
     this.gMapArr.layers[2].removeTextById(this.gMapArr.layers[2].texts[idx].id);
+ 
+    if(this.drawingRects.length != 0){
+      this.drawingRects[idx].markData.relatedTextId.splice(idx-1,1)
+    }
+
+    this.drawingRects.splice(idx, 1);
   }
+
   editRect(idx: number,fileSample:any) {
     this.drawingRects[idx].markData.rects = []
     localStorage.setItem("markData",JSON.stringify(this.drawingRects[idx].markData))
@@ -725,7 +755,8 @@ removeImg(){
              this.drawingRects.push({
                       id:marks[i].sampleOssType.id,
                       markData:this.currentAllotFile,
-                      samplePath:marks[i].sampleOssType.samplePath 
+                      samplePath:marks[i].sampleOssType.samplePath,
+                      relatedTextId
                     })
                    
             }
