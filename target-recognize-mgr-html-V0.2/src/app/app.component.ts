@@ -55,11 +55,11 @@ export class AppComponent implements OnInit {
 
          setTimeout(() => {
           this.getUrlPath()
-        }, 10);
+        }, 200);
 
        }
      }else if(access_token == 'access_token'){
-       window.location.href= `${environment.API_URL}/v1/sso/welcome-mgr?access_token=${pointLogin[2]}`
+       window.location.href= `${environment.API_URL}/v1/sso/welcome-mgr?access_token=${pointLogin[1]}`
      }
 
 

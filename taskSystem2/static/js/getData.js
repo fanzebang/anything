@@ -10,7 +10,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 export default {
 
-    ip:"http://microismile.cn:38084",
+    // ip:"http://microismile.cn:38084",
+    ip:"/api",
 
     getCookie(c_name) {
        if (document.cookie.length>0) {

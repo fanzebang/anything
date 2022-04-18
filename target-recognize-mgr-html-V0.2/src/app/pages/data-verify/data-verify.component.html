@@ -53,8 +53,8 @@
           <tr [nzExpand]="expandSet.has(data.createdBy)">
             <div class="audit-image-wrap" *ngIf="data.hasFiles">
               <div
-                  *ngFor="let sampleFile of data.sampleFiles"
-                   (click)="selectSampleFile(data, sampleFile)"
+                  *ngFor="let sampleFile of data.sampleFiles;let i = index"
+                   (click)="selectSampleFile(data, sampleFile,i)"
                    [class.current-sample]="currentSampleFile?.id === sampleFile.id"
                    >
                 <img [src]="sampleFile.ossKey | ossPath" >
@@ -72,10 +72,11 @@
 
   <div class="audit-right flex-column">
     <div class="audit-picture flex-row">
-      <img *ngIf="currentSampleFile" class="img-responsive" [src]="currentSampleFile?.ossKey | ossPath">
+      <!-- <img *ngIf="currentSampleFile" class="img-responsive" [src]="currentSampleFile?.ossKey | ossPath"> -->
+      <div id="verifyLabel"></div>
     </div>
     <div class="audit-pictures">
-      <div class="audit-picture-item flex-row" *ngFor="let markedRect of markedRects;let key = index" [ngClass]="{'audit-picture-item-active': key == selectClassIndex}" (click)="changeClassIndex(key)">
+      <div style="cursor: pointer;" class="audit-picture-item flex-row" *ngFor="let markedRect of markedRects;let key = index" [ngClass]="{'audit-picture-item-active': key == selectClassIndex1}" (click)="changeClassIndex(key)" title="按数字键可快速选择">
         <div class="audit-picture-item-photo" style="flex-basis: auto;">
           <img style="width: auto;height: 100px" [src]="markedRect.rect | MarkedRectImage : currentSampleFile | async">
           <!-- <img style="width: 100%" [src]="currentSampleFile?.ossKey | ossPath"> -->

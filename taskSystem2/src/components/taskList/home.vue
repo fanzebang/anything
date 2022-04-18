@@ -17,7 +17,7 @@ import right from "./right.vue"
 
 export default {
     name: 'taskList',
-    components:{"v-pHeader":pHeader,"v-left":left,"v-right":right},
+    components:{"v-pHeader":pHeader,"v-left":left,"v-right":right,},
     data() {
         return {
             status:"",

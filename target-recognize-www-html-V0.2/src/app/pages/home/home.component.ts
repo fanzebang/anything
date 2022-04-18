@@ -52,6 +52,12 @@ export class HomeComponent implements OnInit {
     accuracyRate:'99%',
     errorRate:'0.1%',
     lossRate:'0',
+    historyPageIndex:1,
+    historyTotal:0,
+    nextButtonisShow:true,
+    fenxiButtonisShow:true,
+    stopButtonValue:"暂停分析",
+    loding:false,
     history:[{
       id:"",
       createTime:'2022/1/25 17:40',
@@ -72,8 +78,10 @@ export class HomeComponent implements OnInit {
         listOfData:[]
       },
       radioValue:0,
+      radioValue1:0,
       detail:{
         discernName:[],
+        discernType:[],
         standardName:"",
         imgUrl:""
       },
@@ -186,6 +194,8 @@ keyboardSubscription:any
               private ossPathPipe: OssPathPipe,private videoService:VideoService,private message:NzMessageService) {
                 localStorage.removeItem('videoData')
 
+        
+
   }
 
   ngOnInit(): void {
@@ -279,9 +289,9 @@ batchDiscern(isDetailOpen:any){
 
   })
   .catch(e=>{
-    if(e.response.status == 401){
-      this.router.navigate(['/login']);
-    }
+    // if(e.response.status == 401){
+    //   this.router.navigate(['/login']);
+    // }
   })
 }
 
@@ -297,21 +307,30 @@ batchDiscernById(id){
   .then(data=>{
     this.winboxData.modalData.detail = JSON.parse(data.data.data)
     this.winboxData.modalData.detail.discernName = JSON.parse(this.winboxData.modalData.detail.discernName)
+    this.winboxData.modalData.detail.discernType = JSON.parse(this.winboxData.modalData.detail.ext1)
     this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.detail.standardName
     
   })
   .catch(e=>{
-    if(e.response.status == 401){
-      this.router.navigate(['/login']);
-    }
+    // if(e.response.status == 401){
+    //   this.router.navigate(['/login']);
+    // }
   })
 }
 
 setanothername(){
   // console.log(this.winboxData.modalData.deatile)
-  axios.post(`${environment.API_URL}/v1/batchDiscern/insertSampleOssType?standardName=${this.winboxData.modalData.detail.standardName}&discernName=${this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue]}`, {
+  let discernType;
+  try{
+    discernType= this.winboxData.modalData.detail.discernType[this.winboxData.modalData.radioValue1]
+  }catch(e){
+    discernType= "";
+  }
+ 
+  axios.post(`${environment.API_URL}/v1/batchDiscern/insertSampleOssType?standardName=${this.winboxData.modalData.detail.standardName}&discernName=${this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue]}&discernType=${discernType}`, {
     standardName:this.winboxData.modalData.detail.standardName,
-    discernName:this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue]
+    discernName:this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue],
+    discernType:discernType,
   },{
     headers: {
       'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -328,9 +347,9 @@ setanothername(){
   }
   })
   .catch(e=>{
-    if(e.response.status == 401){
-      this.router.navigate(['/login']);
-    }
+    // if(e.response.status == 401){
+    //   this.router.navigate(['/login']);
+    // }
   })
   // alert(this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue])
 }
@@ -1107,7 +1126,76 @@ searchImg(){
       $(`#modal-container > div > div > div.digital > nz-table > nz-spin > div > div > nz-table-inner-scroll > div > div.ant-table-body.ng-star-inserted > table > tbody > tr:nth-child(${key+2}) > td`).css("background","#072c4e")
     }
 
-  fenxi(){
+    stopFenxi(){
+     
+      clearInterval(this.winboxData.interVal)
+      this.winboxData.fenxiButtonisShow = false
+      let id = this.winboxData.tastkId
+      if(this.winboxData.stopButtonValue =="暂停分析"){
+        axios.post(`${environment.API_URL}/v1/label_task/suspendDistinguishBatchImg?id=${id}`,{
+          id
+        },{
+      headers: {
+        'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+        'TR-Role': 'TR-User'
+      }
+    })
+    .then(data=>{
+
+        if(data.data.code ==1){
+          this.winboxData.stopButtonValue = "继续分析"
+          this.winboxData.loding = true
+         
+         
+        }
+        this.requsetProgress1()
+       })
+      }else{
+
+        axios.post(`${environment.API_URL}/v1/label_task/resumeDistinguishBatchImg?id=${id}`,{id},{
+          headers: {
+            'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+            'TR-Role': 'TR-User'
+          }
+        })
+        .then(data=>{
+
+          if(data.data.code ==1){
+            this.winboxData.stopButtonValue = "暂停分析"
+            this.winboxData.loding = true
+            
+          }
+          this.requsetProgress1()
+        })
+
+      }
+        
+ 
+  
+     
+    }
+
+    overFenxi(){
+     
+      clearInterval(this.winboxData.interVal)
+      let id = this.winboxData.tastkId
+      axios.post(`${environment.API_URL}/v1/label_task/stopDistinguishBatchImg?id=${id}`,{},{ headers: {
+        'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+        'TR-Role': 'TR-User'
+      }})
+      .then(data=>{
+        if(data.data.code == 1){
+          this.winboxData.loding = true
+         
+      
+        }
+        this.requsetProgress1()
+      })
+
+    }
+
+fenxi(){
+ 
     axios.get(`${environment.API_URL}/v1/label_task/checkBuildTask`,{
       headers: {
         'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -1115,17 +1203,20 @@ searchImg(){
       }
     })
     .then(data=>{ 
+      this.winboxData.loding = true
       clearInterval(this.winboxData.interVal)
       let requestData = JSON.parse(data.data.data)
       if(requestData.flag != "0000"){
-        $("#dataContent .fenxiButton").css("display","none")
-        
+
+        this.winboxData.fenxiButtonisShow = false
         this.winboxData.tastkId = requestData.list[0].id
         $("#dataContent .content").css({'display':'flex'});
         $("#dataContent .historyAna").animate({'top':'237px'}, 500 );
         this.winBoxCharts();
         this.requsetProgress1()
+
       }else{
+
         axios.get(`${environment.API_URL}/v1/label_task/buildTask`, {
           headers: {
             'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -1144,26 +1235,30 @@ searchImg(){
             $("#dataContent .historyAna").animate({'top':'80px'}, 500 );
           }
         })
-          .catch(e=>{
-          if(e.response.status == 404){
-            this.router.navigate(['/login']);
-          }
-        })
+      
       }
     })
     .catch(e=>{
-      if(e.response.status == 401){
-        this.router.navigate(['/login']);
-      }
+      // if(e.response.status == 401){
+      //   this.router.navigate(['/login']);
+      // }
     })
 
   }
 
 
-  fenxiHistory(){
+  nextList(){
+    this.winboxData.historyPageIndex++;
+    this.fenxiHistory()
+  }
+  perList(){
+    this.winboxData.historyPageIndex--;
+    this.fenxiHistory()
+  }
 
-    axios.post(`${environment.API_URL}/v1/label_task/taskList?pageIndex=1&pageSize=10&detectStatus=0`, {
-      pageIndex: 1,
+  fenxiHistory(){
+    axios.post(`${environment.API_URL}/v1/label_task/taskList?pageIndex=${this.winboxData.historyPageIndex}&pageSize=10&detectStatus=0`, {
+      pageIndex: this.winboxData.historyPageIndex,
       pageSize:10,
       detectStatus:0
     },{
@@ -1175,6 +1270,14 @@ searchImg(){
     .then(data=>{
 
 this.winboxData.history = data.data.data.records
+
+let total:number = data.data.data.total
+
+if(this.winboxData.historyPageIndex*10 >=total){
+  this.winboxData.nextButtonisShow = false
+}else{
+  this.winboxData.nextButtonisShow = true
+}
 
 
  let fornum = 10-data.data.data.records.length
@@ -1201,13 +1304,13 @@ this.winboxData.history = data.data.data.records
 
 
     .catch(e=>{
-      if(e.response.status == 401){
-        this.router.navigate(['/login']);
-      }
+      // if(e.response.status == 401){
+      //   this.router.navigate(['/login']);
+      // }
     })
  }
 
-requsetProgress(){
+  requsetProgress(){
        axios.get(`${environment.API_URL}/v1/label_task/checkBuildTask`,{
           headers: {
             'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -1218,31 +1321,25 @@ requsetProgress(){
           clearInterval(this.winboxData.interVal)
           let requestData = JSON.parse(data.data.data)
           if(requestData.flag != "0000"){
-            $("#dataContent .fenxiButton").css("display","none")
+            this.winboxData.fenxiButtonisShow = false
             this.winboxData.tastkId = requestData.list[0].id
             this.requsetProgress1()
           }else{
             this.winboxData.tastkId = ''   
-            $("#dataContent .fenxiButton").css("display","block")
+            this.winboxData.fenxiButtonisShow = true
           }
         })
         .catch(e=>{
-          if(e.response.status == 401){
-            this.router.navigate(['/login']);
-          }
+          // if(e.response.status == 401){
+          //   this.router.navigate(['/login']);
+          // }
         })
   }
 
 requsetProgress1(){
-
-
-
   this.winboxData.interVal =  setInterval(()=>{
       if(this.winboxData.tastkId){
-        $("#dataContent .fenxiButton").css("display","none")
-
-   
-
+        
         axios.post(`${environment.API_URL}/v1/label_task/queryProgressOfBatchImg?id=${this.winboxData.tastkId}`, {
           id: this.winboxData.tastkId
         },{
@@ -1253,21 +1350,24 @@ requsetProgress1(){
         })
         .then(data=>{
           let requestData = JSON.parse(data.data.data)
+          if(this.winboxData.loding == true) this.winboxData.loding = false
           if(requestData.detectStatus == -1){
             this.winboxData.status =  "排队中"
             this.dataAnaStatus = '排队中'
+            this.winboxData.fenxiButtonisShow = false
           }else if(requestData.detectStatus == 1){
             this.winboxData.status =  "分析中"
              this.dataAnaStatus = '分析中'
+             this.winboxData.fenxiButtonisShow = false
              $(".ant-progress-text").css("color","#fff")
           }else if(requestData.detectStatus == 2){
             this.winboxData.status =  "统计中"
             this.dataAnaStatus = '统计中'
+            this.winboxData.fenxiButtonisShow = false
           }else if(requestData.detectStatus == 0){
             this.winboxData.status =  "完成"
             this.winboxData.tastkId = ''
             this.dataAnaStatus = ''
-
             if(this.winboxData.accuracyRate){
               this.winboxData.accuracyRate = (requestData.accuracyRate*100).toFixed(2)+'%'
             }else{
@@ -1278,24 +1378,27 @@ requsetProgress1(){
             }else{
               this.winboxData.errorRate = 0
             }
-             
-            // if(this.winboxData.progress){
-            //   this.winboxData.progress = (requestData.progress*100).toFixed(2)+'%'
-            // }else{
-            //   this.winboxData.progress = 0
-            // }
-             
-             
-            //  this.winboxData.errorRate = (requestData.errorRate*100).toFixed(2)+'%' || 0
-            //  this.winboxData.lossRate = (requestData.lossRate*100).toFixed(2)+'%' || 0
+            this.winboxData.fenxiButtonisShow = true
+            clearInterval(this.winboxData.interVal)
+          }else if(requestData.detectStatus == 4){
+            this.winboxData.status =  "已停止"
+            this.dataAnaStatus = ''
+            this.winboxData.fenxiButtonisShow = true
+            clearInterval(this.winboxData.interVal)
+          }else if(requestData.detectStatus == 3){
+            this.winboxData.status =  "已暂停"
+            this.dataAnaStatus = '已暂停'
+            this.winboxData.stopButtonValue = "继续分析"
+          
+            // clearInterval(this.winboxData.interVal)
           }
           this.winboxData.count = requestData.imgCount
           this.winboxData.progress = (requestData.progress*100).toFixed(2)
         })
           .catch(e=>{
-          if(e.response.status == 401){
-            this.router.navigate(['/login']);
-          }
+          // if(e.response.status == 401){
+          //   this.router.navigate(['/login']);
+          // }
         })
       }else{
         this.requsetProgress()
@@ -1427,9 +1530,9 @@ errorCorrectionRequest(){
     $("#CorrectionErrorBox > div.wb-header > div.wb-icon > span.wb-close").click()
   })
   .catch(e=>{
-    if(e.response.status == 401){
-      this.router.navigate(['/login']);
-    }
+    // if(e.response.status == 401){
+    //   this.router.navigate(['/login']);
+    // }
   })
 }
 
@@ -1460,9 +1563,8 @@ $("#CorrectionErrorBox > div.wb-header > div.wb-icon > span.wb-close").click()
 
 dataAna(): void {
  $("#dataWinBox > div.wb-header > div.wb-icon > span.wb-close").click()
- 
  $("#modal-container").css("display","none")
-//  mytable.tableInit()
+
  this.closeTable()
   this.dataBox = new WinBox({
       id:'dataWinBox',
@@ -1492,6 +1594,7 @@ dataAna(): void {
       $("#dataContent .content").css({'display':'none'});
       $("#dataContent .historyAna").animate({'top':'80px'}, 500 );
     }
+
   }
 
   loadAllImageCount(): void {

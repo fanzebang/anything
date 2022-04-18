@@ -67,6 +67,7 @@ export class LeafDataManageComponent implements OnInit {
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getOssFilesByTypeId`, {params})
       .subscribe((result: HttpResult<ApiPage<SampleOssFile>>) => {
         this.secondaryData = result.data.records;
+
         this.secondaryTotal = result.data.total;
         this.imgNum = this.secondaryData.length
         let str = $(".search-form-title")[0].innerText

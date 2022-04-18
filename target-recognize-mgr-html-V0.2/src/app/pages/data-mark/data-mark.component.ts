@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {HttpResult} from '../../core/http-entity';
 import {NzMessageService, NzModalService} from "ng-zorro-antd";
@@ -65,6 +65,11 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
    
     this.listenKeyboard(); // 注册键盘监听
+
+    // var interval
+    // window.onfocus=function(){interval=window.setInterval("clipboardData.setData('text','')",100);}
+    // window.onblur=function(){window.clearInterval(interval);}
+
   }
 
   ngAfterViewInit(): void {
@@ -281,8 +286,6 @@ this.listenTime = new Date();
 this.drawingRects = []
  var that = this
  var drawingStyle;
-
- 
  var imgSrc:any = localStorage.getItem('sampleResourcePath')+`/${allotFile.file.ossKey}`;
  if(localStorage.getItem('sampleResourcePath').split("/")[3] != allotFile.file.bucketName){imgSrc=`${localStorage.getItem('sampleResourcePath').split("/")[0]}//${localStorage.getItem('sampleResourcePath').split("/")[2]}/${allotFile.file.bucketName}/${allotFile.file.ossKey}`}
  var img = new Image();
@@ -304,196 +307,201 @@ this.drawingRects = []
 })  
 $(".canvas-container").append("<div id='sy' class='table-sy' style= 'width: 100%;height: 100%;position: absolute;pointer-events: none; /*主要是这个属性*/color:rgba(210, 214, 217,.2);z-index: 99999999999;opacity: .5;'></div>")
 this.loadSy()
-var imageLayer = new AILabel.Layer.Image(
-  'img', // id
-  {
-    src: imgSrc,
-    width: imgWidth,
-    height: imgHeight,
-    crossOrigin: false, // 如果跨域图片，需要设置为true
-    position: { // 图片左上角对应的坐标位置
-        x: 0,
-        y: 0
+
+setTimeout(()=>{
+  var imageLayer = new AILabel.Layer.Image(
+    'img', // id
+    {
+      src: imgSrc,
+      width: imgWidth,
+      height: imgHeight,
+      crossOrigin: false, // 如果跨域图片，需要设置为true
+      position: { // 图片左上角对应的坐标位置
+          x: 0,
+          y: 0
+      },
     },
-  },
-  {name: '第一个图片图层'},
-  {zIndex: 1} 
-);
-
-this.gMapArr.addLayer(imageLayer)
-this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
-this.gMapArr.addLayer(this.gfeatureLayer)
-const gFirstTextLayer = new AILabel.Layer.Text(
-  'first-layer-text', // id
-  {name: '第一个文本图层'}, // props
-  {zIndex: 12, opacity: 1} // style
-);
-this.gMapArr.addLayer(gFirstTextLayer);
-this.gMapArr.events.on('drawDone', (type:any, data:any, data1:any) => {
-  var feature:any;
-  console.log()
-  const relatedTextId = `label-text-id-${+new Date()}`;
-  const relatedDeleteMarkerId = `label-marker-id-${+new Date()}`;
-if (type === 'RECT') {
-      // 添加feature
-      if(!this.uninterested){
-        feature = new AILabel.Feature.Rect(
-          `${+new Date}`, // id
-          data, // shape
-          {name: '123',textId: relatedTextId}, // props
-          {strokeStyle: '#00f', fillStyle: '#0f0', globalAlpha: .3, lineWidth: 1, fill: true, stroke: true} // style
-      );
-      }else{
-        feature = new AILabel.Feature.Rect(
-          `${+new Date}`, // id
-          data, // shape
-          {name: 'uninterested',textId: relatedTextId}, // props
-          {strokeStyle: '#031129', fillStyle: '#031129', globalAlpha: 1, lineWidth: 1, fill: true, stroke: true} // style
+    {name: '第一个图片图层'},
+    {zIndex: 1} 
+  );
+  
+  that.gMapArr.addLayer(imageLayer)
+  that.gfeatureLayer = new AILabel.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
+  that.gMapArr.addLayer(that.gfeatureLayer)
+  const gFirstTextLayer = new AILabel.Layer.Text(
+    'first-layer-text', // id
+    {name: '第一个文本图层'}, // props
+    {zIndex: 12, opacity: 1} // style
+  );
+  that.gMapArr.addLayer(gFirstTextLayer);
+  that.gMapArr.events.on('drawDone', (type:any, data:any, data1:any) => {
+    var feature:any;
+  
+    const relatedTextId = `label-text-id-${+new Date()}`;
+    const relatedDeleteMarkerId = `label-marker-id-${+new Date()}`;
+  if (type === 'RECT') {
+        // 添加feature
+        if(!that.uninterested){
+          feature = new AILabel.Feature.Rect(
+            `${+new Date}`, // id
+            data, // shape
+            {name: '',textId: relatedTextId}, // props
+            {strokeStyle: '#00f', fillStyle: '#0f0', globalAlpha: .3, lineWidth: 1, fill: true, stroke: true} // style
         );
-      }
-
-  that.gfeatureLayer.addFeature(feature);
-
-  var text 
-
-
-    this.allotFiles.forEach(x=>{
-      if(x.id == allotFile.id){
-       var arr =  x.file.samplePath.split("/")
-       if(arr.length != 1){
-        var length = arr.length-2
-        text = arr[length]
-       }else{
-        text = arr[0]
-       }
-       if(!this.uninterested){
-        x.relatedTextId.push(relatedTextId)
+        }else{
+          feature = new AILabel.Feature.Rect(
+            `${+new Date}`, // id
+            data, // shape
+            {name: 'uninterested',textId: relatedTextId}, // props
+            {strokeStyle: '#031129', fillStyle: '#031129', globalAlpha: 1, lineWidth: 1, fill: true, stroke: true} // style
+          );
+        }
+  
+    that.gfeatureLayer.addFeature(feature);
+  
+    var text 
+  
+  
+    that.allotFiles.forEach(x=>{
+        if(x.id == allotFile.id){
+         var arr =  x.file.samplePath.split("/")
+         if(arr.length != 1){
+          var length = arr.length-2
+          text = arr[length]
+         }else{
+          text = arr[0]
+         }
+         if(!that.uninterested){
+          x.relatedTextId.push(relatedTextId)
+         }
+         
+        }
+    
+       
+      })
+  
+    
+  
+  
+       // 添加feature标签名
+       const {x: ltx, y: lty} = data;
+       const gFirstText = new AILabel.Text(
+           relatedTextId, // id
+           {text: text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
+           {name: '第一个文本对象'}, // props
+           {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
+       );
+       if(!that.uninterested){
+        gFirstTextLayer.addText(gFirstText);
        }
        
-      }
-  
-     
-    })
-
-  
-
-
-     // 添加feature标签名
-     const {x: ltx, y: lty} = data;
-     const gFirstText = new AILabel.Text(
-         relatedTextId, // id
-         {text: text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
-         {name: '第一个文本对象'}, // props
-         {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
+    }else if(type === 'POLYGON'){
+      feature = new AILabel.Feature.Polygon(
+        `${+new Date}`, // id
+        {points: data}, // shape
+        {name: '123'}, // props
+        drawingStyle// style
      );
-     if(!this.uninterested){
-      gFirstTextLayer.addText(gFirstText);
+     that.gfeatureLayer.addFeature(feature);
+    }
+    that.markData.dataArr = []
+    $.each(that.gMapArr.layers[1].features,function(i:any,x:any){
+      that.markData.dataArr.push({
+          style:x.style,
+          type:x.type,
+          shape:x.shape,
+          id:x.id
+      })
+    })
+    that.markData.theFeatureId = feature.id
+    // this.initDrawingCanvas();
+   
+  $.each(that.allotFiles,function(i,x){
+    if(x.id == allotFile.id){
+      var arr =  x.file.samplePath.split("/")
+      var length = arr.length-2
+      if(arr.length != 1){
+       length = arr.length-2
+       text = arr[length]
+      }else{
+       length =  0
+       text = arr[length]
+      }
+      
+  
+      if(!that.uninterested){
+        axios.post(`${environment.API_URL}/v1/sample-oss-file/relationQueryCatalogue?sampleTypeName=${text}`,{sampleTypeName:text},{
+          headers: {
+            'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+            'TR-Role': 'TR-User'
+          }
+        })
+        .then((result:any)=>{
+          if(result.data.data.length>0){
+            result.data.data[0].relatedTextId = x.relatedTextId
+            feature.props.name =result.data.data[0].id 
+            that.drawingRects.push({
+              id:result.data.data[0].id,
+              samplePath:result.data.data[0].samplePath,
+              markData:result.data.data[0],
+              relatedTextId
+            })
+          }else{
+            that.drawingRects.push({
+              id:x.file.id,
+              samplePath:x.file.samplePath,
+              markData:x,
+              relatedTextId
+            })
+          }
+        })
+      }
      }
-     
-  }else if(type === 'POLYGON'){
-    feature = new AILabel.Feature.Polygon(
-      `${+new Date}`, // id
-      {points: data}, // shape
-      {name: '123'}, // props
-      drawingStyle// style
-   );
-   that.gfeatureLayer.addFeature(feature);
-  }
-  that.markData.dataArr = []
-  $.each(that.gMapArr.layers[1].features,function(i:any,x:any){
-    that.markData.dataArr.push({
+  })
+  
+  
+  });
+  
+  that.gMapArr.events.on('featureSelected',(feature: any) => {
+  
+    that.gMapArr.setActiveFeature(feature);
+  
+  })
+  
+  that.gMapArr.events.on('featureUnselected',() => {
+  
+      that.gMapArr.setActiveFeature(null);
+    
+  })
+  
+  that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
+    feature.updateShape(shape);
+    
+    const markerId = feature.props.deleteMarkerId;
+    const textId = feature.props.textId;
+    // 更新text位置
+    const targetText = gFirstTextLayer.getTextById(textId);
+  
+    targetText.updatePosition(feature.getPoints()[0]);
+    that.markData.dataArr = []
+    $.each(that.gMapArr.layers[1].features,function(i:any,x:any){
+      that.markData.dataArr.push({
         style:x.style,
         type:x.type,
         shape:x.shape,
         id:x.id
+      })
     })
   })
-  this.markData.theFeatureId = feature.id
-  // this.initDrawingCanvas();
- 
-$.each(this.allotFiles,function(i,x){
-  if(x.id == allotFile.id){
-  
-    var arr =  x.file.samplePath.split("/")
-    var length = arr.length-2
-    if(arr.length != 1){
-     length = arr.length-2
-     text = arr[length]
-    }else{
-     length =  0
-     text = arr[length]
-    }
-    
-
-    if(!that.uninterested){
-      axios.post(`${environment.API_URL}/v1/sample-oss-file/relationQueryCatalogue?sampleTypeName=${text}`,{sampleTypeName:text},{
-        headers: {
-          'Authorization':'Bearer '+localStorage.getItem('Bearer'),
-          'TR-Role': 'TR-User'
-        }
-      })
-      .then((result:any)=>{
-        if(result.data.data.length>0){
-          result.data.data[0].relatedTextId = x.relatedTextId
-          that.drawingRects.push({
-            id:result.data.data[0].id,
-            samplePath:result.data.data[0].samplePath,
-            markData:result.data.data[0],
-            relatedTextId
-          })
-        }else{
-          that.drawingRects.push({
-            id:x.file.id,
-            samplePath:x.file.samplePath,
-            markData:x,
-            relatedTextId
-          })
-        }
-      })
-    }
-   }
-})
-
-
-});
-
-that.gMapArr.events.on('featureSelected',(feature: any) => {
-
-  that.gMapArr.setActiveFeature(feature);
-
-})
-
-that.gMapArr.events.on('featureUnselected',() => {
-
-    that.gMapArr.setActiveFeature(null);
-  
-})
-
-that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
-  feature.updateShape(shape);
-  
-  const markerId = feature.props.deleteMarkerId;
-  const textId = feature.props.textId;
-  // 更新text位置
-  const targetText = gFirstTextLayer.getTextById(textId);
-
-  targetText.updatePosition(feature.getPoints()[0]);
-  that.markData.dataArr = []
-  $.each(that.gMapArr.layers[1].features,function(i:any,x:any){
-    that.markData.dataArr.push({
-      style:x.style,
-      type:x.type,
-      shape:x.shape,
-      id:x.id
-    })
-  })
-})
-
-
-      // 判断是否人机协同标注
-      if (this.markMode === 'auto') {
-        this.autoMark();
+       // 判断是否人机协同标注
+       if (that.markMode === 'auto') {
+        that.autoMark();
       }
+},100)
+
+
+
+ 
   }
 
 
@@ -513,8 +521,6 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
 
  
   saveRect(){
-
- 
     if (this.gMapArr.layers[1].features.length < 1) {
       this.nzMessage.error("请先标注");
       return;
@@ -522,33 +528,22 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
     this.currentAllotFile.rects = this.drawingRects;
     const reqBody: { [key: number]: any } = {};
     var that = this
-    let featuresArr = []
+    let featuresArr = [];
+    var dataRight = true
     $.each(this.gMapArr.layers[1].features,function(i,rect){
       if(rect.props.name != "uninterested"){
-        featuresArr.push(rect)
+        delete rect.layer
+        featuresArr.push(rect) 
       }
     })
+
     $.each(featuresArr,function(i,rect){
+      if(!rect.props.name) dataRight = false
+      rect.props.text = that.gMapArr.layers[2].texts[i].textInfo.text
       let xmin = parseInt(rect.shape.x) 
       let ymin = parseInt(rect.shape.y) ;
       let xmax = parseInt(rect.shape.x) + parseInt(rect.shape.width);
-      let ymax = parseInt(rect.shape.x) + parseInt(rect.shape.height);
-    
-      // try{
-      //   reqBody[that.drawingRects[i].id] = {
-      //     "xmin": xmin,
-      //     "ymin": ymin,
-      //     "xmax": xmax,
-      //     "ymax": ymax
-      //   }
-      // }catch(e){
-      //   reqBody[that.currentAllotFile.file.sampleTypeId] = {
-      //     "xmin": xmin,
-      //     "ymin": ymin,
-      //     "xmax": xmax,
-      //     "ymax": ymax
-      //   }
-      // }
+      let ymax = parseInt(rect.shape.y) + parseInt(rect.shape.height);
       if(that.drawingRects[i].id){
         reqBody[that.drawingRects[i].id] = {
           "xmin": xmin,
@@ -566,15 +561,31 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
       }
     })
 
-    console.log(this.currentAllotFile,this.drawingRects)
+    let saveData = JSON.stringify(featuresArr)
  
-    this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_mark_status`, reqBody, {
+
+  if(!dataRight) return this.nzMessage.error("保存失败,数据库中未查询到当前分类名");
+
+  var headers:Headers = new Headers({
+    'Content-Type':'application/json;charset=utf-8',
+    'Accept':'*!/'
+  })
+
+  console.log(headers)
+    this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_mark_status`,{}, {
+      headers:{
+        'Content-Type':'application/json;charset=utf-8',
+        'Accept':'*!/'
+      },
       params: {
         fileId: this.currentAllotFile.id + '',
         sampleOssTypeId:this.drawingRects[0].id+'',
+        labelMessageObject:saveData
       }
-    }).subscribe((result: HttpResult<any>) => {
+    })
+    .subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
+    
         this.nzMessage.success("保存成功");
         // 在数组中删除当前这个
         // 判断是否还有下一张
@@ -592,8 +603,6 @@ that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
           this.loadSampleFiles();
         }
         this.reqMarkCountData();
-      }else{
-        this.nzMessage.error("保存失败,数据库中未查询到当前分类名");
       }
     });
     this.listenTime = new Date()
@@ -703,6 +712,7 @@ removeImg(){
     localStorage.setItem("markData",JSON.stringify(this.drawingRects[idx].markData))
     //oo
     this.gMapArr.getActiveFeature()
+    this.keyboardSubscription.unsubscribe()
     this.dataMarkService.creatNzModal(this,idx,fileSample)
   }
 
@@ -718,6 +728,7 @@ removeImg(){
             this.nzMessage.error("无法识别");
           }else{
             this.nzMessage.success("识别成功");
+
             for (let i = 0; i < marks.length; i++) {
               rects.push({
                 startX: Math.floor(marks[i].markPolygon.minX * this.currentAllotFile.scaleRatio),
@@ -750,8 +761,11 @@ removeImg(){
                 {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
             );
             this.gMapArr.layers[2].addText(gFirstText);
+
+
+
+
             this.currentAllotFile.relatedTextId.push(relatedTextId)
-       
              this.drawingRects.push({
                       id:marks[i].sampleOssType.id,
                       markData:this.currentAllotFile,

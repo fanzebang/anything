@@ -8,45 +8,57 @@ import {FfdecWasmLoaderService} from "./ffdec-wasm-loader.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import axios from 'axios';
 import {HttpClient, HttpParams} from '@angular/common/http';
+
 // ../core/http-entity
 import {HttpResult} from './core/http-entity';
 // private cs: CommunicateService
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
+
 export class AppComponent implements OnInit {
   constructor(private store: Store, private ws: WebsocketService,
               private ffdecWasmLoaderService: FfdecWasmLoaderService, private router: Router, private route: ActivatedRoute,public http:HttpClient) {
     this.ffdecWasmLoaderService.load();
+    axios.interceptors.response.use(
+      response=> {
+        return response;
+      },
+      (error) => {
+        if(error.response.status == 401){
+          this.router.navigate(['/login']);
+        }
+        return Promise.resolve(error.response)
+      }
+    )
   }
 
+
   ngOnInit(): void {
-
-
-
   var heard:any = location.search;
   var access_token:any = heard.substring(1).split("=")[0]
+
   var pointLogin:any = heard.substring(1).split("=")
+  
     if (heard && access_token != 'access_token') {
       if (heard.concat('jwt')) {
-        let Bearer = heard.split('=')[1];
       
+        let Bearer = heard.split('=')[1];
         localStorage.setItem('Bearer', Bearer);
-
         setTimeout(() => {
           this.getUrlPath()
-        }, 10);
-       
-
+        }, 200);
       }
     }else if(access_token == 'access_token'){
-      window.location.href= `${environment.API_URL}/v1/sso/welcome-detect?access_token=${pointLogin[2]}`
-
+   
+      window.location.href= `${environment.API_URL}/v1/sso/welcome-detect?access_token=${pointLogin[1]}`
     }
 
     const jwt = localStorage.getItem('Bearer');
+    
     if (jwt) {
       this.store.dispatch(new LoginAction(jwt));
     }
@@ -63,6 +75,10 @@ export class AppComponent implements OnInit {
           this.store.dispatch(new RecognizeAction(JSON.stringify(data1)));
 
     });
+
+
+
+
 
   }
   getUrlPath(){

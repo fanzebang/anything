@@ -5,7 +5,7 @@ import {environment} from "../../../environments/environment";
 import {HttpResult} from "../../core/http-entity";
 import axios from 'axios';
 import {DataMarkService} from "./data-mark.service"
-
+import { fromEvent } from 'rxjs';
 declare var $:any;
 
 @Component({
@@ -23,10 +23,39 @@ export class MarkSampleTreeComponent implements OnInit {
   isRequsetAll:any = false
   classValue:string = "";
   classList:any = []
-  classListInfo:any = []
+  classListInfo:any = [];
+  keyboardTreeSubscription:any;
+  slectNum:number = -1;
   constructor(private http: HttpClient,private dataMarkService:DataMarkService) {
 
     this.dataMarkService.isTree = true;
+  }
+
+
+  private listenKeyboard() {
+
+    this.keyboardTreeSubscription = fromEvent(window, 'keydown').subscribe((event: any) => {
+    
+      if(event.keyCode == 40){
+        if(this.slectNum < this.classList.length-1){
+          this.slectNum += 1
+        }else{
+          this.slectNum = this.classList.length-1
+        }
+      }else if(event.keyCode == 38){
+        if (this.slectNum > 0 ){
+          this.slectNum -= 1
+        }else{
+          this.slectNum = 0
+        } 
+      }else if(event.keyCode == 13){
+        this.selectClass(this.classList[this.slectNum])
+      }
+    });
+  }
+  removeKeyboard() {
+    this.keyboardTreeSubscription.unsubscribe()
+
   }
 
 
@@ -55,11 +84,18 @@ export class MarkSampleTreeComponent implements OnInit {
         });
       
         this.expandSampleNode("",imgId)
+        this.listenKeyboard();
       }
     });
 
-   
+  
 
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this. removeKeyboard()
   }
 
   expandSampleNode(event: any,type:any) {
@@ -312,6 +348,7 @@ ngAfterViewInit(): void {
 classSeach(){
   this.classList = []
   this.classListInfo = []
+ 
     axios.post(`${environment.API_URL}/v1/sample-oss-file/relationQueryCatalogue?sampleTypeName=${this.classValue}`,{sampleTypeName:this.classValue},{
       headers: {
         'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -319,16 +356,17 @@ classSeach(){
       }
     })
     .then((result:any)=>{
-   
       result.data.data.forEach(element => {
-       
           this.classList.push(element.sampleTypeName)
           this.classListInfo.push(element)
+          this.slectNum = 0
       });
+     
     })
 }
 
 selectClass(val:string){
+  
   var that =this
   this.classValue = val
   $.each(this.classListInfo,function(i,n){

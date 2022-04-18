@@ -111,8 +111,8 @@
                          <el-button type="success" v-if="scope.row.status == 1" size="mini">进行中</el-button>
                          <div v-else-if="scope.row.status == 2" >
                              <el-row>
-                                <el-col :span="7"><el-button type="warning" size="mini">分析中</el-button></el-col>
-                                <el-col :span="17"> <el-progress :percentage="scope.row.prorgressnum"></el-progress></el-col>
+                                <el-col :span="7"><el-button type="warning" size="mini" @click="openProgress(scope.row)">分析中</el-button></el-col>
+                                <!-- <el-col :span="17"> <el-progress :percentage="scope.row.prorgressnum"></el-progress></el-col> -->
                             </el-row>
                            
                         </div>
@@ -129,6 +129,7 @@
                  width="250"
                 show-overflow-tooltip>
                           <el-row  slot-scope="scope">
+                                <!-- <el-col :span="4"><a @click="openProgress(scope.row)" style="cursor:pointer">{{scope.row.play.btn1}}</a></el-col> -->
                                 <el-col :span="4"><a @click="openDetail(scope.row)" style="cursor:pointer">{{scope.row.play.btn1}}</a></el-col>
                                 <!-- <el-col :span="20"> <a style="cursor:pointer" @click="interval(scope.row)">{{scope.row.play.btn2}}</a></el-col> -->
                             </el-row>
@@ -158,15 +159,20 @@
         <v-newTask v-if="newTask" @changeNewTask="changeNewTask" @listData="listData"></v-newTask>
     </div>
 
+    <div>
+        <v-progress v-if="progress" @changeProgress="changeProgress" :progressData="progressData"></v-progress>
+    </div>
+
   </div>
 </template>
 
 <script>
 import detail from './detail.vue'
 import newTask from './newTask.vue'
+import progress from "./progress.vue"
 
 export default {
-  components:{'v-detail':detail,'v-newTask':newTask},
+  components:{'v-detail':detail,'v-newTask':newTask,"v-progress":progress},
   name: "right",
   data() {
     return {
@@ -175,7 +181,9 @@ export default {
       pageSize:20,
       detail:false,
       newTask:false,
+      progress:false,
       toDeatalData:"",
+      progressData:"",
       totalItem:400,
       ruleForm: {
         name: "",
@@ -248,15 +256,16 @@ export default {
   mounted() {
     var that = this
      this.$EventBus.$on("sendFile",data=>{
- 
        if(data.scusses){
-            this.$notify({
-                  title: '成功',
-                  message: '上传成功',
-                  type: 'success'
-                });
+         console.log(1111)
+            // this.$notify({
+            //       title: '成功',
+            //       message: '上传成功',
+            //       type: 'success'
+            //     });
 
         that.getTableData(this.ruleForm,this.pageSize,this.page,this.status)
+        
        }
      })
 
@@ -264,18 +273,20 @@ export default {
         this.status = data
          this.getTableData(this.ruleForm,this.pageSize,this.page,this.status)
      })
- 
 
-   this.getTableData(this.ruleForm,this.pageSize,this.page,this.status)
-            
+ this.getTableData(this.ruleForm,this.pageSize,this.page,this.status)
 
-      
 
   },
 
   methods: {
 
+      openProgress(data){
 
+        console.log(data)
+      this.progress = true
+      this.progressData = data
+      },
 
 interval(data){
 
@@ -321,11 +332,11 @@ interval(data){
     
       .then(data1=>{
         if(data1.data.msg == "操作成功"){
-          this.$notify({
-            title: '成功',
-            message: '上传成功',
-            type: 'success'
-          });
+          // this.$notify({
+          //   title: '成功',
+          //   message: '上传成功',
+          //   type: 'success'
+          // });
           that.getTableData(this.ruleForm,this.pageSize,this.page,this.status)
         }else{
 
@@ -344,7 +355,7 @@ interval(data){
     },
 
  getTableData(ruleForm,pageSize,page,status){
-      this.tableData = [];
+   this.tableData = [];
    var that = this
       let date = new Date(ruleForm.date1[0])
             let date1 = new Date(ruleForm.date1[1])
@@ -390,7 +401,7 @@ interval(data){
                 data2.startTime = ""
               }
 
-      this.$getData.getList("/taskArchives/queryPage","post",data2)
+this.$getData.getList("/taskArchives/queryPage","post",data2)
       .then(data=>{
         $.each(data.data.data.taskList,function(i,n){
                 that.tableData.push({
@@ -448,6 +459,9 @@ interval(data){
       changeDeatil(data){
           this.detail = data
       },
+      changeProgress(data){
+        this.progress = data
+      },
 
 listData(data){
     this.tableData = [];
@@ -469,6 +483,8 @@ listData(data){
       changeNewTask(data){
           this.newTask = data
       },
+
+
 
         openDetail(data){
             this.detail = true

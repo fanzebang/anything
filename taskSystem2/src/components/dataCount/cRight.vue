@@ -134,7 +134,6 @@ changeTargetData(data){
                          distance :20,
                          color :'#fff',
                          formatter:function(x){
-                             console.log(x)
                              return `${x.value}`
                          }
                       },

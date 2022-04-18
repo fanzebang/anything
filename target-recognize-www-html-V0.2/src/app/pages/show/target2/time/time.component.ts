@@ -14,6 +14,10 @@ export class TimeComponent implements OnInit {
 
   public yAxisData:any;
 
+  public legendData:any = []
+
+  public series:any = []
+
   constructor() {
 
     this.xAxisData = [];
@@ -23,14 +27,26 @@ export class TimeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.list)
+    
 
     for (let index = 0; index < this.list.length; index++) {
       
 
-         this.xAxisData.push(this.list[index].name)
-         this.yAxisData.push(this.list[index].time)
+        this.xAxisData.push(this.list[index].name)
+        // this.yAxisData.push(this.list[index].time)
+        this.legendData.push(this.list[index].name)
+        this.series.push({
+          name:this.list[index].name,
+          type: 'bar',
+          emphasis: {
+            focus: 'series'
+          },
+          data: [this.list[index].time]
+        })
     }
+
+
+    console.log(this.xAxisData,this.legendData,this.series)
 
   }
 
@@ -41,11 +57,14 @@ export class TimeComponent implements OnInit {
   }
 
   initCharts() {
+ 
     const ec:any = echarts as any;
     const barChart:any = ec.init(document.getElementById('barChart1'));
 
-    const barChartOption:Object = {
 
+
+
+    const barChartOption:Object = {
       tooltip: {
         trigger: 'item',
         triggerOn: 'mousemove',
@@ -54,7 +73,10 @@ export class TimeComponent implements OnInit {
                  return `<span style="position: relative;top: 10px;padding:0 5px;">${parmas.value}</span>`
                },
          },
-     
+         
+    grid:{
+      right:'20%',
+    },
       title:{
         text: '单位（毫秒）',
         x: 'left',                 
@@ -72,23 +94,32 @@ export class TimeComponent implements OnInit {
             color: '#aaa'   
         }
     },
-    dataZoom: [
-      {
-        type: 'inside',
-        start :0,
-        end:100,
-        bottom: '10px'
+    label: {
+      show: true,
+      position: 'bottom',
+      formatter: '{a}',
+      color: '#2f4554',
+      rotate:45,
+      offset:[0, 0],
+      align: 'right',
+      fontSize :11,
       },
-      {
-        type: 'slider',
-        bottom: '10%',
-        height: 12,
-      },
-     
-    ],
+    // dataZoom: [
+    //   {
+    //     type: 'inside',
+    //     start :0,
+    //     end:100,
+    //     bottom: '10px'
+    //   },
+    //   {
+    //     type: 'slider',
+    //     bottom: '10%',
+    //     height: 0,
+    //   },
+    // ],
       xAxis: {
         type: 'category',
-        data: this.xAxisData,
+        data: [""],
         axisLabel: {
           show: true,
           interval:0,
@@ -117,21 +148,16 @@ export class TimeComponent implements OnInit {
           
       }
       },
-      series: [{
-        data: this.yAxisData,
-        itemStyle:{
-          normal:{
-                      color: function (params){
-                      var  color:any[] = ['#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed',
-                                    '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0',
-                                    '#1e90ff','#ff6347','#7b68ee','#00fa9a','#ffd700',
-                                    '#6699FF','#ff6666','#3cb371','#b8860b','#30e0e0'];
-                          return color[params.dataIndex];
-                      }
-                  },
-        },
-        type: 'bar',
-      }]
+      series:this.series,
+      legend: {
+        show: true,
+        type: 'scroll',
+        orient: 'vertical',
+        right: 0,
+        top: 10,
+        bottom: 10,
+        textStyle: { color: "#2f4554" }
+      }
     }
     barChart.setOption(barChartOption);
 

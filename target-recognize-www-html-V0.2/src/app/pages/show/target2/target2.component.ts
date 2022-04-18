@@ -36,12 +36,13 @@ public swiper:any
 
   
 
-  ngAfterViewInit(): void {
-    this.getVideoPic()
+ngAfterViewInit(): void {
+ this.getVideoPic()
 $(".content .top .left video").mouseover(function(){
   $(".content .top .left .video-info").animate({top:"0"},200)
 }).mouseleave(function(){
-  $(".content .top .left .video-info").animate({top:"-75px"},200)
+  let height = "-"+$(".content .top .left .video-info").css("height")
+  $(".content .top .left .video-info").animate({top:height},200)
 })
 
     
@@ -231,7 +232,6 @@ this.http.post(api,{}).subscribe((res:any)=>{
     dataArr.forEach(element => {
       this.videoArr.push(element)
     });
-console.log(this.videoArr)
     setTimeout(() => {
       this.initSwiper()
       }, 200);

@@ -2,6 +2,7 @@
   <div class="home" style="overflow-x: hidden;overflow-y: scroll;">
     <div id="backstore" style="display: none">
       <div id="dataContent">
+        <div class="loding" style="width: 100%;height: 100%;z-index: 99999;background: rgba(0, 0, 0, 0.384);position: absolute;color: #fff;text-align: center;line-height: 30em;" *ngIf="winboxData.loding">请稍候....</div>
         <div id="modal-container" >
           <div class="modal-background">
             <div class="modal">
@@ -93,6 +94,12 @@
                                 <label *ngFor="let item of winboxData.modalData.detail.discernName;let key = index" nz-radio [nzValue]="key" style="color: rgb(230, 140, 38);"  nzSize="small" >{{item}}</label>
                               </nz-radio-group>
                           </li>
+                          <li style="margin-top: 15px;">
+                            <span>目标类型：</span> 
+                            <nz-radio-group [(ngModel)]="winboxData.modalData.radioValue1" style="margin-left: 10px;overflow-y: auto;max-height: 100px;"  nzSize="small">
+                              <label *ngFor="let item of winboxData.modalData.detail.discernType;let key = index" nz-radio [nzValue]="key" style="color: rgb(230, 140, 38);"  nzSize="small" >{{item}}</label>
+                            </nz-radio-group>
+                        </li>
                           <li  style="margin-top: 15px;">
                             <span>正确对象名称：<span style="color: rgb(230, 140, 38);">{{winboxData.modalData.detail.standardName}}</span></span>
                         </li>
@@ -108,14 +115,19 @@
                     </div>
               </div>
             </div>
-
+          
           </div>
-         
+
         </div>
+
           <div class="nowAna">
             <div class="title" style="display: flex;padding: 20px 0px 10px 30px;">
-               <span style="flex: 0 0 85%;color: #fff;font-size: 17px;"> 当前分析 </span>
-               <div style=" flex: 1;"><button nz-button nzType="primary" (click)="fenxi()" class="fenxiButton">开始分析</button></div>
+               <span style="flex: 0 0 70%;color: #fff;font-size: 17px;"> 当前分析 </span>
+               <div style=" flex: 1;">
+                <button nz-button nzType="primary" (click)="fenxi()" class="fenxiButton" *ngIf="winboxData.fenxiButtonisShow">开始分析</button>
+                <button nz-button nzType="primary" nzDanger (click)="stopFenxi()" class="fenxiButton" *ngIf="!winboxData.fenxiButtonisShow" style="border: 1px solid rgb(230, 178, 10);background: rgb(230, 178, 10);margin-right: 15px;">{{winboxData.stopButtonValue}}</button>
+                <button nz-button nzType="primary" nzDanger (click)="overFenxi()" class="fenxiButton" *ngIf="!winboxData.fenxiButtonisShow">停止分析</button>
+              </div>
           </div>
           <div class="content">
                 <div class="left box">
@@ -135,6 +147,8 @@
           </div>
           </div>
           <div class="historyAna">
+            <div class="perList changeList" *ngIf="!(winboxData.historyPageIndex <= 1)" (click)="perList()"> <svg t="1648025467503" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2211" width="40" height="40"><path d="M469.749538 512 737.1371 962.254727 286.863924 512 737.1371 61.745273Z" p-id="2212" fill="#ffffff"></path></svg> </div>
+            <div class="nextList changeList" (click)="nextList()" *ngIf="winboxData.nextButtonisShow"> <svg t="1648025504899" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2389" width="40" height="40"><path d="M554.250462 512 286.863924 61.745273 737.1371 512 286.863924 962.254727Z" p-id="2390" fill="#ffffff"></path></svg> </div>
               <div class="title" style="padding: 0px 0px 10px 30px;color: #fff;font-size: 17px;">
                   分析历史
               </div>

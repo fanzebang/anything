@@ -26,6 +26,9 @@ Vue.use(VueJsonp)
 import getData from '../static/js/getData'
 Vue.prototype.$getData = getData
 
+import miaov from "../static/js/miaov"
+Vue.prototype.$miaov = miaov
+
 Vue.use(ElementUI);
 
 

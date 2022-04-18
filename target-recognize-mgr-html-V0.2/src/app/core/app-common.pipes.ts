@@ -3,11 +3,37 @@ import {environment} from '../../environments/environment';
 import {Observable, Subject} from 'rxjs';
 import {HttpResult, SampleOssFile} from './http-entity';
 import {HttpClient} from '@angular/common/http';
+declare var Tiff:any;
 
 @Pipe({name: 'ossPath'})
 export class OssPathPipe implements PipeTransform {
-  transform(ossKey: string): string {
-    return localStorage.getItem('sampleResourcePath') + '/' + ossKey;
+  transform(tiem: any): string {
+    // .ossKey
+
+    // if(tiem.ossKey){
+    //   var xhr = new XMLHttpRequest()
+    //   xhr.responseType = 'arraybuffer';
+   
+    //   var url = localStorage.getItem('sampleResourcePath') + '/' + tiem.ossKey
+    //   xhr.open('GET', url)
+    //   var tiff = new Tiff({buffer: xhr.response})
+    //  var imgSrc = tiff.toDataURL() // 是转化成base64的api
+    //     console.log(Tiff)
+    //     // return url;
+
+    //   // xhr.onload = function (e) {
+    //   //   var tiff = new Tiff({buffer: xhr.response})
+    //   //   console.log(tiff)
+    
+    //   //   };
+      
+    // }else{
+    //   return localStorage.getItem('sampleResourcePath') + '/' + tiem;
+    // }
+
+
+    return localStorage.getItem('sampleResourcePath') + '/' + tiem;
+  
   }
 }
 

@@ -31,7 +31,7 @@ export default {
 
 		    ],
             settings:{
-                        entries:'',
+                        entries:[],
                         width: 910,
                         height: 245,
                         radius: '65%',
@@ -64,26 +64,30 @@ export default {
         this.settings.entries = []
         var labelList = data.data.data
         $.each(labelList,function(i,n){
+           
+
+             
             for (let index = 0; index < n.num; index++) {
-               that.entries.push({
+                    that.entries.push({
                    label:n.labelName,
                    url:"#",
                    target: '_top'
                })
-                
             }
-
         })
-
-        this.settings.entries = this.entries
+        this.settings.entries = this.entries 
         miaov.created()
         $( '#labelWind' ).svg3DTagCloud(this.settings)
+
+       
         $.each($(".labelWind text"),function(i,n){
              var num = Math.ceil(20+Math.random()*15)
              $(".labelWind text")[i].style.fontSize = num
              $(".labelWind text")[i].style.fill = '#' + Math.random().toString(16).substr(2, 6).toUpperCase();
         
         })
+       
+      
 
     })
     .catch(e=>{

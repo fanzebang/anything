@@ -6,8 +6,32 @@
 </template>
 
 <script>
+// import getData from "../static/js/getData";
 export default {
-  name: 'App'
+  name: 'App',
+  methods:{
+	  setCookie(name,value){
+		var Days = 30;
+		var exp = new Date();
+		exp.setTime(exp.getTime() + Days*24*60*60*1000);
+		document.cookie = name + "="+ value + ";expires=" + exp.toString();
+		}
+  },
+  mounted(){
+  var that  = this
+  var heard = location.search;
+  var access_token = heard.substring(1).split("=")[0]
+  var pointLogin = heard.substring(1).split("=")
+    if (heard && access_token == 'access_token') {
+    
+      	that.setCookie("token",pointLogin[1])
+        setTimeout(()=>{
+            that.$router.push({path:'/'})
+        },200)
+			  
+    //  window.location.href= `${getData.ip}/v1/sso/welcome-detect?access_token=${pointLogin[2]}`
+    }
+  }
 }
 </script>
 

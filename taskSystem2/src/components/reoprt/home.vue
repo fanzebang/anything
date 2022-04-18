@@ -46,7 +46,7 @@
                   stroke-linecap="butt"
                 ></el-progress>
               </div>
-              <p>视屏识别进度{{vedioNum}}/{{vedioNum}}</p>
+              <p>视频识别进度{{vedioNum}}/{{vedioNum}}</p>
             </li>
           </ul>
         </div>

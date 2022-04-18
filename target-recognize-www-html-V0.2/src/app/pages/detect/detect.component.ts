@@ -16,6 +16,7 @@ import {WebsocketService} from "../../core/websocket.service";
 declare var $:any;
 declare var ImagePreview:any;
 declare var WinBox:any;
+declare var AILabel:any;
 @Component({
   templateUrl: './detect.component.html',
   styleUrls: ['./detect.component.less']
@@ -38,11 +39,11 @@ export class DetectComponent implements OnInit, OnDestroy {
   video: File;
 
   detectHistory: any = [{id:""}];
-
+  gMapArr:any;
 
   pageIndex = 0; // 从0开始计数
   total = 0;
-
+  gfeatureLayer:any;
   currentDetectResult: DetectHistory = new DetectHistory();
 
   selectedTarget: { ossKey: string, category: string, similarity: string };
@@ -91,13 +92,12 @@ export class DetectComponent implements OnInit, OnDestroy {
     id:" ",
     errorCorrectionMsg:" "
   }
+
   constructor(private router: Router, private http: HttpClient, private nzMessage: NzMessageService,
               private route: ActivatedRoute, private store: Store,private ws:WebsocketService,) {
       this.route.paramMap.subscribe((paramMap) => {
-    
         if (paramMap.has('borderShow')) {
           this.searchClass = paramMap.get('borderShow')
-         
           if(this.searchClass == "5"){
             $(".content-right") .css("display","none")
           }
@@ -116,13 +116,9 @@ export class DetectComponent implements OnInit, OnDestroy {
             },200)
           }
         }else if(paramMap.has('textSearch')){
-          
           let imgtext = paramMap.get('textSearch')
-          console.log()
           // 文字搜图
-
           this.http.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
-            
           }).subscribe((result:any) => {
             if (HttpResult.succeed(result.code)) {
              var that = this
@@ -132,16 +128,17 @@ export class DetectComponent implements OnInit, OnDestroy {
               $(".content-bottom").css("overflow","auto")
               $(".content-bottom").css("min-height","100%")
               $(".similar").css("min-height","100%")
+              $(".effect-content, .similar-content").css("flex","0 0 auto")
               $.each(result.data,function(i,n){
                 that.similarTargets.push({
                   ossKey: n.split("sample-resource/")[1]
                 })
-              })    
+              })  
+              setTimeout(()=>{
+                ImagePreview.removed()
+                ImagePreview.init({id:$("#similarImg img")})
+              },300)  
             }
-          setTimeout(()=>{
-            ImagePreview.removed()
-            ImagePreview.init({id:$("#similarImg img")})
-          },300)
           });
         }
       });
@@ -237,13 +234,9 @@ export class DetectComponent implements OnInit, OnDestroy {
   }
 
 ngAfterViewInit(): void{
-var that = this
-
+  var that = this
 
 }
-
-
-
 
   ngOnDestroy(): void {
     $(".wb-close").click()
@@ -350,7 +343,7 @@ borderShowHidden(){
     }
   }
 
-  //fan
+  //范
   showDetectResult(): void {
     this.isPic = true
     clearInterval(this.detectingInterval);
@@ -410,44 +403,140 @@ borderShowHidden(){
             }      
         
           }
+
+          setTimeout(()=>{
+            ImagePreview.removed()
+            ImagePreview.init({id:$("#similarImg img")})
+          },300)
         }
       });
       // 查询kms
     
       if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
-        this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
+          this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
       }
     }
   }
 
   drwReact(selectedTargetPolygon){
-    setTimeout(()=>{
-      $(".bigImg canvas").remove()
+    let imgUrl =`${localStorage.getItem('targetRecognizePath')}/` +  this.currentDetectResult.ossKey
+    let img = new Image();
+    img.src = imgUrl
+      setTimeout(()=>{
+        $(".bigImg #aiLable").remove()
+      var bigImgDom:any = document.querySelector(".bigImg")
       var image:any = document.querySelector(".showImg")
       image.style.display = "none"
-      var canvas:any = document.createElement("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-      var ctx=canvas.getContext("2d");
-        ctx.drawImage(image, 0, 0);//0, 0参数画布上的坐标点，图片将会拷贝到这个地方
-        var bigImgDom:any = document.querySelector(".bigImg")
-        // 红色矩形
-          ctx.beginPath();
-          ctx.lineWidth="2";
-          ctx.strokeStyle="red";
-        if(selectedTargetPolygon){
-          if(selectedTargetPolygon.xPoints){
-            var maxX = selectedTargetPolygon.maxX+40 >= canvas.width+selectedTargetPolygon.xPoints[0] ? canvas.width-selectedTargetPolygon.xPoints[0]-40 :selectedTargetPolygon.maxX-selectedTargetPolygon.xPoints[0]
-            ctx.rect(selectedTargetPolygon.xPoints[0],selectedTargetPolygon.yPoints[0],maxX,selectedTargetPolygon.maxY-selectedTargetPolygon.yPoints[0]);
-          }else{
-            var maxX = selectedTargetPolygon.maxX+40 >= canvas.width+selectedTargetPolygon.xpoints[0] ? canvas.width-selectedTargetPolygon.xpoints[0]-40 :selectedTargetPolygon.maxX-selectedTargetPolygon.xpoints[0]
-            ctx.rect(selectedTargetPolygon.xpoints[0],selectedTargetPolygon.ypoints[0],maxX,selectedTargetPolygon.maxY-selectedTargetPolygon.ypoints[0]);
-          }
+      var labelDiv:any = document.createElement("div");
+      labelDiv.id = "aiLable";
+      bigImgDom.appendChild(labelDiv)
+      $("#aiLable").css({
+        width:"100%",
+        height:"100%",
+        overflow: "hidden",
+        position:"relative",
+      })
+      
+      console.log()
+      let zoomWidth = $("#aiLable").css("width").replace(/[^\d.]/ig,"")
+      let zoomHeight = $("#aiLable").css("height").replace(/[^\d.]/ig,"")
+      let imgWidth = img.width
+       let imgHeight =  img.height
+       let imgSrc  = image.src;
+       let mutliple;
+       let labelZoom;
+
+      //  this.route.paramMap.subscribe((paramMap) => {    
+
+      // })
+
+        if(imgWidth >= imgHeight ){
+            mutliple = zoomWidth/imgWidth
+            imgHeight = imgHeight*mutliple
+            imgWidth = zoomWidth
+            labelZoom = imgWidth*1.3
+        }else{  
+          mutliple = zoomHeight/imgHeight
+          imgWidth = imgWidth*mutliple
+          labelZoom = imgHeight*1.3
+          imgHeight = zoomHeight
         }
-          ctx.stroke();
-        bigImgDom.appendChild(canvas)
+
+      this.gMapArr= new AILabel.Map(`aiLable`,{
+        center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
+        zoom: labelZoom,
+        mode: 'PAN', // 绘制线段
+        refreshDelayWhenZooming: false, // 缩放时是否允许刷新延时，性能更优
+        zoomWhenDrawing: true,
+        panWhenDrawing: false,
+        featureCaptureWhenMove:true,
+        zoomWheelRatio: 5 , // 控制滑轮缩放缩率[0, 10), 值越小，则缩放越快，反之越慢
+        withHotKeys: true ,// 关闭快捷键
+        zoomMax: zoomWidth * 10,
+        zoomMin: zoomWidth / 10
+    }) 
+
+    var imageLayer = new AILabel.Layer.Image(
+      'img', // id
+      {
+        src: imgSrc,
+        width: imgWidth,
+        height: imgHeight,
+        crossOrigin: false, // 如果跨域图片，需要设置为true
+        position: { // 图片左上角对应的坐标位置
+            x: 0,
+            y: 0
+        },
+      },
+      {name: '第一个图片图层'},
+      {zIndex: 1} 
+    );
+    
+    this.gMapArr.addLayer(imageLayer)
+    this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
+    this.gMapArr.addLayer(this.gfeatureLayer)
+    let x,y,height,width;
+    x = selectedTargetPolygon.minX*mutliple
+    y = selectedTargetPolygon.minY*mutliple
+    height = (selectedTargetPolygon.maxY - selectedTargetPolygon.minY)*mutliple
+    width = (selectedTargetPolygon.maxX - selectedTargetPolygon.minX)*mutliple
+    console.log(selectedTargetPolygon,x,y,height,width)
+      var feature = new AILabel.Feature.Rect(this.imgId, 
+      {height,width,x,y}, 
+      {name:'123',textId: ""}, 
+      {fill: true,
+        fillStyle: "#0f0",
+        globalAlpha: 0,
+        lineWidth: 1,
+        opacity: 1,
+        stroke: true,
+        strokeStyle: "red"}
+    );
+    this.gfeatureLayer.addFeature(feature)
+
+      // var canvas:any = document.createElement("canvas");
+      // canvas.width = image.width;
+      // canvas.height = image.height;
+      // var ctx=canvas.getContext("2d");
+      //   ctx.drawImage(image, 0, 0);//0, 0参数画布上的坐标点，图片将会拷贝到这个地方
+      //   var bigImgDom:any = document.querySelector(".bigImg")
+      //   // 红色矩形
+      //     ctx.beginPath();
+      //     ctx.lineWidth="2";
+      //     ctx.strokeStyle="red";
+      //   if(selectedTargetPolygon){
+      //     if(selectedTargetPolygon.xPoints){
+      //       var maxX = selectedTargetPolygon.maxX+40 >= canvas.width+selectedTargetPolygon.xPoints[0] ? canvas.width-selectedTargetPolygon.xPoints[0]-40 :selectedTargetPolygon.maxX-selectedTargetPolygon.xPoints[0]
+      //       ctx.rect(selectedTargetPolygon.xPoints[0],selectedTargetPolygon.yPoints[0],maxX,selectedTargetPolygon.maxY-selectedTargetPolygon.yPoints[0]);
+      //     }else{
+      //       var maxX = selectedTargetPolygon.maxX+40 >= canvas.width+selectedTargetPolygon.xpoints[0] ? canvas.width-selectedTargetPolygon.xpoints[0]-40 :selectedTargetPolygon.maxX-selectedTargetPolygon.xpoints[0]
+      //       ctx.rect(selectedTargetPolygon.xpoints[0],selectedTargetPolygon.ypoints[0],maxX,selectedTargetPolygon.maxY-selectedTargetPolygon.ypoints[0]);
+      //     }
+      //   }
+      //   ctx.stroke();
+      //   bigImgDom.appendChild(canvas)
+
       },1000)
-  
   }
 
 

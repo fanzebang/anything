@@ -36,7 +36,8 @@
               "src/imagePreview.js",
               "src/winbox.bundle.js",
               "src/assets/news/js/swiper.min.js",
-              "src/assets/cssCavasJs/fss.js"
+              "src/assets/cssCavasJs/fss.js",
+              "src/assets/cssCavasJs/AILabel.pkg.min.js"
             ]
           },
           "configurations": {

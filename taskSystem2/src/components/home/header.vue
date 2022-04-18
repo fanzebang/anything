@@ -16,7 +16,7 @@
                 </ul>
 
             </div>
-            <div class="right"> 
+            <div class="right" style="display:none"> 
                 <el-button type="primary" icon="el-icon-plus" circle size="mini" class="btn"></el-button>
                 <span>新建任务</span>
             </div>
