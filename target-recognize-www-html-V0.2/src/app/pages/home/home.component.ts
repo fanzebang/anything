@@ -339,7 +339,7 @@ setanothername(){
   })
   .then(data=>{
 
-  console.log(data.data.code)
+  // console.log(data.data.code)
   if(data.data.code == 1){
     this.message.success(data.data.message, {
       nzDuration: 3000
@@ -379,7 +379,10 @@ closeTable(){
     var renderer = new FSS.CanvasRenderer();
     var scene = new FSS.Scene();
     var light = new FSS.Light('#192539', '#416296');
-    var geometry = new FSS.Plane(1300, 500, 12, 6);
+    var width = $("#dataContent").css("width").split("px")[0]
+    var height = $("#dataContent").css("height").split("px")[0]
+  
+    var geometry = new FSS.Plane(width, height, 24, 12);
     var material = new FSS.Material('#FFFFFF', '#FFFFFF');
     var mesh = new FSS.Mesh(geometry, material);
     var now, start = Date.now();
@@ -405,13 +408,13 @@ closeTable(){
     resize();
     animate();
 
-  
       // works
       this.workShow()
  
- 
-
   }
+
+
+  
 
   starCanvas(){
     setTimeout(()=>{
@@ -1571,8 +1574,8 @@ dataAna(): void {
       title: "存量数据分析",
       x: "center",
       y: "center",
-      width: "50%",
-      height: "50%",
+      width: "100%",
+      height: "100%",
       mount: document.getElementById("dataContent"),
       onresize: function(width, height){
           $(".winbox").css({

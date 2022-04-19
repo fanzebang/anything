@@ -328,7 +328,7 @@
         <div class="recommend-title">样本图片<div style="width: 60px;height: 2px;background: #357af6;margin: 0 auto;"></div></div>
   
         <div class="recommend-pictures flex-row">
-          <div class="recommend-picture">
+          <div class="recommend-picture" style="text-align: right;">
             <ul class="pic">
               <li><img src="assets/images/kjg.png" alt=""></li>
               <li><img src="assets/images/yg.png" alt=""></li>
@@ -342,7 +342,7 @@
             </ul>
           </div>
   
-          <div class="recommend-picture">
+          <div class="recommend-picture"  style="text-align: right;">
             <ul class="pic">
               <li><img src="assets/images/hw.png" alt=""></li>
               <li><img src="assets/images/sar.png" alt=""></li>
@@ -361,7 +361,7 @@
       <div class="hotPic">
         <div class="pic">
           <div class="title">
-            <div class="text">热点图片<div style="width: 80px;height: 2px;background: #357af6;position: absolute;right: 10px;"></div></div>
+            <div class="text">热点图片<div style="width: 80px;height: 2px;background: #357af6;position: absolute;right:50%;transform: translateX(50%);"></div></div>
             <div class="detail">
             </div>
           </div>
@@ -374,12 +374,12 @@
 
         <div class="news">
               <div class="title">
-                <div class="text">新闻热点<div style="width: 80px;height: 2px;background: #357af6;position: absolute;right: 10px;"></div></div>
+                <div class="text">新闻热点<div style="width: 80px;height: 2px;background: #357af6;position: absolute;right:50%;transform: translateX(50%);"></div></div>
                 <div class="detail">
                 </div>
             </div>
               <ul>
-                <li *ngFor="let newsItem of news;let key = index" align="center">
+                <li *ngFor="let newsItem of news;let key = index" align="left">
                   <a href="/news;iframe={{news[key].src}}"  target="_blank"> {{newsItem.text}}</a>
                 </li>
               </ul>
