@@ -11419,7 +11419,8 @@ class DataVerifyComponent {
         let text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length - 2];
         let img = new Image();
         img.src = imgUrl;
-        setTimeout(() => {
+        console.log(Imgdata);
+        if (img.complete) {
             let imgWidth = img.width;
             let imgHeight = img.height;
             let coordinateData1 = coordinateData.data;
@@ -11512,7 +11513,12 @@ class DataVerifyComponent {
                 }
             }
             return;
-        }, 200);
+        }
+        else {
+            setTimeout(() => {
+                this.creatAILabel(Imgdata);
+            }, 200);
+        }
     }
     selectSampleFile(labelTask, sampleFile, index) {
         this.currentLabelTask = labelTask;

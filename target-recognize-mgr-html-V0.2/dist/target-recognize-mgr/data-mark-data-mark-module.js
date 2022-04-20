@@ -319,24 +319,24 @@ class DataMarkComponent {
         }
         var img = new Image();
         img.src = imgSrc;
-        const imgWidth = allotFile.file.width || img.width;
-        const imgHeight = allotFile.file.height || img.height;
-        this.gMapArr = new AILabel.Map(`aiLabel`, {
-            center: { x: imgWidth / 2, y: imgHeight / 2 },
-            zoom: imgWidth * 2,
-            mode: 'RECT',
-            refreshDelayWhenZooming: false,
-            zoomWhenDrawing: true,
-            panWhenDrawing: false,
-            featureCaptureWhenMove: true,
-            zoomWheelRatio: 5,
-            withHotKeys: true,
-            zoomMax: imgWidth * 10,
-            zoomMin: imgWidth / 10
-        });
-        $(".canvas-container").append("<div id='sy' class='table-sy' style= 'width: 100%;height: 100%;position: absolute;pointer-events: none; /*主要是这个属性*/color:rgba(210, 214, 217,.2);z-index: 99999999999;opacity: .5;'></div>");
-        this.loadSy();
-        setTimeout(() => {
+        if (img.complete) {
+            const imgWidth = img.width;
+            const imgHeight = img.height;
+            this.gMapArr = new AILabel.Map(`aiLabel`, {
+                center: { x: imgWidth / 2, y: imgHeight / 2 },
+                zoom: imgWidth * 2,
+                mode: 'RECT',
+                refreshDelayWhenZooming: false,
+                zoomWhenDrawing: true,
+                panWhenDrawing: false,
+                featureCaptureWhenMove: true,
+                zoomWheelRatio: 5,
+                withHotKeys: true,
+                zoomMax: imgWidth * 10,
+                zoomMin: imgWidth / 10
+            });
+            $(".canvas-container").append("<div id='sy' class='table-sy' style= 'width: 100%;height: 100%;position: absolute;pointer-events: none; /*主要是这个属性*/color:rgba(210, 214, 217,.2);z-index: 99999999999;opacity: .5;'></div>");
+            this.loadSy();
             var imageLayer = new AILabel.Layer.Image('img', // id
             {
                 src: imgSrc,
@@ -493,7 +493,12 @@ class DataMarkComponent {
             if (that.markMode === 'auto') {
                 that.autoMark();
             }
-        }, 100);
+        }
+        else {
+            setTimeout(() => {
+                this.drawFileInCanvas(allotFile);
+            }, 200);
+        }
     }
     redraw(points) {
         this.gfeatureLayer.removeFeatureById(this.markData.theFeatureId);

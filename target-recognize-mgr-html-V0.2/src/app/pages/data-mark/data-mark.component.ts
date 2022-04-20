@@ -290,8 +290,12 @@ this.drawingRects = []
  if(localStorage.getItem('sampleResourcePath').split("/")[3] != allotFile.file.bucketName){imgSrc=`${localStorage.getItem('sampleResourcePath').split("/")[0]}//${localStorage.getItem('sampleResourcePath').split("/")[2]}/${allotFile.file.bucketName}/${allotFile.file.ossKey}`}
  var img = new Image();
   img.src = imgSrc;
- const imgWidth = allotFile.file.width || img.width ;
- const imgHeight = allotFile.file.height || img.height ;
+
+if (img.complete){
+
+
+ const imgWidth =  img.width ;
+ const imgHeight =  img.height ;
  this.gMapArr= new AILabel.Map(`aiLabel`,{
     center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
     zoom: imgWidth*2,
@@ -308,7 +312,7 @@ this.drawingRects = []
 $(".canvas-container").append("<div id='sy' class='table-sy' style= 'width: 100%;height: 100%;position: absolute;pointer-events: none; /*主要是这个属性*/color:rgba(210, 214, 217,.2);z-index: 99999999999;opacity: .5;'></div>")
 this.loadSy()
 
-setTimeout(()=>{
+
   var imageLayer = new AILabel.Layer.Image(
     'img', // id
     {
@@ -497,9 +501,13 @@ setTimeout(()=>{
        if (that.markMode === 'auto') {
         that.autoMark();
       }
-},100)
 
 
+}else{
+  setTimeout(()=>{
+  this.drawFileInCanvas(allotFile)
+},200)
+}
 
  
   }

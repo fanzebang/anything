@@ -115,29 +115,19 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
 public  mutliple;
   creatAILabel(Imgdata:SampleOssFile) :void{
      var that = this
-
       let coordinateData = JSON.parse(Imgdata.labelMessage);
       let ossKey:String = Imgdata.ossKey
       let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey
       let text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length-2];
       let img = new Image()
       img.src = imgUrl
-      
-      var imgWidth = img.width*1 || Imgdata.width;
-      var imgHeight =  img.height*1 ||  Imgdata.height;
-     
-   
+      if(img.complete) {
+        console.log(img)
+      var imgWidth = img.width*1 ;
+      var imgHeight =  img.height*1 ;
       let zoomWidth = $("#detailLabel").css("width").replace(/[^\d.]/ig,"")
       let zoomHeight = $("#detailLabel").css("height").replace(/[^\d.]/ig,"")
- 
-  
-      
        let labelZoom;
-
-      
-  
-     
-
         if(imgWidth >= imgHeight ){
             this.mutliple = zoomWidth/imgWidth
             imgHeight = imgHeight* this.mutliple
@@ -255,7 +245,12 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
   targetText.updatePosition(feature.getPoints()[0]);
 })
 
+}else{
+  setTimeout(()=>{
+    this.creatAILabel(Imgdata)
+  },200)
 
+}
 
 
 }

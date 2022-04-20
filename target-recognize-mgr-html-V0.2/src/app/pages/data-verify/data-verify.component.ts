@@ -174,12 +174,12 @@ export class DataVerifyComponent implements OnInit {
         let img = new Image()
         img.src = imgUrl
       
-
-
+      
+    console.log(Imgdata)
    
       
-    setTimeout(()=>{
-
+ 
+      if(img.complete) {
       let imgWidth = img.width;
       let imgHeight =  img.height;
       let coordinateData1 = coordinateData.data
@@ -293,8 +293,13 @@ export class DataVerifyComponent implements OnInit {
           }
         }
         return
-      },200)
+        }else{
+         setTimeout(()=>{
+          this.creatAILabel(Imgdata)
+        },200)
    
+        }
+    
 
   
   }

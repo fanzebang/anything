@@ -1558,96 +1558,104 @@ class DetailDataManageComponent {
         let text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length - 2];
         let img = new Image();
         img.src = imgUrl;
-        var imgWidth = img.width * 1 || Imgdata.width;
-        var imgHeight = img.height * 1 || Imgdata.height;
-        let zoomWidth = $("#detailLabel").css("width").replace(/[^\d.]/ig, "");
-        let zoomHeight = $("#detailLabel").css("height").replace(/[^\d.]/ig, "");
-        let labelZoom;
-        if (imgWidth >= imgHeight) {
-            this.mutliple = zoomWidth / imgWidth;
-            imgHeight = imgHeight * this.mutliple;
-            imgWidth = zoomWidth;
-            labelZoom = imgWidth * 3;
+        if (img.complete) {
+            console.log(img);
+            var imgWidth = img.width * 1;
+            var imgHeight = img.height * 1;
+            let zoomWidth = $("#detailLabel").css("width").replace(/[^\d.]/ig, "");
+            let zoomHeight = $("#detailLabel").css("height").replace(/[^\d.]/ig, "");
+            let labelZoom;
+            if (imgWidth >= imgHeight) {
+                this.mutliple = zoomWidth / imgWidth;
+                imgHeight = imgHeight * this.mutliple;
+                imgWidth = zoomWidth;
+                labelZoom = imgWidth * 3;
+            }
+            else {
+                this.mutliple = zoomHeight / imgHeight;
+                imgWidth = imgWidth * this.mutliple;
+                labelZoom = imgHeight * 3;
+                imgHeight = zoomHeight;
+            }
+            // let coordinateData1 = coordinateData.data
+            $("#detailLabel").empty();
+            this.aiLabel = new AILabel.Map(`detailLabel`, {
+                center: { x: imgWidth / 2, y: imgHeight / 2 },
+                zoom: labelZoom,
+                mode: 'RECT',
+                refreshDelayWhenZooming: false,
+                zoomWhenDrawing: true,
+                panWhenDrawing: false,
+                featureCaptureWhenMove: true,
+                zoomWheelRatio: 5,
+                withHotKeys: true,
+                zoomMax: imgWidth * 10,
+                zoomMin: imgWidth / 10
+            });
+            var imageLayer = new AILabel.Layer.Image('img', // id
+            {
+                src: imgUrl,
+                width: imgWidth,
+                height: imgHeight,
+                crossOrigin: true,
+                position: {
+                    x: 0,
+                    y: 0
+                },
+            }, { name: '第一个图片图层' }, { zIndex: 1 });
+            that.aiLabel.addLayer(imageLayer);
+            this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, { name: '第一个矢量图层' }, { zIndex: 19 });
+            this.aiLabel.addLayer(this.gfeatureLayer);
+            var gFirstTextLayer = new AILabel.Layer.Text('first-layer-text', // id
+            { name: '第一个文本图层' }, // props
+            { zIndex: 12, opacity: 1 } // style
+            );
+            this.aiLabel.addLayer(gFirstTextLayer);
+            for (let i = 0; i < coordinateData.length; i++) {
+                var testData = coordinateData[i];
+                var id = +new Date();
+                if (null == testData.id)
+                    testData.id = id;
+                if (null == testData.props.text)
+                    testData.props.text = text;
+                if (null == testData.props.textId)
+                    testData.props.textId = id;
+                testData.shape.height = testData.shape.height * 1 * this.mutliple;
+                testData.shape.width = testData.shape.width * 1 * this.mutliple;
+                testData.shape.x = testData.shape.x * 1 * this.mutliple;
+                testData.shape.y = testData.shape.y * 1 * this.mutliple;
+                if (null == testData.style)
+                    testData.style = { fill: true, fillStyle: "#0f0", globalAlpha: 0, lineWidth: 1, opacity: 1, stroke: true, strokeStyle: "red" };
+                var feature = new AILabel.Feature.Rect(testData.id, testData.shape, testData.props, testData.style);
+                that.gfeatureLayer.addFeature(feature);
+                var { x: ltx, y: lty } = feature.shape;
+                var gFirstText = new AILabel.Text(testData.props.textId, // id
+                { text: text, position: { x: ltx, y: lty }, offset: { x: 0, y: 0 } }, // shape, 左上角
+                { name: '第一个文本对象' }, // props
+                { fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff' } // style
+                );
+                that.aiLabel.layers[2].addText(gFirstText);
+            }
+            this.aiLabel.events.on('featureSelected', (feature) => {
+                this.aiLabel.setActiveFeature(feature);
+            });
+            this.aiLabel.events.on('featureUnselected', () => {
+                this.aiLabel.setActiveFeature(null);
+            });
+            this.aiLabel.events.on('featureUpdated', (feature, shape) => {
+                feature.updateShape(shape);
+                const markerId = feature.props.deleteMarkerId;
+                const textId = feature.props.textId;
+                // 更新text位置
+                const targetText = gFirstTextLayer.getTextById(textId);
+                targetText.updatePosition(feature.getPoints()[0]);
+            });
         }
         else {
-            this.mutliple = zoomHeight / imgHeight;
-            imgWidth = imgWidth * this.mutliple;
-            labelZoom = imgHeight * 3;
-            imgHeight = zoomHeight;
+            setTimeout(() => {
+                this.creatAILabel(Imgdata);
+            }, 200);
         }
-        // let coordinateData1 = coordinateData.data
-        $("#detailLabel").empty();
-        this.aiLabel = new AILabel.Map(`detailLabel`, {
-            center: { x: imgWidth / 2, y: imgHeight / 2 },
-            zoom: labelZoom,
-            mode: 'RECT',
-            refreshDelayWhenZooming: false,
-            zoomWhenDrawing: true,
-            panWhenDrawing: false,
-            featureCaptureWhenMove: true,
-            zoomWheelRatio: 5,
-            withHotKeys: true,
-            zoomMax: imgWidth * 10,
-            zoomMin: imgWidth / 10
-        });
-        var imageLayer = new AILabel.Layer.Image('img', // id
-        {
-            src: imgUrl,
-            width: imgWidth,
-            height: imgHeight,
-            crossOrigin: true,
-            position: {
-                x: 0,
-                y: 0
-            },
-        }, { name: '第一个图片图层' }, { zIndex: 1 });
-        that.aiLabel.addLayer(imageLayer);
-        this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, { name: '第一个矢量图层' }, { zIndex: 19 });
-        this.aiLabel.addLayer(this.gfeatureLayer);
-        var gFirstTextLayer = new AILabel.Layer.Text('first-layer-text', // id
-        { name: '第一个文本图层' }, // props
-        { zIndex: 12, opacity: 1 } // style
-        );
-        this.aiLabel.addLayer(gFirstTextLayer);
-        for (let i = 0; i < coordinateData.length; i++) {
-            var testData = coordinateData[i];
-            var id = +new Date();
-            if (null == testData.id)
-                testData.id = id;
-            if (null == testData.props.text)
-                testData.props.text = text;
-            if (null == testData.props.textId)
-                testData.props.textId = id;
-            testData.shape.height = testData.shape.height * 1 * this.mutliple;
-            testData.shape.width = testData.shape.width * 1 * this.mutliple;
-            testData.shape.x = testData.shape.x * 1 * this.mutliple;
-            testData.shape.y = testData.shape.y * 1 * this.mutliple;
-            if (null == testData.style)
-                testData.style = { fill: true, fillStyle: "#0f0", globalAlpha: 0, lineWidth: 1, opacity: 1, stroke: true, strokeStyle: "red" };
-            var feature = new AILabel.Feature.Rect(testData.id, testData.shape, testData.props, testData.style);
-            that.gfeatureLayer.addFeature(feature);
-            var { x: ltx, y: lty } = feature.shape;
-            var gFirstText = new AILabel.Text(testData.props.textId, // id
-            { text: text, position: { x: ltx, y: lty }, offset: { x: 0, y: 0 } }, // shape, 左上角
-            { name: '第一个文本对象' }, // props
-            { fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff' } // style
-            );
-            that.aiLabel.layers[2].addText(gFirstText);
-        }
-        this.aiLabel.events.on('featureSelected', (feature) => {
-            this.aiLabel.setActiveFeature(feature);
-        });
-        this.aiLabel.events.on('featureUnselected', () => {
-            this.aiLabel.setActiveFeature(null);
-        });
-        this.aiLabel.events.on('featureUpdated', (feature, shape) => {
-            feature.updateShape(shape);
-            const markerId = feature.props.deleteMarkerId;
-            const textId = feature.props.textId;
-            // 更新text位置
-            const targetText = gFirstTextLayer.getTextById(textId);
-            targetText.updatePosition(feature.getPoints()[0]);
-        });
     }
     loadImages() {
         this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_URL}/v1/sample-oss-file/${this.imageId}`)
