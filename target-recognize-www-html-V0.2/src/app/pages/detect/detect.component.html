@@ -43,7 +43,7 @@
       <!-- <div class="content-title">目标检测对象</div> -->
 
       <!-- <div class="content-item flex-column border"> -->
-        <div class="content-top flex-column border-bottom" *ngIf="isPic">
+        <div class="content-top flex-column border-bottom" [hidden]="!isPic">
           <div class="slide flex-row" style="width: 850px;">
             <div class="slide-prev flex-row">
               <img class="pointer" src="assets/images/prev.png" alt="上一张" (click)="prevImage()">
@@ -105,7 +105,7 @@
           </div>
 
           <div class="similar flex-column">
-            <div class="similar-title">相似图片目标</div>
+            <div class="similar-title">相似图片目标<span>{{countNum}}</span></div>
             <div class="similar-content flex-row">
               <div class="similar-item flex-row similarImg" *ngFor="let similarImg of similarTargets"  id="similarImg">
                 <img class="img-responsive"

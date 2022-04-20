@@ -40,7 +40,7 @@ export class DetectComponent implements OnInit, OnDestroy {
 
   detectHistory: any = [{id:""}];
   gMapArr:any;
-
+  public countNum:any;
   pageIndex = 0; // 从0开始计数
   total = 0;
   gfeatureLayer:any;
@@ -124,7 +124,7 @@ export class DetectComponent implements OnInit, OnDestroy {
              var that = this
               $(".content-right").css("display","none")
               $(".effect").css("display","none")
-              $(".similar-title")[0].innerHTML ="查询到的图片"
+              $(".similar-title")[0].innerHTML =`查询到的图片 共${result.data.length}张`
               $(".content-bottom").css("overflow","auto")
               $(".content-bottom").css("min-height","100%")
               $(".similar").css("min-height","100%")
@@ -305,6 +305,7 @@ borderShowHidden(){
         },100)
       }else if(this.searchClass == "5"){
         this.isPic = false
+        $(".content-top").css("display","none")
         $(".content-bottom").css("min-height","100%")
         $(".effect-content").css("flex","none")
         $(".similar-content").css("flex","none")
@@ -401,7 +402,13 @@ borderShowHidden(){
             } else {
               this.similarTargets = result.data.records;
             }      
-        
+            if(this.searchClass == 5){
+              this.countNum = `    共${result.data.total}张`
+            }else{
+              this.countNum = null
+            }
+         
+            
           }
 
           setTimeout(()=>{
@@ -437,7 +444,7 @@ borderShowHidden(){
         position:"relative",
       })
       
-      console.log()
+
       let zoomWidth = $("#aiLable").css("width").replace(/[^\d.]/ig,"")
       let zoomHeight = $("#aiLable").css("height").replace(/[^\d.]/ig,"")
       let imgWidth = img.width
@@ -446,9 +453,7 @@ borderShowHidden(){
        let mutliple;
        let labelZoom;
 
-      //  this.route.paramMap.subscribe((paramMap) => {    
 
-      // })
 
         if(imgWidth >= imgHeight ){
             mutliple = zoomWidth/imgWidth
