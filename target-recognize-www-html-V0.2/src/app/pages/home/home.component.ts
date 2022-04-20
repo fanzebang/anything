@@ -163,6 +163,8 @@ export class HomeComponent implements OnInit {
     }
 ]
 
+public animationBoolean:boolean = false;
+
 public serverList:any=[
 
   {
@@ -375,6 +377,7 @@ closeTable(){
 
 
   dataBackground(){
+    var that = this;
     var container = document.getElementById('dataContent');
     var renderer = new FSS.CanvasRenderer();
     var scene = new FSS.Scene();
@@ -396,19 +399,32 @@ closeTable(){
     function resize() {
       renderer.setSize(container.offsetWidth, container.offsetHeight);
     }
-
+    var animation;
+    var nau:number = 0;
     function animate() {
       now = Date.now() - start;
       light.setPosition(300*Math.sin(now*0.001), 200*Math.cos(now*0.0005), 60);
       renderer.render(scene);
-      requestAnimationFrame(animate);
-    }
+    
+      if(!that.animationBoolean){
+        cancelAnimationFrame(animation)
+      }else{
+        animation = requestAnimationFrame(animate);
+      }
+      
+      
 
+
+    }
+    
     initialise();
     resize();
     animate();
 
-      // works
+      $(".fenxiButton").click(function(){
+        cancelAnimationFrame(animation)
+      })
+
       this.workShow()
  
   }
@@ -1115,8 +1131,9 @@ searchImg(){
   deatailFormAction(data,key){
     
     if($(".modal-detaile").css("display") == 'none'){
-        $(".modal").animate({left:'-100px'},200)
+        $(".modal").animate({left:'-200px'},200)
         $(".modal-detaile").css("display","block")
+        $(".modal-detaile").animate({right:'-400px'},200)
         this.batchDiscernById(data.id)
     }else{
       this.batchDiscernById(data.id)
@@ -1214,7 +1231,7 @@ fenxi(){
         this.winboxData.fenxiButtonisShow = false
         this.winboxData.tastkId = requestData.list[0].id
         $("#dataContent .content").css({'display':'flex'});
-        $("#dataContent .historyAna").animate({'top':'237px'}, 500 );
+        $("#dataContent .historyAna").animate({'top':'454px'}, 500 );
         this.winBoxCharts();
         this.requsetProgress1()
 
@@ -1231,7 +1248,7 @@ fenxi(){
           if(this.winboxData.tastkId){
             this.requsetProgress1()
             $("#dataContent .content").css({'display':'flex'});
-            $("#dataContent .historyAna").animate({'top':'237px'}, 500 );
+            $("#dataContent .historyAna").animate({'top':'454px'}, 500 );
             this.winBoxCharts();
           }else{
             $("#dataContent .content").css({'display':'none'});
@@ -1358,15 +1375,19 @@ requsetProgress1(){
             this.winboxData.status =  "排队中"
             this.dataAnaStatus = '排队中'
             this.winboxData.fenxiButtonisShow = false
+            this.animationBoolean = false
           }else if(requestData.detectStatus == 1){
             this.winboxData.status =  "分析中"
              this.dataAnaStatus = '分析中'
              this.winboxData.fenxiButtonisShow = false
+             this.animationBoolean = true
+       
              $(".ant-progress-text").css("color","#fff")
           }else if(requestData.detectStatus == 2){
             this.winboxData.status =  "统计中"
             this.dataAnaStatus = '统计中'
             this.winboxData.fenxiButtonisShow = false
+            this.animationBoolean = false
           }else if(requestData.detectStatus == 0){
             this.winboxData.status =  "完成"
             this.winboxData.tastkId = ''
@@ -1382,17 +1403,19 @@ requsetProgress1(){
               this.winboxData.errorRate = 0
             }
             this.winboxData.fenxiButtonisShow = true
+            this.animationBoolean = false
             clearInterval(this.winboxData.interVal)
           }else if(requestData.detectStatus == 4){
             this.winboxData.status =  "已停止"
             this.dataAnaStatus = ''
             this.winboxData.fenxiButtonisShow = true
             clearInterval(this.winboxData.interVal)
+            this.animationBoolean = false
           }else if(requestData.detectStatus == 3){
             this.winboxData.status =  "已暂停"
             this.dataAnaStatus = '已暂停'
             this.winboxData.stopButtonValue = "继续分析"
-          
+            this.animationBoolean = false
             // clearInterval(this.winboxData.interVal)
           }
           this.winboxData.count = requestData.imgCount
@@ -1579,8 +1602,8 @@ dataAna(): void {
       mount: document.getElementById("dataContent"),
       onresize: function(width, height){
           $(".winbox").css({
-            height:$(".home")[0].offsetHeight/2-1+'px',
-            width:$(".home")[0].offsetWidth/2-1+'px'
+            height:height,
+            width:width
           })
       },
     });
@@ -1591,7 +1614,7 @@ dataAna(): void {
     this.requsetProgress();
     if(this.winboxData.tastkId){
       $("#dataContent .content").css({'display':'flex'});
-      $("#dataContent .historyAna").animate({'top':'237px'}, 500 );
+      $("#dataContent .historyAna").animate({'top':'454px'}, 500 );
       this.winBoxCharts();
     }else{
       $("#dataContent .content").css({'display':'none'});
