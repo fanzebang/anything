@@ -377,14 +377,17 @@ closeTable(){
 
 
   dataBackground(){
-    var that = this;
     var container = document.getElementById('dataContent');
+    try{
+      $("#dataContent>canvas").remove()
+    }catch(e){}
+   
     var renderer = new FSS.CanvasRenderer();
     var scene = new FSS.Scene();
     var light = new FSS.Light('#192539', '#416296');
     var width = $("#dataContent").css("width").split("px")[0]
     var height = $("#dataContent").css("height").split("px")[0]
-  
+    var that = this
     var geometry = new FSS.Plane(width, height, 24, 12);
     var material = new FSS.Material('#FFFFFF', '#FFFFFF');
     var mesh = new FSS.Mesh(geometry, material);
@@ -399,34 +402,21 @@ closeTable(){
     function resize() {
       renderer.setSize(container.offsetWidth, container.offsetHeight);
     }
-    var animation;
-    var nau:number = 0;
+
     function animate() {
       now = Date.now() - start;
       light.setPosition(300*Math.sin(now*0.001), 200*Math.cos(now*0.0005), 60);
       renderer.render(scene);
-    
-      if(!that.animationBoolean){
-        cancelAnimationFrame(animation)
-      }else{
-        animation = requestAnimationFrame(animate);
-      }
-      
-      
-
-
+      requestAnimationFrame(animate);
+     
+  
     }
-    
+
     initialise();
     resize();
     animate();
-
-      $(".fenxiButton").click(function(){
-        cancelAnimationFrame(animation)
-      })
-
-      this.workShow()
- 
+    this.workShow()
+    console.log()
   }
 
 
@@ -1147,7 +1137,6 @@ searchImg(){
     }
 
     stopFenxi(){
-     
       clearInterval(this.winboxData.interVal)
       this.winboxData.fenxiButtonisShow = false
       let id = this.winboxData.tastkId
@@ -1161,17 +1150,14 @@ searchImg(){
       }
     })
     .then(data=>{
-
         if(data.data.code ==1){
           this.winboxData.stopButtonValue = "继续分析"
           this.winboxData.loding = true
-         
-         
         }
         this.requsetProgress1()
+       
        })
       }else{
-
         axios.post(`${environment.API_URL}/v1/label_task/resumeDistinguishBatchImg?id=${id}`,{id},{
           headers: {
             'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -1179,18 +1165,16 @@ searchImg(){
           }
         })
         .then(data=>{
-
           if(data.data.code ==1){
             this.winboxData.stopButtonValue = "暂停分析"
             this.winboxData.loding = true
-            
           }
           this.requsetProgress1()
+       
         })
 
       }
-        
- 
+  
   
      
     }
@@ -1381,7 +1365,6 @@ requsetProgress1(){
              this.dataAnaStatus = '分析中'
              this.winboxData.fenxiButtonisShow = false
              this.animationBoolean = true
-       
              $(".ant-progress-text").css("color","#fff")
           }else if(requestData.detectStatus == 2){
             this.winboxData.status =  "统计中"
@@ -1415,7 +1398,7 @@ requsetProgress1(){
             this.winboxData.status =  "已暂停"
             this.dataAnaStatus = '已暂停'
             this.winboxData.stopButtonValue = "继续分析"
-            this.animationBoolean = false
+           this.animationBoolean = false
             // clearInterval(this.winboxData.interVal)
           }
           this.winboxData.count = requestData.imgCount

@@ -90,13 +90,13 @@
                         <ul>
                           <li style="margin-top: 15px;">
                               <span>识别结果：</span> 
-                              <nz-radio-group [(ngModel)]="winboxData.modalData.radioValue" style="margin-left: 10px;overflow-y: auto;max-height: 100px;"  nzSize="small">
+                              <nz-radio-group [(ngModel)]="winboxData.modalData.radioValue" style="margin-left: 10px;overflow-y: auto;max-height: 200px;"  nzSize="small">
                                 <label *ngFor="let item of winboxData.modalData.detail.discernName;let key = index" nz-radio [nzValue]="key" style="color: rgb(230, 140, 38);"  nzSize="small" >{{item}}</label>
                               </nz-radio-group>
                           </li>
                           <li style="margin-top: 15px;">
                             <span>目标类型：</span> 
-                            <nz-radio-group [(ngModel)]="winboxData.modalData.radioValue1" style="margin-left: 10px;overflow-y: auto;max-height: 100px;"  nzSize="small">
+                            <nz-radio-group [(ngModel)]="winboxData.modalData.radioValue1" style="margin-left: 10px;overflow-y: auto;max-height: 200px;"  nzSize="small">
                               <label *ngFor="let item of winboxData.modalData.detail.discernType;let key = index" nz-radio [nzValue]="key" style="color: rgb(230, 140, 38);"  nzSize="small" >{{item}}</label>
                             </nz-radio-group>
                         </li>
