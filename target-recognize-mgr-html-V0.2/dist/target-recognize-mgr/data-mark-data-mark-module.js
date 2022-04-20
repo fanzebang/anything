@@ -1442,8 +1442,10 @@ class MarkSampleTreeComponent {
         $.each(this.classListInfo, function (i, n) {
             if (n.sampleTypeName == val) {
                 that.selectedSampleId = n.id;
+                console.log(n);
             }
         });
+        console.log(that.selectedSampleId);
         this.dataMarkService.isTree = false;
         this.dataMarkService.nzModal.openModals[0].triggerOk();
     }

@@ -3,24 +3,25 @@
         <div class="search-form-title">{{sampleOssType?.sampleTypeName}}<span class="search-form-quantity">共{{secondaryTotal}}个</span>
             <span style="margin-left: 30px;">当前第 {{pageIndex}} 页共 {{imgNum}} 个</span>
         </div>
-        <ng-container *ngIf="!isOperateButton">
+        <ng-container *ngIf="isOperateButton">
             <!--      <button class="btn m-r" (click)="uploadImages()">导入</button>-->
             <!--
       <input type="file" #filesInput value="导入" multiple (change)="uploadImages($event)">
       -->
             <div class="import-samples-btn-wrap">
-                <button class="upload">导入</button>
+                <!-- <button class="upload">导入</button> -->
+                <button class="btn m-r upload">导入</button>
                 <input #filesInput type="file" value="本地上传" multiple (change)="uploadImages($event)">
             </div>
 
-            <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button>
+            <!-- <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button> -->
         </ng-container>
         <ng-container *ngIf="isOperateButton">
             <button class="btn m-r" (click)="updateAllChecked()">全选</button>
             <button class="btn m-r" (click)="lock()">锁定</button>
             <button class="btn m-r" (click)="download()">下载</button>
             <button class="btn btn-remove m-r" (click)="delete()">删除</button>
-            <button class="btn btn-batch" (click)="operateMgr(false)">完成</button>
+            <!-- <button class="btn btn-batch" (click)="operateMgr(false)">完成</button> -->
         </ng-container>
 
     </div>

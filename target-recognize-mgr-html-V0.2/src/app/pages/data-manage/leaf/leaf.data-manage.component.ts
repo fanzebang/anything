@@ -19,7 +19,7 @@ export class LeafDataManageComponent implements OnInit {
   sampleUpId: number;
   secondaryData: SampleOssFile[] = [];
   secondaryTotal = 0;
-  isOperateButton = false;
+  isOperateButton = true;
   // sampleTitle: string;
   checkOptionsOne = [];
   indeterminate = true;
@@ -58,9 +58,9 @@ export class LeafDataManageComponent implements OnInit {
     });
   }
 
-  operateMgr(flag: boolean): void {
-    this.isOperateButton = flag;
-  }
+  // operateMgr(flag: boolean): void {
+  //   this.isOperateButton = flag;
+  // }
 
   loadSecondaryImage(sampleUpId: number): void {
     const params = new HttpParams().append('typeId', sampleUpId + '').append('pageSize', 300 + '').append('pageIndex', this.pageIndex + '');
@@ -283,17 +283,27 @@ export class LeafDataManageComponent implements OnInit {
       const uploadingFiles = [];
       for (let i = 0; i < fileCount; i++) {
         // 每个文件单个上传，这样才能对每个文件有进度条
-        uploadingFiles.push({
-          file: fileList[i],
-          progress: 0
-        });
+        let type = fileList[i].type
+   
+        if(type == "image/png" || type == "image/jpeg" ){
+          uploadingFiles.push({
+            file: fileList[i],
+            progress: 0
+          });
+        }else{
+          this.nzMessage.error('文件格式不正确');
+        }
+      
       }
       this.uploadingFiles = uploadingFiles;
 
       this.uploadingFiles.forEach((file, index) => {
-        const formData = new FormData();
-        formData.append('files', file.file);
-        this.uploadWithFiles(index, formData);
+     
+          const formData = new FormData();
+          formData.append('files', file.file);
+          this.uploadWithFiles(index, formData);
+        
+      
       });
 
       const completeInterval = setInterval(() => {

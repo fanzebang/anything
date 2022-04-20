@@ -75,16 +75,21 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
       rect.id = that.sampleOssFile.sampleTypeId
       rect.props.name = that.sampleOssFile.sampleTypeId
       delete rect.layer
-      let xmin = parseInt(rect.shape.x) 
-      let ymin = parseInt(rect.shape.y) ;
-      let xmax = parseInt(rect.shape.x) + parseInt(rect.shape.width);
-      let ymax = parseInt(rect.shape.y) + parseInt(rect.shape.height);
-        reqBody[rect.id] = {
-          "xmin": xmin,
-          "ymin": ymin,
-          "xmax": xmax,
-          "ymax": ymax
-        }
+      rect.shape.x = rect.shape.x/that.mutliple
+      rect.shape.y = rect.shape.y/that.mutliple
+      rect.shape.width = rect.shape.width/that.mutliple
+      rect.shape.height = rect.shape.height/that.mutliple
+   
+      // let xmin = parseInt(rect.shape.x) 
+      // let ymin = parseInt(rect.shape.y) ;
+      // let xmax = parseInt(rect.shape.x) + parseInt(rect.shape.width);
+      // let ymax = parseInt(rect.shape.y) + parseInt(rect.shape.height);
+      //   reqBody[rect.id] = {
+      //     "xmin": xmin,
+      //     "ymin": ymin,
+      //     "xmax": xmax,
+      //     "ymax": ymax
+      //   }
     })
 
     let saveData = JSON.stringify(featuresArr)
@@ -107,43 +112,71 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
 
   }
 
-
+public  mutliple;
   creatAILabel(Imgdata:SampleOssFile) :void{
-  var that = this
-    $("#detailLabel").empty();
+     var that = this
+
       let coordinateData = JSON.parse(Imgdata.labelMessage);
       let ossKey:String = Imgdata.ossKey
       let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey
       let text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length-2];
       let img = new Image()
       img.src = imgUrl
-      console.log(coordinateData,img.width)
-
-   
-      let imgWidth = img.width*1;
-      let imgHeight =  img.height*1;
-      let coordinateData1 = coordinateData.data
       
+      var imgWidth = img.width*1 || Imgdata.width;
+      var imgHeight =  img.height*1 ||  Imgdata.height;
+     
+   
+      let zoomWidth = $("#detailLabel").css("width").replace(/[^\d.]/ig,"")
+      let zoomHeight = $("#detailLabel").css("height").replace(/[^\d.]/ig,"")
+ 
+  
+      
+       let labelZoom;
+
+      
+  
+     
+
+        if(imgWidth >= imgHeight ){
+            this.mutliple = zoomWidth/imgWidth
+            imgHeight = imgHeight* this.mutliple
+            imgWidth = zoomWidth
+            labelZoom = imgWidth*3
+        }else{  
+          this.mutliple = zoomHeight/imgHeight
+          imgWidth = imgWidth* this.mutliple
+          labelZoom = imgHeight*3
+          imgHeight = zoomHeight
+        }
+
+      // let coordinateData1 = coordinateData.data
+
+      $("#detailLabel").empty();
+     
       this.aiLabel= new AILabel.Map(`detailLabel`,{
         center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
-        zoom: imgWidth*2,
+        zoom: labelZoom,
         mode: 'RECT', // 绘制线段
         refreshDelayWhenZooming: false, // 缩放时是否允许刷新延时，性能更优
         zoomWhenDrawing: true,
         panWhenDrawing: false,
         featureCaptureWhenMove:true,
-        zoomWheelRatio: 10 , // 控制滑轮缩放缩率[0, 10), 值越小，则缩放越快，反之越慢
+        zoomWheelRatio: 5 , // 控制滑轮缩放缩率[0, 10), 值越小，则缩放越快，反之越慢
         withHotKeys: true ,// 关闭快捷键
         zoomMax: imgWidth * 10,
         zoomMin: imgWidth / 10
         })
+
+     
+
     var imageLayer = new AILabel.Layer.Image(
               'img', // id
               {
                 src: imgUrl,
                 width: imgWidth,
                 height: imgHeight,
-                crossOrigin: false, // 如果跨域图片，需要设置为true
+                crossOrigin: true, // 如果跨域图片，需要设置为true
                 position: { // 图片左上角对应的坐标位置
                     x: 0,
                     y: 0
@@ -152,9 +185,12 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
               {name: '第一个图片图层'},
               {zIndex: 1} 
          );
-  this.aiLabel.addLayer(imageLayer)
+  that.aiLabel.addLayer(imageLayer)
+
   this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
+
   this.aiLabel.addLayer(this.gfeatureLayer)
+
   var gFirstTextLayer = new AILabel.Layer.Text(
     'first-layer-text', // id
     {name: '第一个文本图层'}, // props
@@ -162,41 +198,28 @@ export class DetailDataManageComponent implements OnInit, AfterViewInit {
   );
   this.aiLabel.addLayer(gFirstTextLayer);
   
-try{
-  for (let i = 0; i < coordinateData1.length; i++) {
-    var testData = coordinateData1[i];
-    var feature:any = new AILabel.Feature.Rect(
-      testData.type_id, 
-      {height:testData.coordinate.ymax -testData.coordinate.ymin,width:testData.coordinate.xmax - testData.coordinate.xmin,x:(testData.coordinate.xmin*1) ,y: (testData.coordinate.ymin*1)}, 
-      {name:'123',textId: testData.type_id}, 
-      {fill: true,
-      fillStyle: "#0f0",
-      globalAlpha: 0,
-      lineWidth: 1,
-      opacity: 1,
-      stroke: true,
-      strokeStyle: "red"}
-    );
-    that.gfeatureLayer.addFeature(feature);
-    var {x: ltx, y: lty} = feature.shape;
-    var gFirstText = new AILabel.Text(
-      testData.type_id, // id
-      {text:text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
-      {name: '第一个文本对象'}, // props
-      {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
-    );
-    this.aiLabel.layers[2].addText(gFirstText);
-  }
-}catch(e){
+
   for (let i = 0; i < coordinateData.length; i++) {
     var testData = coordinateData[i];
-    console.log(testData)
-    var feature:any = new AILabel.Feature.Rect(
-      testData.type_id, 
+    var id = +new Date();
+    if( null == testData.id) testData.id = id
+    if( null == testData.props.text) testData.props.text = text
+    if( null == testData.props.textId) testData.props.textId = id
+    testData.shape.height = testData.shape.height *1* this.mutliple
+    testData.shape.width = testData.shape.width *1* this.mutliple
+    testData.shape.x = testData.shape.x *1* this.mutliple
+    testData.shape.y = testData.shape.y *1* this.mutliple
+
+   
+
+    if( null == testData.style) testData.style =  {fill: true,fillStyle: "#0f0",globalAlpha: 0,lineWidth: 1,opacity: 1,stroke: true,strokeStyle: "red"}
+     var feature:any = new AILabel.Feature.Rect(
+      testData.id, 
       testData.shape, 
       testData.props, 
       testData.style
     );
+
     that.gfeatureLayer.addFeature(feature);
     var {x: ltx, y: lty} = feature.shape;
     var gFirstText = new AILabel.Text(
@@ -205,51 +228,17 @@ try{
       {name: '第一个文本对象'}, // props
       {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
     );
-    this.aiLabel.layers[2].addText(gFirstText);
+    that.aiLabel.layers[2].addText(gFirstText);
+
+
+  
   }
 
-}
 
 
-// this.aiLabel.events.on('drawDone', (type:any, data:any, data1:any) => {
-//     var feature:any;
-//     const relatedTextId = coordinateData1[0].type_id;
-//     // const relatedDeleteMarkerId = `label-marker-id-${+new Date()}`;
-//   if (type === 'RECT') {
-
-//    // 添加feature
-//           feature = new AILabel.Feature.Rect(
-//             `${+new Date}`, // id
-//             data, // shape
-//             {name: 'uninterested',textId: relatedTextId}, // props
-//             {strokeStyle: '#031129', fillStyle: '#031129', globalAlpha: 1, lineWidth: 1, fill: true, stroke: true} // style
-//           );
-//     that.gfeatureLayer.addFeature(feature);
-//     console.log(this.aiLabel)
-//   // 添加feature标签名
-//        var {x: ltx, y: lty} = data;
-
-//        var gFirstText = new AILabel.Text(
-//            relatedTextId, // id
-//            {text: text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
-//            {name: '第一个文本对象'}, // props
-//            {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
-//        );
-
-//        gFirstTextLayer.addText(gFirstText);
-
-//     }else if(type === 'POLYGON'){
-//       feature = new AILabel.Feature.Polygon(
-//         `${+new Date}`, // id
-//         {points: data}, // shape
-//         {name: '123'}, // props
-//         drawingStyle// style
-//      );
-//      that.gfeatureLayer.addFeature(feature);
-//     }
-//   });
 
   this.aiLabel.events.on('featureSelected',(feature: any) => {
+
     this.aiLabel.setActiveFeature(feature);
   })
   this.aiLabel.events.on('featureUnselected',() => {
@@ -410,6 +399,7 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
   }
 
   lastImage(): void {
+
     for (let i = 0; i < this.sampleOssFiles.length; i++) {
       if (this.sampleOssFiles[i].id === this.imageId) {
         if (i === 0) {
@@ -419,10 +409,14 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
           this.sampleOssFile = this.sampleOssFiles[i - 1];
           this.updateBrowseNumber();
           this.loadOne(this.imageId).subscribe((result: HttpResult<SampleOssFile>) => {
+         
             if (HttpResult.succeed(result.code)) {
               this.sampleOssFile = result.data;
-              this.creatAILabel(result.data)
-              this.loadChars();
+  
+          this.creatAILabel(result.data)
+   
+              
+             
             }
           });
           if (this.presentIdx > 0) {
@@ -527,18 +521,18 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
     this.lineEchart.setOption(lineChartOption);
   }
 
-  lock(): void {
-    const params = new HttpParams().append('ids', this.imageId + '').append('sampleTypeId', this.sampleOssFile.sampleTypeId + '').append('enumStatus', 'LOCK');
-    this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_status`, null, {params})
-      .subscribe((result: HttpResult<SampleOssFile[]>) => {
-        if (HttpResult.succeed(result.code)) {
-          this.nzMessage.success('锁定成功');
-          this.loadSecondaryImage(+this.imageId);
-        } else {
-          this.nzMessage.error(result.message);
-        }
-      });
-  }
+  // lock(): void {
+  //   const params = new HttpParams().append('ids', this.imageId + '').append('sampleTypeId', this.sampleOssFile.sampleTypeId + '').append('enumStatus', 'LOCK');
+  //   this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_status`, null, {params})
+  //     .subscribe((result: HttpResult<SampleOssFile[]>) => {
+  //       if (HttpResult.succeed(result.code)) {
+  //         this.nzMessage.success('锁定成功');
+  //         this.loadSecondaryImage(+this.imageId);
+  //       } else {
+  //         this.nzMessage.error(result.message);
+  //       }
+  //     });
+  // }
 
   delete(): void {
     const params = new HttpParams().append('ids', this.imageId + '').append('sampleTypeId', this.sampleOssFile.sampleTypeId + '').append('enumStatus', 'DELETE');
