@@ -1,5 +1,5 @@
-<div class="flex-row">
-  <div class="tree-box flex-column">
+<div class="flex-row" id="hContainer">
+  <div class="tree-box flex-column" id="treeBox">
     <div class="tree-top" style="text-align:left;">
       <span class="tree-top-title">所有分类</span>
       <span class="tree-top-add" (click)="editSampleType()"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
@@ -7,7 +7,7 @@
       <span class="tree-top-add" (click)="delSampleType()"><i nz-icon nzType="minus" nzTheme="outline"></i></span>
     </div>
 
-    <div style="padding: 10px; overflow: scroll;">
+    <div style="padding: 10px; overflow: auto;">
       <nz-tree style="font-size:18px; color: #65CAFF ;line-height:28px;" [nzData]="visibleLight" [nzShowIcon]="false"
                nzShowLine nzAsyncData (nzClick)="nzEvent($event)"
                (nzExpandChange)="nzEvent($event)" #nzTreeComponent></nz-tree>
@@ -22,7 +22,7 @@
                (nzExpandChange)="nzEvent($event)" #nzTreeComponentInfrared></nz-tree>
     </div>
   </div>
-
+  <div class="vertical-dragbar" id="vDragbar"></div>
   <div class="main">
 
     <router-outlet></router-outlet>

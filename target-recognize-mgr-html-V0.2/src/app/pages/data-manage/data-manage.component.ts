@@ -99,6 +99,22 @@ export class DataManageComponent implements OnInit {
     // this.loadSarTree();
     // this.loadRemoteSenseTree();
     this.loadStatInfo();
+    this.dragWidth();
+  }
+
+  dragWidth(){
+    var vbar = document.getElementById('vDragbar');
+    var leftd = document.getElementById('treeBox');
+    var hctn = document.getElementById("hContainer");
+    const vdrag = (e) => {
+      leftd.style.flexBasis = (e.pageX - vbar.offsetWidth / 2 - hctn.offsetLeft) + 'px';
+    }
+    vbar.addEventListener('mousedown', () => {
+      document.addEventListener('mousemove', vdrag);
+    });
+    vbar.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', vdrag);
+    });
   }
 
   loadVisibleLightTree() {
