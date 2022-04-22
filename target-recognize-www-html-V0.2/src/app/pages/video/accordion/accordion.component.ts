@@ -17,12 +17,12 @@ export class AccordionComponent implements OnInit {
 
   panels = [
     {
-      active: true,
+      active: false,
       name: '文字',
       nn:'<app-video-list></app-video-list>'
     },
     {
-      active: false,
+      active: true,
       name: '关键帧',
       nn:'<app-video-list></app-video-list>'
     }

@@ -307,10 +307,15 @@ batchDiscernById(id){
     }
   })
   .then(data=>{
+   
     this.winboxData.modalData.detail = JSON.parse(data.data.data)
+    
     this.winboxData.modalData.detail.discernName = JSON.parse(this.winboxData.modalData.detail.discernName)
-    this.winboxData.modalData.detail.discernType = JSON.parse(this.winboxData.modalData.detail.ext1)
-    this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.detail.standardName
+
+    this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.detail.standardName  
+
+    if(this.winboxData.modalData.detail) this.winboxData.modalData.detail.discernType = JSON.parse(this.winboxData.modalData.detail.ext1)
+  
     
   })
   .catch(e=>{
@@ -1126,6 +1131,7 @@ searchImg(){
         $(".modal-detaile").animate({right:'-400px'},200)
         this.batchDiscernById(data.id)
     }else{
+      
       this.batchDiscernById(data.id)
       }
       setTimeout(()=>{
@@ -1551,8 +1557,8 @@ $("#CorrectionErrorBox > div.wb-header > div.wb-icon > span.wb-close").click()
     id: "CorrectionErrorBox",
     root:document.querySelector("#modal-container > div"),
     title: "纠错",
-    x: "150px",
-    y: "50px",
+    x: '30%',
+    y: '30%',
     width: "500px",
     height: "300px",
     mount: document.getElementById("errorCorrectionBox"),

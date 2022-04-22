@@ -50,7 +50,7 @@
               "src/pictureViewer.js",
               "src/imagePreview.js",
               "src/AILabel.pkg.min.js",
-              "src/tiff.js",
+              "src/ds.min.js",
               "src/echarts.js",
               "src/ecStat.js"
             ]

@@ -24,6 +24,7 @@
     "axios": "^0.24.0",
     "crypto-js": "^4.0.0",
     "date-fns": "^2.16.1",
+    "dragselect": "^2.3.1",
     "echarts": "^4.9.0",
     "echarts-stat": "^1.2.0",
     "express": "^4.17.1",

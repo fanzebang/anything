@@ -11416,7 +11416,13 @@ class DataVerifyComponent {
         let coordinateData = JSON.parse(Imgdata.labelMessage);
         let ossKey = Imgdata.ossKey;
         let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey;
-        let text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length - 2];
+        let text;
+        try {
+            text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length - 2];
+        }
+        catch (e) {
+            text = "";
+        }
         let img = new Image();
         img.src = imgUrl;
         console.log(Imgdata);

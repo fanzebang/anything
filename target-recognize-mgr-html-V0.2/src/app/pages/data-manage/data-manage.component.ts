@@ -125,6 +125,7 @@ export class DataManageComponent implements OnInit {
         const visibleLight = result.data.map((samples: any) => {
           return new NzTreeNode({
             title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+            imageCount:samples.imageCount,
             key: samples.data.id + '',
             data: samples,
             isLeaf: samples.data.isLeaf,
@@ -135,6 +136,7 @@ export class DataManageComponent implements OnInit {
           this.visibleLightRootNode.clearChildren();
           this.visibleLightRootNode.addChildren(visibleLight);
         }
+        
         this.router.navigate(['not-leaf', {'sampleUpId': 'KJG'}], {relativeTo: this.route});
       }
     });
@@ -154,6 +156,7 @@ export class DataManageComponent implements OnInit {
           });
         });
         this.titleData = infrared;
+
         if (this.nzTreeComponentInfrared.getTreeNodeByKey(this.type.HW)?.isExpanded) {
           this.infraredRootNode.clearChildren();
           this.infraredRootNode.addChildren(infrared);
@@ -274,18 +277,15 @@ export class DataManageComponent implements OnInit {
 
     //只加载树菜单
     if (event.eventName === 'expand' && event.node.isExpanded) {
-     
       let params;
       if (!isNaN(parseInt(id))) {
         params = new HttpParams().append('sampleUpId', id);
       } else {
         params = new HttpParams().append('sampleTypeName', id);
       }
- 
       this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
-          const data = result.data.map((samples: any) => {
-       
+          const data = result.data.map((samples:any) => {
             return new NzTreeNode({
               markTitle: samples.data.sampleTypeName,
               title: samples.data.sampleTypeName + '    ' + samples.imageCount,
@@ -299,6 +299,7 @@ export class DataManageComponent implements OnInit {
           if (node?.getChildren().length === 0) {
             node.addChildren(data);
           }
+          // this.dataManageService.setVisibleLightRootNode(this.visibleLight)
         }
       });
     }
@@ -390,6 +391,7 @@ export class DataManageComponent implements OnInit {
                   isLeaf: result.data.isLeaf,
                   id: result.data.id
                 })]);
+              
                 if (this.currentNode.isLeaf) {
                   this.currentNode.isLeaf = false;
                 } else {
@@ -416,6 +418,7 @@ export class DataManageComponent implements OnInit {
                       this.titleData = data;
                       this.currentNode.clearChildren();
                       this.currentNode.addChildren(data);
+                    
                     }
                   });
                 }

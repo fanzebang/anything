@@ -8,9 +8,10 @@ import {Select} from "@ngxs/store";
 import {Observable} from "rxjs";
 import {RenameSampleOssTypeState, RenameSampleOssTypeStateModel} from "../../../state/rename-sample-oss-type.state";
 import { DataManageService } from '../data-manage.service';
+import DragSelect from 'dragselect';
 
 declare var $:any;
-
+// declare var DragSelect:any;
 @Component({
   templateUrl: './leaf.data-manage.component.html',
   styleUrls: ['./leaf.data-manage.component.less']
@@ -29,6 +30,7 @@ export class LeafDataManageComponent implements OnInit {
   pageIndex:any = 1;
   imgNum:any = 300;
   current = 1;
+  ds:any;
   @ViewChild('filesInput')
   filesInputElm: ElementRef;
   // files: ProgressDto[] = [];
@@ -56,7 +58,33 @@ export class LeafDataManageComponent implements OnInit {
         this.sampleOssType.sampleTypeName = renameModel.name;
       }
     });
+   
   }
+
+  dragSelectInit(){
+    // var dom:any = document.getElementsByClassName('picture-box')
+    // console.log(dom)
+      this.ds = new DragSelect({
+        area: document.getElementById('pictureUl'),
+        selectables:document.getElementsByClassName('ds-box') as any,
+        multiSelectMode: true,
+        //选中
+        onElementSelect: function(element){
+          $(element).addClass('on').find('input[type="checkbox"]').prop('checked', true);
+        },
+        //取消选中
+        onElementUnselect: function(element){
+          $(element).removeClass('on').find('input[type="checkbox"]').prop('checked', false);
+        },
+        //鼠标抬起后返回所有选中的元素
+        callback: function(elements) {
+          console.log(elements)
+        }
+      })
+
+
+  }
+
 
   // operateMgr(flag: boolean): void {
   //   this.isOperateButton = flag;
@@ -67,7 +95,6 @@ export class LeafDataManageComponent implements OnInit {
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getOssFilesByTypeId`, {params})
       .subscribe((result: HttpResult<ApiPage<SampleOssFile>>) => {
         this.secondaryData = result.data.records;
-
         this.secondaryTotal = result.data.total;
         this.imgNum = this.secondaryData.length
         let str = $(".search-form-title")[0].innerText
@@ -80,6 +107,7 @@ export class LeafDataManageComponent implements OnInit {
         });
         this.checkOptionsOne = box;
         this.allSelect = false
+        this.dragSelectInit()
       });
   }
   nzPageIndexChange(){
@@ -240,11 +268,11 @@ export class LeafDataManageComponent implements OnInit {
     this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_status`, null, {params})
       .subscribe((result: HttpResult<SampleOssFile[]>) => {
         if (HttpResult.succeed(result.code)) {
-    
+          
           //
           this.nzMessage.success('删除成功');
           this.loadSecondaryImage(+sampleTypeId);
-         
+       
         } else {
           this.nzMessage.error(result.message);
         }
@@ -318,7 +346,7 @@ export class LeafDataManageComponent implements OnInit {
           clearInterval(completeInterval);
 
           this.clearFiles();
-
+//oo
           this.loadSecondaryImage(this.sampleUpId);
           this.loadSampleType(this.sampleUpId);
 
