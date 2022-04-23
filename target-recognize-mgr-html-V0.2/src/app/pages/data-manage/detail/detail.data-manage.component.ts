@@ -263,16 +263,16 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
         if (HttpResult.succeed(result.code)) {
           this.sampleOssFiles = result.data;
           this.countImg = result.data.length
-          let str = $(".search-form-title")[0].innerText
-          let str1 = str.slice(0, str.indexOf(str.match('共[0-9]+个结果|共个结果')[0]))
-          if (str1.length > 0) {
-            this.dataManageService.delect(this.countImg,str1)
-          }
+          // let str = $(".search-form-title")[0].innerText
+          // let str1 = str.slice(0, str.indexOf(str.match('共[0-9]+个结果|共个结果')[0]))
+       
           for (let i = 0; i < result.data.length; i++) {
             if (result.data[i].id === this.imageId) {
               // debugger;
               // console.log(images.browseNumber + 'images');
               this.sampleOssFile = result.data[i];
+           
+              this.dataManageService.delect(this.countImg,result.data[i])
               if (i === 0) {
                 this.presentIdx = 1;
               } else {

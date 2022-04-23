@@ -39,7 +39,7 @@ export class DataManageComponent implements OnInit {
   visibleLight: NzTreeNode[] = [];
   infrared: NzTreeNode[] = [];
   sar: NzTreeNode[] = [];
-  remoteSense = [];
+  remoteSense: NzTreeNode[] = [];
   statInfo: StatInfo;
   titleData: NzTreeNode[] = [];
   type: { KJG: string, HW: string, SAR: string, YG: string } = {KJG: 'KJG', HW: 'HW', SAR: 'SAR', YG: 'YG'};
@@ -61,29 +61,40 @@ export class DataManageComponent implements OnInit {
 
   constructor(private http: HttpClient, private nzMessage: NzMessageService, private nzModal: NzModalService,
               private router: Router, private route: ActivatedRoute, private store: Store,public dataManageService:DataManageService) {
-    this.visibleLightRootNode = new NzTreeNode({
-      title: '可见光',
-      key: 'KJG',
-      expanded: true,
-      isSelected: true,
-    });
-    this.visibleLight.push(this.visibleLightRootNode);
+                this.visibleLightRootNode = this.dataManageService.visibleLightRootNode      
+                this.infraredRootNode = this.dataManageService.infraredRootNode   
+                this.sarRootNode = this.dataManageService.sarRootNode   
+                this.remoteSenseRootNode = this.dataManageService.remoteSenseRootNode   
+                this.visibleLight = this.dataManageService.visibleLight
+                this.infrared = this.dataManageService.infrared
+                this.sar = this.dataManageService.sar
+                this.remoteSense = this.dataManageService.remoteSense
+    // this.visibleLightRootNode = new NzTreeNode({
+    //   title: '可见光',
+    //   key: 'KJG',
+    //   expanded: true,
+    //   isSelected: true,
+    // });
+    // this.visibleLight.push(this.visibleLightRootNode);
 
-    this.infraredRootNode = new NzTreeNode({
-      title: '红外',
-      key: 'HW'
-    });
-    this.infrared.push(this.infraredRootNode);
-    this.sarRootNode = new NzTreeNode({
-      title: 'SAR',
-      key: 'SAR'
-    });
-    this.sar.push(this.sarRootNode);
-    this.remoteSenseRootNode = new NzTreeNode({
-      title: '遥感',
-      key: 'YG'
-    });
-    this.remoteSense.push(this.remoteSenseRootNode);
+    // this.infraredRootNode = new NzTreeNode({
+    //   title: '红外',
+    //   key: 'HW',
+    //   expanded: true,
+    // });
+    // this.infrared.push(this.infraredRootNode);
+    // this.sarRootNode = new NzTreeNode({
+    //   title: 'SAR',
+    //   key: 'SAR',
+    //   expanded: true,
+    // });
+    // this.sar.push(this.sarRootNode);
+    // this.remoteSenseRootNode = new NzTreeNode({
+    //   title: '遥感',
+    //   key: 'YG',
+    //   expanded: true,
+    // });
+    // this.remoteSense.push(this.remoteSenseRootNode);
   }
 
   ngOnInit(): void {
@@ -94,7 +105,11 @@ export class DataManageComponent implements OnInit {
 
     });
     // this.checkOptionsOne.push();
-    this.loadVisibleLightTree();
+    this.dataManageService.loadVisibleLightTree(this);
+    this.dataManageService.loadInfraredTree(this);
+    this.dataManageService.loadRemoteSenseTree(this);
+    this.dataManageService.loadSarTree(this);
+    // this.loadVisibleLightTree();
     // this.loadInfraredTree();
     // this.loadSarTree();
     // this.loadRemoteSenseTree();
@@ -117,100 +132,135 @@ export class DataManageComponent implements OnInit {
     });
   }
 
-  loadVisibleLightTree() {
+
+  // countBigClassNum(Tree,count){
+
+  //  if(Tree[0]){
+  //   let numReg =  new RegExp( /\d+/)
+
+  //   if(!numReg.test(Tree[0].title)){
+  //     $.each(Tree[0].origin.children,function(i,n){
+  //       if(n.imageCount) {count+=n.imageCount} else {count +=0}
+  //     })
+  //     Tree[0].title = ` ${Tree[0].title}   ${count}`
+  //   }
+  //  }else{
+  //   let numReg =  new RegExp( /\d+/)
+  //   if(!numReg.test(Tree.title)){
+  //   $.each(Tree.origin.children,function(i,n){
+  //     if(n.imageCount) {count+=n.imageCount} else {count +=0}
+      
+  //   })
+  //   Tree.title += `    ${count}`
+  //   }
+  //  }
+     
    
-    const httpParams = new HttpParams().append('sampleTypeName', this.type.KJG);
-    this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
-      if (HttpResult.succeed(result.code)) {
-        const visibleLight = result.data.map((samples: any) => {
-          return new NzTreeNode({
-            title: samples.data.sampleTypeName + '    ' + samples.imageCount,
-            imageCount:samples.imageCount,
-            key: samples.data.id + '',
-            data: samples,
-            isLeaf: samples.data.isLeaf,
-          });
-        });
-        // this.titleData = visibleLight;
-        if (this.nzTreeComponent.getTreeNodeByKey(this.type.KJG)?.isExpanded) {
-          this.visibleLightRootNode.clearChildren();
-          this.visibleLightRootNode.addChildren(visibleLight);
-        }
-        
-        this.router.navigate(['not-leaf', {'sampleUpId': 'KJG'}], {relativeTo: this.route});
-      }
-    });
-  }
 
-  loadInfraredTree() {
-    const httpParams = new HttpParams().append('sampleTypeName', this.type.HW);
-    this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
-      if (HttpResult.succeed(result.code)) {
+  // }
 
-        const infrared = result.data.map((samples: any) => {
-          return new NzTreeNode({
-            title: samples.data.sampleTypeName + '    ' + samples.imageCount,
-            key: samples.data.id + '',
-            data: samples.data,
-            isLeaf: samples.data.isLeaf,
-          });
-        });
-        this.titleData = infrared;
+  // loadVisibleLightTree() {
+   
+  //   const httpParams = new HttpParams().append('sampleTypeName', this.type.KJG);
+  //   this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
+  //     if (HttpResult.succeed(result.code)) {
+      
+  //       const visibleLight = result.data.map((samples: any) => {
+  //         return new NzTreeNode({
+  //           title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+  //           imageCount:samples.imageCount,
+  //           key: samples.data.id + '',
+  //           data: samples,
+  //           isLeaf: samples.data.isLeaf,
+  //         });
+  //       });
+  //       // this.titleData = visibleLight;
+  //       if (this.nzTreeComponent.getTreeNodeByKey(this.type.KJG)?.isExpanded) {
+  //         this.visibleLightRootNode.clearChildren();
+  //         this.visibleLightRootNode.addChildren(visibleLight);
+          
+  //       }
+  
+  //       this.countBigClassNum(this.visibleLight,0)
+  //     this.router.navigate(['not-leaf', {'sampleUpId': 'KJG'}], {relativeTo: this.route});
+  //     }
+  //   });
+  // }
 
-        if (this.nzTreeComponentInfrared.getTreeNodeByKey(this.type.HW)?.isExpanded) {
-          this.infraredRootNode.clearChildren();
-          this.infraredRootNode.addChildren(infrared);
-        }
-      }
-    });
+  // loadInfraredTree() {
+  //   const httpParams = new HttpParams().append('sampleTypeName', this.type.HW);
+  //   this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
+  //     if (HttpResult.succeed(result.code)) {
+
+  //       const infrared = result.data.map((samples: any) => {
+  //         return new NzTreeNode({
+  //           title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+  //           key: samples.data.id + '',
+  //           data: samples.data,
+  //           isLeaf: samples.data.isLeaf,
+  //         });
+  //       });
+  //       this.titleData = infrared;
+  //       if (this.nzTreeComponentInfrared.getTreeNodeByKey(this.type.HW)?.isExpanded) {
+  //         this.infraredRootNode.clearChildren();
+  //         this.infraredRootNode.addChildren(infrared);
+  //       }
+  //       this.countBigClassNum(this.infrared,0)
+  //     }
+  //   });
  
-  }
+  // }
 
-  loadSarTree() {
-    const httpParams = new HttpParams().append('sampleTypeName', this.type.SAR);
-    this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
-      if (HttpResult.succeed(result.code)) {
-        if (result.data) {
-          const sar = result.data.map((samples: any) => {
-            return new NzTreeNode({
-              title: samples.data.sampleTypeName + '    ' + samples.imageCount,
-              key: samples.data.id + '',
-              data: samples.data,
-              isLeaf: samples.data.isLeaf,
-            });
-          });
-          this.titleData = sar;
-          if (this.nzTreeComponentSar.getTreeNodeByKey(this.type.SAR)?.isExpanded) {
-            this.sarRootNode.clearChildren();
-            this.sarRootNode.addChildren(sar);
-          }
-        }
-      }
-    });
-  }
+  // loadSarTree() {
+  //   const httpParams = new HttpParams().append('sampleTypeName', this.type.SAR);
+  //   this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
+  //     if (HttpResult.succeed(result.code)) {
+  //       if (result.data) {
+  //         const sar = result.data.map((samples: any) => {
+  //           return new NzTreeNode({
+  //             title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+  //             key: samples.data.id + '',
+  //             data: samples.data,
+  //             isLeaf: samples.data.isLeaf,
+  //           });
+  //         });
+  //         this.titleData = sar;
+  //         if (this.nzTreeComponentSar.getTreeNodeByKey(this.type.SAR)?.isExpanded) {
+  //           this.sarRootNode.clearChildren();
+  //           this.sarRootNode.addChildren(sar);
+  //         }
+  //         this.countBigClassNum(this.sar,0)
+  //       }
+  //     }
+  //   });
+  // }
 
-  loadRemoteSenseTree() {
-    const httpParams = new HttpParams().append('sampleTypeName', this.type.YG);
-    this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
-      if (HttpResult.succeed(result.code)) {
-        if (result.data) {
-          const remote = result.data.map((samples: any) => {
-            return new NzTreeNode({
-              title: samples.data.sampleTypeName + '    ' + samples.imageCount,
-              key: samples.data.id + '',
-              data: samples.data,
-              isLeaf: samples.data.isLeaf,
-            });
-          });
-          this.titleData = remote;
-          if (this.nzTreeComponentRemote.getTreeNodeByKey(this.type.YG)?.isExpanded) {
-            this.remoteSenseRootNode.clearChildren();
-            this.remoteSenseRootNode.addChildren(remote);
-          }
-        }
-      }
-    });
-  }
+  // loadRemoteSenseTree() {
+  //   const httpParams = new HttpParams().append('sampleTypeName', this.type.YG);
+  //   this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
+  //     if (HttpResult.succeed(result.code)) {
+  //       if (result.data) {
+  //         const remote = result.data.map((samples: any) => {
+  //           return new NzTreeNode({
+  //             title: samples.data.sampleTypeName + '    ' + samples.imageCount,
+  //             key: samples.data.id + '',
+  //             data: samples.data,
+  //             isLeaf: samples.data.isLeaf,
+  //           });
+  //         });
+  //         // this.titleData = remote;
+  //         if (this.nzTreeComponentRemote.getTreeNodeByKey(this.type.YG)?.isExpanded) {
+        
+  //           this.remoteSenseRootNode.clearChildren();
+  //           this.remoteSenseRootNode.addChildren(remote);
+  //         }
+          
+  //         this.countBigClassNum(this.remoteSenseRootNode,0)
+        
+  //       }
+  //     }
+  //   });
+  // }
 
   loadStatInfo() {
     this.http.get(`${environment.API_URL}/v1/stat-infos/`).subscribe((result: HttpResult<StatInfo>) => {
@@ -224,11 +274,11 @@ export class DataManageComponent implements OnInit {
    * 点击事件
    * @param event
    */
+ 
   nzEvent(event: NzFormatEmitEvent): void {
  
     if (event.node.isLeaf) {
       // 袁攀 如果是最后一级
-     
       this.router.navigate(['leaf', {'sampleUpId': event.node.key}], {relativeTo: this.route});
     } else {
       // 袁攀 如果不是最后一级
@@ -249,22 +299,25 @@ export class DataManageComponent implements OnInit {
           case this.type.KJG:
             this.sampleUpId = 1;
             // this.mutexType(id);
-            this.loadVisibleLightTree();
+            // this.loadVisibleLightTree();
+            this.dataManageService.loadVisibleLightTree(this);
             return;
           case this.type.YG:
             // this.mutexType(id);
-            this.loadRemoteSenseTree();
+            this.dataManageService.loadRemoteSenseTree(this);
             this.sampleUpId = 2;
             return;
           case this.type.SAR:
             // this.mutexType(id);
             this.sampleUpId = 4;
-            this.loadSarTree();
+            this.dataManageService.loadSarTree(this);
+            // this.loadSarTree();
             return;
           case this.type.HW:
             // this.mutexType(id);
             this.sampleUpId = 3;
-            this.loadInfraredTree();
+            this.dataManageService.loadInfraredTree(this);
+            // this.loadInfraredTree();
             return;
         }
       }
@@ -299,6 +352,7 @@ export class DataManageComponent implements OnInit {
           if (node?.getChildren().length === 0) {
             node.addChildren(data);
           }
+         
           // this.dataManageService.setVisibleLightRootNode(this.visibleLight)
         }
       });
@@ -405,7 +459,6 @@ export class DataManageComponent implements OnInit {
                   this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
                     if (HttpResult.succeed(result.code)) {
                       const data = result.data.map((samples: any) => {
-                    
                         return new NzTreeNode({
                           markTitle: samples.data.sampleTypeName,
                           title: samples.data.sampleTypeName + '    ' + samples.imageCount,
@@ -418,7 +471,7 @@ export class DataManageComponent implements OnInit {
                       this.titleData = data;
                       this.currentNode.clearChildren();
                       this.currentNode.addChildren(data);
-                    
+                     
                     }
                   });
                 }
@@ -486,7 +539,6 @@ export class DataManageComponent implements OnInit {
                 this.http.patch(`${environment.API_URL}/v2/sample-oss-types/${currentSampleType.id}/sample-type-name`, {
                   sampleTypeName: newName
                 }).subscribe((result: HttpResult<any>) => {
-
                   if (HttpResult.succeed(result.code)) {
                     this.nzMessage.success('修改成功');
                     this.currentNode.title = newName + '    ' + result.data.imageCount;
