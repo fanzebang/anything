@@ -544,6 +544,10 @@ this.loadSy()
     $.each(this.gMapArr.layers[1].features,function(i,rect){
       if(rect.props.name != "uninterested"){
         delete rect.layer
+        if(!rect.style.stroke){
+          rect.style.globalAlpha =0.2 
+          rect.style.stroke = true }
+       
         featuresArr.push(rect) 
       }
     })
@@ -815,6 +819,7 @@ removeImg(){
 
       let rectFeature = this.gMapArr.layers[1].features[index];
       let textFeature = this.gMapArr.layers[2].texts[index];
+      if(rectFeature.props.name != "uninterested"){
       if(key != index){
         rectFeature.style.stroke = false
         rectFeature.style.globalAlpha = 0
@@ -828,6 +833,7 @@ removeImg(){
       }
   
     }
+  }
      this.gMapArr.refresh()
   }
 

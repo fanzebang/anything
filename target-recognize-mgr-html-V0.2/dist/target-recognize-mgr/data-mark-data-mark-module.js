@@ -531,6 +531,10 @@ class DataMarkComponent {
         $.each(this.gMapArr.layers[1].features, function (i, rect) {
             if (rect.props.name != "uninterested") {
                 delete rect.layer;
+                if (!rect.style.stroke) {
+                    rect.style.globalAlpha = 0.2;
+                    rect.style.stroke = true;
+                }
                 featuresArr.push(rect);
             }
         });
@@ -771,17 +775,19 @@ class DataMarkComponent {
         for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
             let rectFeature = this.gMapArr.layers[1].features[index];
             let textFeature = this.gMapArr.layers[2].texts[index];
-            if (key != index) {
-                rectFeature.style.stroke = false;
-                rectFeature.style.globalAlpha = 0;
-                textFeature.style.fontColor = "rgba(225,225,225,0)";
-                textFeature.style.globalAlpha = 0;
-            }
-            else {
-                rectFeature.style.stroke = true;
-                rectFeature.style.globalAlpha = 0.2;
-                textFeature.style.fontColor = "#fff";
-                textFeature.style.globalAlpha = 1;
+            if (rectFeature.props.name != "uninterested") {
+                if (key != index) {
+                    rectFeature.style.stroke = false;
+                    rectFeature.style.globalAlpha = 0;
+                    textFeature.style.fontColor = "rgba(225,225,225,0)";
+                    textFeature.style.globalAlpha = 0;
+                }
+                else {
+                    rectFeature.style.stroke = true;
+                    rectFeature.style.globalAlpha = 0.2;
+                    textFeature.style.fontColor = "#fff";
+                    textFeature.style.globalAlpha = 1;
+                }
             }
         }
         this.gMapArr.refresh();
