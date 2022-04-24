@@ -33,9 +33,7 @@ export class MarkSampleTreeComponent implements OnInit {
 
 
   private listenKeyboard() {
-
     this.keyboardTreeSubscription = fromEvent(window, 'keydown').subscribe((event: any) => {
-    
       if(event.keyCode == 40){
         if(this.slectNum < this.classList.length-1){
           this.slectNum += 1
@@ -55,7 +53,6 @@ export class MarkSampleTreeComponent implements OnInit {
   }
   removeKeyboard() {
     this.keyboardTreeSubscription.unsubscribe()
-
   }
 
 

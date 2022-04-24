@@ -120,27 +120,17 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
       }else if(event.keyCode  == 46){
         try{
           if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
-
             this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
-  
           }else if(this.gMapArr.getActiveFeature().props.name == "123"){
-  
             var that = this
             let idx:number; 
             let textId = this.gMapArr.getActiveFeature().props.textId;
-          
             $.each(that.drawingRects,function(i,n){
-            
               if(that.drawingRects[i].relatedTextId == textId){
                 idx = i
-               
               }
-           
             })
-       
             this.delRect(idx)
-     
-  
           }
         }catch(e){
           console.log(e)
@@ -154,9 +144,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
         }
       }
     });
-
     this.keyboardUp = fromEvent(window, 'keyup').subscribe((event: any) => {
-
       if(event.keyCode == 32){
         this.gMapArr.setMode("RECT")
       }
@@ -167,6 +155,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   removeKeyboard() {
     this.keyboardSubscription.unsubscribe()
     this.keyboardUp.unsubscribe()
+    this.keyboarChangeFeature.unsubscribe()
   }
 
   ngOnDestroy(): void {
@@ -808,13 +797,57 @@ removeImg(){
     }
   }
   selectClassIndex1 = -1;
+  keyboarChangeFeature:any;
+
+  private keyBoardOfFeature() {
+
+    this.keyboarChangeFeature = fromEvent(window, 'keydown').subscribe((event: any) => {
+      if(event.keyCode == 40){
+        if((this.selectClassIndex1+1) <=0 || (this.selectClassIndex1+1) >= this.gMapArr.layers[1].features.length) return
+        this.labelShowAlone(this.selectClassIndex1+1)
+      }else if(event.keyCode == 38){
+        if((this.selectClassIndex1-1) < 0 || (this.selectClassIndex1-1) >= this.gMapArr.layers[1].features.length) return
+        this.labelShowAlone(this.selectClassIndex1-1)
+      }
+      // if(event.keyCode == 39){
+      //   this.nextAllocFile()
+      // }else if(event.keyCode == 37){
+      //   this.prevAllocFile()
+      // }else if(event.keyCode == 32){
+      //   this.gMapArr.setMode("PAN")
+      // }else if(event.keyCode  == 46){
+      //   try{
+      //     if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
+      //       this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
+      //     }else if(this.gMapArr.getActiveFeature().props.name == "123"){
+      //       var that = this
+      //       let idx:number; 
+      //       let textId = this.gMapArr.getActiveFeature().props.textId;
+      //       $.each(that.drawingRects,function(i,n){
+      //         if(that.drawingRects[i].relatedTextId == textId){
+      //           idx = i
+      //         }
+      //       })
+      //       this.delRect(idx)
+      //     }
+      //   }catch(e){
+      //     console.log(e)
+      //   }
+    
+      // }
+      // if(event.ctrlKey){
+      //   if(event.keyCode == 83){
+      //     event.preventDefault();
+      //     this.saveRect()
+      //   }
+      // }
+    });
+  }
 
   labelShowAlone(key){
-
+    if(!this.keyboarChangeFeature)  this.keyBoardOfFeature()
     this.selectClassIndex1 = key
-
-   let features = []
-   console.log(this.gMapArr)
+    // this.keyBoardOfFeature()
     for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
 
       let rectFeature = this.gMapArr.layers[1].features[index];
@@ -838,6 +871,10 @@ removeImg(){
   }
 
 }
+
+
+
+
 
 
 interface AllotFile {
