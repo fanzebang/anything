@@ -350,7 +350,7 @@ this.loadSy()
             `${+new Date}`, // id
             data, // shape
             {name: '',textId: relatedTextId}, // props
-            {strokeStyle: '#00f', fillStyle: '#0f0', globalAlpha: .3, lineWidth: 1, fill: true, stroke: true} // style
+            {strokeStyle: '#00f', fillStyle: '#0f0', globalAlpha: 0.2, lineWidth: 1, fill: true, stroke: true} // style
         );
         }else{
           feature = new AILabel.Feature.Rect(
@@ -527,6 +527,9 @@ this.loadSy()
     }
   }
 
+
+
+
  
   saveRect(){
     if (this.gMapArr.layers[1].features.length < 1) {
@@ -571,15 +574,8 @@ this.loadSy()
 
     let saveData = JSON.stringify(featuresArr)
  
-
   if(!dataRight) return this.nzMessage.error("保存失败,数据库中未查询到当前分类名");
 
-  var headers:Headers = new Headers({
-    'Content-Type':'application/json;charset=utf-8',
-    'Accept':'*!/'
-  })
-
-  console.log(headers)
     this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_mark_status`,{}, {
       headers:{
         'Content-Type':'application/json;charset=utf-8',
@@ -806,6 +802,33 @@ removeImg(){
     }else{
       this.uninterested = true
     }
+  }
+  selectClassIndex1 = -1;
+
+  labelShowAlone(key){
+
+    this.selectClassIndex1 = key
+
+   let features = []
+   console.log(this.gMapArr)
+    for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
+
+      let rectFeature = this.gMapArr.layers[1].features[index];
+      let textFeature = this.gMapArr.layers[2].texts[index];
+      if(key != index){
+        rectFeature.style.stroke = false
+        rectFeature.style.globalAlpha = 0
+        textFeature.style.fontColor = "rgba(225,225,225,0)"
+        textFeature.style.globalAlpha = 0
+      }else{
+        rectFeature.style.stroke = true
+        rectFeature.style.globalAlpha = 0.2
+        textFeature.style.fontColor = "#fff"
+        textFeature.style.globalAlpha = 1
+      }
+  
+    }
+     this.gMapArr.refresh()
   }
 
 }
