@@ -99,9 +99,11 @@ creatNzModal(that:any,idx:any,fileSample:any){
       
         }
         that.listenKeyboard();
+        that.keyBoardOfFeature()
       },
       nzOnCancel: () => {
         that.listenKeyboard();
+        that.keyBoardOfFeature()
       }
     });
   }

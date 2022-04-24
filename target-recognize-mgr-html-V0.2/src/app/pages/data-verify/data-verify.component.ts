@@ -4,6 +4,7 @@ import {environment} from '../../../environments/environment';
 import {HttpResult, LabelTask, SampleOssFile, StatInfo, User} from '../../core/http-entity';
 import {format} from 'date-fns';
 import { fromEvent } from 'rxjs';
+import {NzMessageService, NzModalService} from "ng-zorro-antd";
 declare var $:any
 declare var AILabel:any;
 @Component({
@@ -40,7 +41,7 @@ export class DataVerifyComponent implements OnInit {
   selectClassIndex:any;
   selectClassIndex1 = -1;
   keyboardVerifySubscription:any;
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private nzMessage: NzMessageService) {
 
   }
 
@@ -128,7 +129,6 @@ export class DataVerifyComponent implements OnInit {
   }
 
   onExpandChange(labelTask: LabelTask, checked: boolean): void {
-    console.log(labelTask,checked)
     if (checked) {
       this.expandSet.add(labelTask.createdBy);
       this.http.get(`${environment.API_URL}/v1/label_task/sample_oss_file/${labelTask.createdBy}`).subscribe((result: HttpResult<SampleOssFile[]>) => {
@@ -159,7 +159,7 @@ export class DataVerifyComponent implements OnInit {
 
 
   creatAILabel(Imgdata:SampleOssFile) :void{
-   
+
     var that = this
     $("#verifyLabel").empty();
     var str = $("#verifyLabel").css("width")
@@ -179,11 +179,6 @@ export class DataVerifyComponent implements OnInit {
         let img = new Image()
         img.src = imgUrl
       
-      
-    console.log(Imgdata)
-   
-      
- 
       if(img.complete) {
       let imgWidth = img.width;
       let imgHeight =  img.height;
@@ -202,7 +197,6 @@ export class DataVerifyComponent implements OnInit {
         labelZoom = imgHeight
         imgHeight = zoomH
       }
-      console.log(Imgdata,imgWidth,imgHeight,zoom,zoomH,mutliple,labelZoom)
 
       this.verifyLabel= new AILabel.Map(`verifyLabel`,{
         center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
@@ -287,16 +281,9 @@ export class DataVerifyComponent implements OnInit {
               testData.style
             );
             that.gfeatureLayer.addFeature(feature);
-            var {x: ltx, y: lty} = feature.shape;
-            var gFirstText = new AILabel.Text(
-              testData.props.textId, // id
-              {text:testData.props.text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
-              {name: '第一个文本对象'}, // props
-              {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
-            );
-            that.verifyLabel.layers[2].addText(gFirstText);
           }
         }
+        this.autoMark(Imgdata.ossKey,mutliple)
         return
         }else{
          setTimeout(()=>{
@@ -308,6 +295,50 @@ export class DataVerifyComponent implements OnInit {
 
   
   }
+
+
+  autoMark(ossKey,mutliple) {
+      this.http.post(`${environment.API_URL}/v1/mark-detect`, {
+        "ossKey": ossKey
+      }).subscribe((result: HttpResult<any>) => {
+        if (HttpResult.succeed(result.code)) {
+          const marks = result.data;
+          if(marks.length == 0){
+            this.nzMessage.error("无法识别");
+          }else{
+            this.nzMessage.success("识别成功");
+            console.log(marks)
+            for (let i = 0; i < marks.length; i++) {
+              const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}${i}`;
+              var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id+"_"+i, 
+                {height:(marks[i].markPolygon.maxY - marks[i].markPolygon.minY)*mutliple,width:(marks[i].markPolygon.maxX - marks[i].markPolygon.minX)*mutliple,x:(marks[i].markPolygon.minX)*mutliple ,y: (marks[i].markPolygon.minY)*mutliple}, 
+                {name:'123',textId: relatedTextId}, 
+                {fill: true,
+                  fillStyle: "#30b1e3",
+                  globalAlpha: .5,
+                  lineWidth: 1,
+                  opacity: 1,
+                  stroke: true,
+                  strokeStyle: "#000"}
+              );
+              this.gfeatureLayer.addFeature(feature)
+              const {x: ltx, y: lty} = feature.shape;
+              const gFirstText = new AILabel.Text(
+                relatedTextId, // id
+                {text:`机器识别-${marks[i].markPolygon.categoryCn}`  , position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
+                {name: '第一个文本对象'}, // props
+                {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
+            );
+            this.verifyLabel.layers[2].addText(gFirstText);     
+            }
+          }
+          console.log(this.verifyLabel)
+          // this.verifyLabel.refresh()
+        }
+      });
+   
+  }
+
 
 
   selectSampleFile(labelTask: LabelTask, sampleFile: SampleOssFile,index:any) {

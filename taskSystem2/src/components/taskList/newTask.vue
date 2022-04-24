@@ -78,19 +78,19 @@ export default {
         rules: {
            name: [
             { required: true, message: '请输入任务名称', trigger: 'blur' },
-            { min: 3, max: 255, message: '长度在 1 到 85 个汉字', trigger: 'blur' }
+            { min: 1, max: 85, message: '长度在 1 到 85 个汉字', trigger: 'blur' }
           ],
           equip:[
              { required: true, message: '请输入侦查装备', trigger: 'blur' },
-            { min: 3, max: 1000, message: '长度在 1 到 330 个汉字', trigger: 'blur' }
+            { min: 1, max: 330, message: '长度在 1 到 330 个汉字', trigger: 'blur' }
           ],
           target:[
              { required: true, message: '请输入任务目标', trigger: 'blur' },
-            { min: 3, max: 1000, message: '长度在 1 到 330 个汉字', trigger: 'blur' }
+            { min: 1, max: 330, message: '长度在 1 到 330 个汉字', trigger: 'blur' }
           ],
           adress:[
               { required: false, message: '请输入任务目标', trigger: 'blur' },
-            { min: 3, max: 600, message: '长度在 1 到 200 个汉字', trigger: 'blur' }
+            { min: 2, max: 200, message: '长度在 1 到 200 个汉字', trigger: 'blur' }
           ],
           bg:[
               { required: false, message: '请输入任务目标', trigger: 'blur' }

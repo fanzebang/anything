@@ -78,7 +78,7 @@
     <div class="audit-pictures">
       <div style="cursor: pointer;" class="audit-picture-item flex-row" *ngFor="let markedRect of markedRects;let key = index" [ngClass]="{'audit-picture-item-active': key == selectClassIndex1}" (click)="changeClassIndex(key)" title="按数字键可快速选择">
         <div class="audit-picture-item-photo" style="flex-basis: auto;">
-          <img style="width: auto;height: 100px" [src]="markedRect.rect | MarkedRectImage : currentSampleFile | async">
+          <img style="width: auto;height: 100px;max-width: 300px" [src]="markedRect.rect | MarkedRectImage : currentSampleFile | async">
           <!-- <img style="width: 100%" [src]="currentSampleFile?.ossKey | ossPath"> -->
         </div>
         <div class="audit-picture-item-text flex-row">类型：<span>{{markedRect.typeId | SampleTypeIdPath | async}}</span></div>

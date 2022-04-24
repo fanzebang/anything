@@ -78,10 +78,10 @@
 
   <div class="annotation-right flex-column">
     <div class="annotation-classifies flex-column">
-      <div class="annotation-title">分类</div>
+      <div class="annotation-title">分类 <button nz-button nzType="primary" nzSize="small" style="margin-left: 10px;" (click)="allFeatures()">全部显示</button> <button nz-button nzDanger nzType="primary" nzSize="small" style="margin-left: 10px;" (click)="allFeaturesHide()">全部隐藏</button></div> 
       <div class="classifies" style="overflow:scroll">
         <div class="classify-item flex-row" *ngFor="let fileSample of drawingRects;index as idx;">
-          <span class="classify-item-desc" [ngClass]="{'classify-item-desc-active': idx == selectClassIndex1}" (click)="labelShowAlone(idx)">{{fileSample.samplePath}}</span>
+          <span class="classify-item-desc" [ngClass]="{'classify-item-desc-active': idx == selectClassIndex1,'classify-item-desc-hiden': featuresAllHiden}" (click)="labelShowAlone(idx)">{{fileSample.samplePath}}</span>
           <span class="amanisky amani-edit" (click)="editRect(idx,fileSample)"></span>
           <span class="amanisky amani-delete" (click)="delRect(idx)"></span>
         </div>

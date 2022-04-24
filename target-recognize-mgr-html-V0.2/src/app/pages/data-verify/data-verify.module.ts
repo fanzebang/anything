@@ -1,14 +1,13 @@
 import {NgModule} from '@angular/core';
-import {NzDatePickerModule, NzProgressModule, NzSelectModule, NzTableModule,NzButtonModule} from 'ng-zorro-antd';
+import {NzDatePickerModule, NzProgressModule, NzSelectModule, NzTableModule,NzButtonModule,NzMessageModule} from 'ng-zorro-antd';
 import {DataVerifyComponent} from './data-verify.component';
 import {DataVerifyRoutingModule} from './data-verify-routing.module';
 import {CommonModule} from "@angular/common";
 import {AppCommonModule} from "../../core/app-common.module";
 import {FormsModule} from '@angular/forms';
 
-
 const APP_MODULES = [AppCommonModule];
-const NZ_MODULES = [NzTableModule, NzDatePickerModule, NzSelectModule, NzProgressModule,NzButtonModule];
+const NZ_MODULES = [NzTableModule, NzDatePickerModule, NzSelectModule, NzProgressModule,NzButtonModule,NzMessageModule];
 const NG_MODULES = [CommonModule];
 
 @NgModule({

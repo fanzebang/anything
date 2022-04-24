@@ -155,8 +155,10 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   removeKeyboard() {
     this.keyboardSubscription.unsubscribe()
     this.keyboardUp.unsubscribe()
-    this.keyboarChangeFeature.unsubscribe()
+    if(this.keyboarChangeFeature) this.keyboarChangeFeature.unsubscribe()
   }
+
+ 
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
@@ -691,7 +693,9 @@ removeImg(){
   }
   delRect(idx: number) {
    
-    console.log(idx,this.gMapArr.layers[1].features)
+    // console.log(idx,this.gMapArr.layers[1].features,this.selectClassIndex1)
+    if(idx == this.selectClassIndex1) this.labelShowAlone(this.selectClassIndex1-1)
+
     this.gfeatureLayer.removeFeatureById(this.gMapArr.layers[1].features[idx].id);
 
     // 删除对应text
@@ -709,7 +713,8 @@ removeImg(){
     localStorage.setItem("markData",JSON.stringify(this.drawingRects[idx].markData))
     //oo
     this.gMapArr.getActiveFeature()
-    this.keyboardSubscription.unsubscribe()
+    // this.keyboardSubscription.unsubscribe()
+    this.removeKeyboard() 
     this.dataMarkService.creatNzModal(this,idx,fileSample)
   }
 
@@ -742,7 +747,7 @@ removeImg(){
                 {name:'123',textId: relatedTextId}, 
                 {fill: true,
                   fillStyle: "#0f0",
-                  globalAlpha: 0,
+                  globalAlpha: 0.2,
                   lineWidth: 1,
                   opacity: 1,
                   stroke: true,
@@ -809,47 +814,56 @@ removeImg(){
         if((this.selectClassIndex1-1) < 0 || (this.selectClassIndex1-1) >= this.gMapArr.layers[1].features.length) return
         this.labelShowAlone(this.selectClassIndex1-1)
       }
-      // if(event.keyCode == 39){
-      //   this.nextAllocFile()
-      // }else if(event.keyCode == 37){
-      //   this.prevAllocFile()
-      // }else if(event.keyCode == 32){
-      //   this.gMapArr.setMode("PAN")
-      // }else if(event.keyCode  == 46){
-      //   try{
-      //     if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
-      //       this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
-      //     }else if(this.gMapArr.getActiveFeature().props.name == "123"){
-      //       var that = this
-      //       let idx:number; 
-      //       let textId = this.gMapArr.getActiveFeature().props.textId;
-      //       $.each(that.drawingRects,function(i,n){
-      //         if(that.drawingRects[i].relatedTextId == textId){
-      //           idx = i
-      //         }
-      //       })
-      //       this.delRect(idx)
-      //     }
-      //   }catch(e){
-      //     console.log(e)
-      //   }
-    
-      // }
-      // if(event.ctrlKey){
-      //   if(event.keyCode == 83){
-      //     event.preventDefault();
-      //     this.saveRect()
-      //   }
-      // }
     });
   }
 
+  featuresAllHiden:boolean = false
+  allFeaturesHide(){
+    this.labelShowAlone(-1)
+    this.featuresAllHiden = true
+    if(this.keyboarChangeFeature || !this.keyboarChangeFeature.closed)  this.keyboarChangeFeature.unsubscribe()
+    for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
+      let rectFeature = this.gMapArr.layers[1].features[index];
+      let textFeature = this.gMapArr.layers[2].texts[index];
+      if(rectFeature.props.name != "uninterested"){
+        if(rectFeature.style.stroke == true){
+          rectFeature.style.stroke = false
+          rectFeature.style.globalAlpha = 0
+          textFeature.style.fontColor = "rgba(225,225,225,0)"
+          textFeature.style.globalAlpha = 0
+        }
+    }
+  }
+  this.gMapArr.refresh()
+
+  }
+
+
+  allFeatures(){
+    this.featuresAllHiden = false
+    this.labelShowAlone(-1)
+    if(this.keyboarChangeFeature || !this.keyboarChangeFeature.closed)  this.keyboarChangeFeature.unsubscribe()
+    for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
+      let rectFeature = this.gMapArr.layers[1].features[index];
+      let textFeature = this.gMapArr.layers[2].texts[index];
+      if(rectFeature.props.name != "uninterested"){
+        if(rectFeature.style.stroke == false){
+          rectFeature.style.stroke = true
+          rectFeature.style.globalAlpha = 0.2
+          textFeature.style.fontColor = "#fff"
+          textFeature.style.globalAlpha = 1
+        }
+    }
+  }
+  this.gMapArr.refresh()
+}
+
   labelShowAlone(key){
-    if(!this.keyboarChangeFeature)  this.keyBoardOfFeature()
+    this.featuresAllHiden = false
+    if(!this.keyboarChangeFeature || this.keyboarChangeFeature.closed)  this.keyBoardOfFeature()
     this.selectClassIndex1 = key
     // this.keyBoardOfFeature()
     for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
-
       let rectFeature = this.gMapArr.layers[1].features[index];
       let textFeature = this.gMapArr.layers[2].texts[index];
       if(rectFeature.props.name != "uninterested"){
