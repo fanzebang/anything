@@ -11302,8 +11302,9 @@ function DataVerifyComponent_button_40_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
 class DataVerifyComponent {
-    constructor(http) {
+    constructor(http, nzMessage) {
         this.http = http;
+        this.nzMessage = nzMessage;
         this.listOfData = [];
         this.expandSet = new Set();
         this.markedRects = [];
@@ -11315,32 +11316,32 @@ class DataVerifyComponent {
         this.selectClassIndex1 = -1;
     }
     listenKeyboard() {
-        // 49 == 1
         this.keyboardVerifySubscription = Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["fromEvent"])(window, 'keydown').subscribe((event) => {
-            // console.log(event.keyCode,this.markedRects)
-            for (let index = 0; index < this.markedRects.length; index++) {
-                // const element = this.markedRects[index];
-                if (event.keyCode == 49 + index) {
-                    this.changeClassIndex(index);
-                }
+            if (event.keyCode == 38) {
+                if (this.selectClassIndex1 - 1 >= 0)
+                    this.changeClassIndex(this.selectClassIndex1 - 1);
             }
-            // if(event.keyCode == 40){
-            //   this.slectNum += 1
-            // }else if(event.keyCode == 38){
-            //   this.slectNum -= 1
-            // }else if(event.keyCode == 13){
-            //   this.selectClass(this.classList[this.slectNum])
-            // }
+            else if (event.keyCode == 40) {
+                let featuresLength = 0;
+                for (let index = 0; index < this.verifyLabel.layers[1].features.length; index++) {
+                    const element = this.verifyLabel.layers[1].features[index];
+                    if (element.props.name != "auto") {
+                        featuresLength++;
+                    }
+                }
+                if (this.selectClassIndex1 + 1 < featuresLength)
+                    this.changeClassIndex(this.selectClassIndex1 + 1);
+            }
         });
     }
     ngOnInit() {
         this.search(true);
-        this.listenKeyboard();
     }
     ngOnDestroy() {
         //Called once, before the instance is destroyed.
         //Add 'implements OnDestroy' to the class.
-        this.keyboardVerifySubscription.unsubscribe();
+        if (this.keyboardVerifySubscription)
+            this.keyboardVerifySubscription.unsubscribe();
     }
     sorLIstOfData() {
         let nuserNmae = JSON.parse(localStorage.getItem("userInfo"));
@@ -11360,23 +11361,64 @@ class DataVerifyComponent {
         this.search(true);
     }
     changeClassIndex(key) {
+        if (!this.keyboardVerifySubscription || this.keyboardVerifySubscription.closed == true)
+            this.listenKeyboard();
         $(".audit-picture-item").removeClass('audit-picture-item-active');
-        this.selectClassIndex1 = key;
-        this.verifyLabel.layers[1].removeAllFeatures();
-        this.verifyLabel.layers[2].removeAllTexts();
         var testData = this.gCoordinateData[key];
-        var feature = new AILabel.Feature.Rect(testData.type_id, testData.shape, testData.props, testData.style);
-        this.gfeatureLayer.addFeature(feature);
-        var { x: ltx, y: lty } = feature.shape;
-        var gFirstText = new AILabel.Text(testData.props.textId, // id
-        { text: testData.props.text, position: { x: ltx, y: lty }, offset: { x: 0, y: 0 } }, // shape, 左上角
-        { name: '第一个文本对象' }, // props
-        { fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff' } // style
-        );
-        this.verifyLabel.layers[2].addText(gFirstText);
+        this.selectClassIndex1 = key;
+        for (let index = 0; index < this.verifyLabel.layers[1].features.length; index++) {
+            let rectFeature = this.verifyLabel.layers[1].features[index];
+            // console.log(rectFeature)
+            if (rectFeature.props.name != "auto") {
+                if (key != index) {
+                    rectFeature.style.stroke = false;
+                    rectFeature.style.globalAlpha = 0;
+                }
+                else {
+                    rectFeature.style.stroke = testData.style.stroke;
+                    rectFeature.style.globalAlpha = testData.style.globalAlpha;
+                }
+            }
+            else {
+                let box1 = this.verifyLabel.layers[1].features[this.selectClassIndex1].shape;
+                let box2 = rectFeature.shape;
+                let x_inter1 = Math.max(box1.x, box2.x);
+                let y_inter1 = Math.max(box1.y, box2.y);
+                let x_inter2 = Math.min(box1.x + box1.width, box2.x + box2.width);
+                let y_inter2 = Math.min(box1.y + box1.height, box2.y + box2.height);
+                let interArea = Math.max(0, x_inter2 - x_inter1 + 1) * Math.max(0, y_inter2 - y_inter1 + 1);
+                let area_box1 = (box1.width + 1) * (box1.height + 1);
+                let area_box2 = (box2.width + 1) * (box2.height + 1);
+                let iou = interArea / (area_box1 + area_box2 - interArea) * 100;
+                let autoRectFeatureId = rectFeature.id.replace("_", "");
+                let autoTextHiden = false;
+                if (iou < 80) {
+                    rectFeature.style.stroke = false;
+                    autoTextHiden = true;
+                }
+                else {
+                    rectFeature.style.stroke = true;
+                    autoTextHiden = false;
+                }
+                for (let j = 0; j < this.verifyLabel.layers[2].texts.length; j++) {
+                    let autoText = this.verifyLabel.layers[2].texts[j];
+                    let autoTextFeatureId = autoText.id.match(/\d+/);
+                    if (autoRectFeatureId == autoTextFeatureId[0]) {
+                        if (autoTextHiden) {
+                            autoText.style.fontColor = "rgba(225,225,225,0)";
+                            autoText.style.globalAlpha = 0;
+                        }
+                        else {
+                            autoText.style.fontColor = "#fff";
+                            autoText.style.globalAlpha = 1;
+                        }
+                    }
+                }
+            }
+        }
+        this.verifyLabel.refresh();
     }
     onExpandChange(labelTask, checked) {
-        console.log(labelTask, checked);
         if (checked) {
             this.expandSet.add(labelTask.createdBy);
             this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].API_URL}/v1/label_task/sample_oss_file/${labelTask.createdBy}`).subscribe((result) => {
@@ -11425,7 +11467,6 @@ class DataVerifyComponent {
         }
         let img = new Image();
         img.src = imgUrl;
-        console.log(Imgdata);
         if (img.complete) {
             let imgWidth = img.width;
             let imgHeight = img.height;
@@ -11445,7 +11486,6 @@ class DataVerifyComponent {
                 labelZoom = imgHeight;
                 imgHeight = zoomH;
             }
-            console.log(Imgdata, imgWidth, imgHeight, zoom, zoomH, mutliple, labelZoom);
             this.verifyLabel = new AILabel.Map(`verifyLabel`, {
                 center: { x: imgWidth / 2, y: imgHeight / 2 },
                 zoom: labelZoom * 1.3,
@@ -11509,15 +11549,9 @@ class DataVerifyComponent {
                     testData.shape.height = testData.shape.height * mutliple;
                     var feature = new AILabel.Feature.Rect(testData.type_id, testData.shape, testData.props, testData.style);
                     that.gfeatureLayer.addFeature(feature);
-                    var { x: ltx, y: lty } = feature.shape;
-                    var gFirstText = new AILabel.Text(testData.props.textId, // id
-                    { text: testData.props.text, position: { x: ltx, y: lty }, offset: { x: 0, y: 0 } }, // shape, 左上角
-                    { name: '第一个文本对象' }, // props
-                    { fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff' } // style
-                    );
-                    that.verifyLabel.layers[2].addText(gFirstText);
                 }
             }
+            this.autoMark(Imgdata.ossKey, mutliple);
             return;
         }
         else {
@@ -11525,6 +11559,40 @@ class DataVerifyComponent {
                 this.creatAILabel(Imgdata);
             }, 200);
         }
+    }
+    autoMark(ossKey, mutliple) {
+        this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].API_URL}/v1/mark-detect`, {
+            "ossKey": ossKey
+        }).subscribe((result) => {
+            if (_core_http_entity__WEBPACK_IMPORTED_MODULE_2__["HttpResult"].succeed(result.code)) {
+                const marks = result.data;
+                if (marks.length == 0) {
+                    this.nzMessage.error("无法识别");
+                }
+                else {
+                    this.nzMessage.success("识别成功");
+                    console.log(marks);
+                    for (let i = 0; i < marks.length; i++) {
+                        const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}${i}`;
+                        var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id + "_" + i, { height: (marks[i].markPolygon.maxY - marks[i].markPolygon.minY) * mutliple, width: (marks[i].markPolygon.maxX - marks[i].markPolygon.minX) * mutliple, x: (marks[i].markPolygon.minX) * mutliple, y: (marks[i].markPolygon.minY) * mutliple }, { name: 'auto', textId: relatedTextId }, { fill: true,
+                            fillStyle: "#30b1e3",
+                            globalAlpha: 0,
+                            lineWidth: 1,
+                            opacity: 1,
+                            stroke: true,
+                            strokeStyle: "red" });
+                        this.gfeatureLayer.addFeature(feature);
+                        const { x: ltx, y: lty } = feature.shape;
+                        const gFirstText = new AILabel.Text(relatedTextId, // id
+                        { text: `机器识别-${marks[i].markPolygon.categoryCn}`, position: { x: ltx, y: lty }, offset: { x: 0, y: 0 } }, // shape, 左上角
+                        { name: 'auto' }, // props
+                        { fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff' } // style
+                        );
+                        this.verifyLabel.layers[2].addText(gFirstText);
+                    }
+                }
+            }
+        });
     }
     selectSampleFile(labelTask, sampleFile, index) {
         this.currentLabelTask = labelTask;
@@ -11552,7 +11620,8 @@ class DataVerifyComponent {
                 });
             }
         }
-        // console.log(this.selectClassIndex,index)
+        if (this.keyboardVerifySubscription)
+            this.keyboardVerifySubscription.unsubscribe();
     }
     markErrorOrCorrect(enumMarkStatus) {
         if (this.currentLabelTask) {
@@ -11655,8 +11724,8 @@ class DataVerifyComponent {
         });
     }
 }
-DataVerifyComponent.ɵfac = function DataVerifyComponent_Factory(t) { return new (t || DataVerifyComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"])); };
-DataVerifyComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataVerifyComponent, selectors: [["ng-component"]], decls: 41, vars: 9, consts: [[1, "flex-row"], [1, "audit-left", "flex-column"], [1, "search-form", "flex-row", 2, "position", "relative"], [2, "position", "relative", "left", "25px"], ["for", "datePice", 2, "color", "#fff"], ["name", "datePice", 1, "blue-datepicker", 2, "position", "relative", "left", "20px", 3, "ngModel", "ngModelChange"], ["nz-button", "", "nzType", "primary", 2, "position", "absolute", "right", "10px", "width", "100px", 3, "click"], [1, "audit-table-box"], ["nzTableLayout", "fixed", 1, "blue-table", 3, "nzData", "nzShowPagination"], ["auditTable", ""], ["nzWidth", "60px"], [4, "ngFor", "ngForOf"], [1, "audit-right", "flex-column"], [1, "audit-picture", "flex-row"], ["id", "verifyLabel"], [1, "audit-pictures"], ["style", "cursor: pointer;", "class", "audit-picture-item flex-row", "title", "\u6309\u6570\u5B57\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "audit-operate"], ["class", "btn btn-remove m-r", 3, "click", 4, "ngIf"], ["class", "btn", 3, "click", 4, "ngIf"], ["class", "btn btn-remove m-r", 4, "ngIf"], ["class", "btn", 4, "ngIf"], [3, "nzExpand", "nzExpandChange"], [3, "nzPercent"], [3, "nzExpand"], ["class", "audit-image-wrap", 4, "ngIf"], [1, "audit-image-wrap"], [3, "current-sample", "click", 4, "ngFor", "ngForOf"], [3, "click"], [3, "src"], [2, "margin", "0", "text-align", "center", "width", "100%"], ["title", "\u6309\u6570\u5B57\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 1, "audit-picture-item", "flex-row", 2, "cursor", "pointer", 3, "ngClass", "click"], [1, "audit-picture-item-photo", 2, "flex-basis", "auto"], [2, "width", "auto", "height", "100px", 3, "src"], [1, "audit-picture-item-text", "flex-row"], [1, "audit-picture-item-text", "flex-row", "classId", 2, "display", "none"], [1, "btn", "btn-remove", "m-r", 3, "click"], [1, "btn", 3, "click"], [1, "btn", "btn-remove", "m-r"], [1, "btn"]], template: function DataVerifyComponent_Template(rf, ctx) { if (rf & 1) {
+DataVerifyComponent.ɵfac = function DataVerifyComponent_Factory(t) { return new (t || DataVerifyComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ng_zorro_antd__WEBPACK_IMPORTED_MODULE_6__["NzMessageService"])); };
+DataVerifyComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataVerifyComponent, selectors: [["ng-component"]], decls: 41, vars: 9, consts: [[1, "flex-row"], [1, "audit-left", "flex-column"], [1, "search-form", "flex-row", 2, "position", "relative"], [2, "position", "relative", "left", "25px"], ["for", "datePice", 2, "color", "#fff"], ["name", "datePice", 1, "blue-datepicker", 2, "position", "relative", "left", "20px", 3, "ngModel", "ngModelChange"], ["nz-button", "", "nzType", "primary", 2, "position", "absolute", "right", "10px", "width", "100px", 3, "click"], [1, "audit-table-box"], ["nzTableLayout", "fixed", 1, "blue-table", 3, "nzData", "nzShowPagination"], ["auditTable", ""], ["nzWidth", "60px"], [4, "ngFor", "ngForOf"], [1, "audit-right", "flex-column"], [1, "audit-picture", "flex-row"], ["id", "verifyLabel"], [1, "audit-pictures"], ["style", "cursor: pointer;", "class", "audit-picture-item flex-row", "title", "\u6309\u6570\u5B57\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "audit-operate"], ["class", "btn btn-remove m-r", 3, "click", 4, "ngIf"], ["class", "btn", 3, "click", 4, "ngIf"], ["class", "btn btn-remove m-r", 4, "ngIf"], ["class", "btn", 4, "ngIf"], [3, "nzExpand", "nzExpandChange"], [3, "nzPercent"], [3, "nzExpand"], ["class", "audit-image-wrap", 4, "ngIf"], [1, "audit-image-wrap"], [3, "current-sample", "click", 4, "ngFor", "ngForOf"], [3, "click"], [3, "src"], [2, "margin", "0", "text-align", "center", "width", "100%"], ["title", "\u6309\u6570\u5B57\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 1, "audit-picture-item", "flex-row", 2, "cursor", "pointer", 3, "ngClass", "click"], [1, "audit-picture-item-photo", 2, "flex-basis", "auto"], [2, "width", "auto", "height", "100px", "max-width", "300px", 3, "src"], [1, "audit-picture-item-text", "flex-row"], [1, "audit-picture-item-text", "flex-row", "classId", 2, "display", "none"], [1, "btn", "btn-remove", "m-r", 3, "click"], [1, "btn", 3, "click"], [1, "btn", "btn-remove", "m-r"], [1, "btn"]], template: function DataVerifyComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);
@@ -11747,7 +11816,7 @@ DataVerifyComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefi
                 templateUrl: './data-verify.component.html',
                 styleUrls: ['./data-verify.component.less', './audit.less']
             }]
-    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"] }]; }, null); })();
+    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"] }, { type: ng_zorro_antd__WEBPACK_IMPORTED_MODULE_6__["NzMessageService"] }]; }, null); })();
 
 
 /***/ }),
@@ -11778,13 +11847,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const APP_MODULES = [_core_app_common_module__WEBPACK_IMPORTED_MODULE_5__["AppCommonModule"]];
-const NZ_MODULES = [ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzTableModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzDatePickerModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzSelectModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzProgressModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzButtonModule"]];
+const NZ_MODULES = [ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzTableModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzDatePickerModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzSelectModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzProgressModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzButtonModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzMessageModule"]];
 const NG_MODULES = [_angular_common__WEBPACK_IMPORTED_MODULE_4__["CommonModule"]];
 class DataVerifyModule {
 }
 DataVerifyModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: DataVerifyModule });
 DataVerifyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function DataVerifyModule_Factory(t) { return new (t || DataVerifyModule)(); }, imports: [[_data_verify_routing_module__WEBPACK_IMPORTED_MODULE_3__["DataVerifyRoutingModule"], ...NZ_MODULES, ...NG_MODULES, ...APP_MODULES, _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormsModule"]]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](DataVerifyModule, { declarations: [_data_verify_component__WEBPACK_IMPORTED_MODULE_2__["DataVerifyComponent"]], imports: [_data_verify_routing_module__WEBPACK_IMPORTED_MODULE_3__["DataVerifyRoutingModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzTableModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzDatePickerModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzSelectModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzProgressModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzButtonModule"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["CommonModule"], _core_app_common_module__WEBPACK_IMPORTED_MODULE_5__["AppCommonModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormsModule"]] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](DataVerifyModule, { declarations: [_data_verify_component__WEBPACK_IMPORTED_MODULE_2__["DataVerifyComponent"]], imports: [_data_verify_routing_module__WEBPACK_IMPORTED_MODULE_3__["DataVerifyRoutingModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzTableModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzDatePickerModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzSelectModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzProgressModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzButtonModule"], ng_zorro_antd__WEBPACK_IMPORTED_MODULE_1__["NzMessageModule"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["CommonModule"], _core_app_common_module__WEBPACK_IMPORTED_MODULE_5__["AppCommonModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](DataVerifyModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{

@@ -47,30 +47,20 @@ export class DataVerifyComponent implements OnInit {
 
 
   private listenKeyboard() {
-    // 49 == 1
+
     this.keyboardVerifySubscription = fromEvent(window, 'keydown').subscribe((event: any) => {
-    
-      // console.log(event.keyCode,this.markedRects)
-
-      for (let index = 0; index < this.markedRects.length; index++) {
-        // const element = this.markedRects[index];
-
-        if(event.keyCode == 49+index){
-        
-          this.changeClassIndex(index)
-      
+        if(event.keyCode == 38){
+          if(this.selectClassIndex1-1>=0)this.changeClassIndex(this.selectClassIndex1-1)
+        }else if(event.keyCode == 40){
+          let featuresLength = 0;
+          for (let index = 0; index < this.verifyLabel.layers[1].features.length; index++) {
+            const element = this.verifyLabel.layers[1].features[index];
+              if(element.props.name != "auto"){
+                featuresLength++
+              }
+          }
+          if(this.selectClassIndex1+1<featuresLength)this.changeClassIndex(this.selectClassIndex1+1)
         }
-
-        
-      }
-      
-      // if(event.keyCode == 40){
-      //   this.slectNum += 1
-      // }else if(event.keyCode == 38){
-      //   this.slectNum -= 1
-      // }else if(event.keyCode == 13){
-      //   this.selectClass(this.classList[this.slectNum])
-      // }
     });
   }
 
@@ -78,13 +68,13 @@ export class DataVerifyComponent implements OnInit {
 
   ngOnInit(): void {
     this.search(true)
-    this.listenKeyboard()
+  
   }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    this.keyboardVerifySubscription.unsubscribe();
+    if(this.keyboardVerifySubscription)  this.keyboardVerifySubscription.unsubscribe();
   }
 
   sorLIstOfData(){
@@ -106,26 +96,64 @@ export class DataVerifyComponent implements OnInit {
   }
 
   changeClassIndex(key:any){
+    if(!this.keyboardVerifySubscription || this.keyboardVerifySubscription.closed == true)  this.listenKeyboard()
       $(".audit-picture-item").removeClass('audit-picture-item-active')
+      var testData = this.gCoordinateData[key];
       this.selectClassIndex1 = key
-      this.verifyLabel.layers[1].removeAllFeatures()
-      this.verifyLabel.layers[2].removeAllTexts()
-          var testData = this.gCoordinateData[key];
-          var feature:any = new AILabel.Feature.Rect(
-            testData.type_id, 
-            testData.shape, 
-            testData.props, 
-            testData.style
-          );
-          this.gfeatureLayer.addFeature(feature);
-          var {x: ltx, y: lty} = feature.shape;
-          var gFirstText = new AILabel.Text(
-            testData.props.textId, // id
-            {text: testData.props.text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
-            {name: '第一个文本对象'}, // props
-            {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
-          );
-          this.verifyLabel.layers[2].addText(gFirstText);
+      for (let index = 0; index < this.verifyLabel.layers[1].features.length; index++) {
+        let rectFeature = this.verifyLabel.layers[1].features[index];
+        // console.log(rectFeature)
+      if(rectFeature.props.name != "auto"){
+
+        if(key != index){
+          rectFeature.style.stroke = false
+          rectFeature.style.globalAlpha = 0
+        }else{
+          rectFeature.style.stroke = testData.style.stroke 
+          rectFeature.style.globalAlpha = testData.style.globalAlpha
+        }
+    
+      }else{
+        let box1 = this.verifyLabel.layers[1].features[this.selectClassIndex1].shape
+        let box2 = rectFeature.shape
+        let x_inter1 =  Math.max(box1.x,box2.x)
+        let y_inter1 = Math.max(box1.y,box2.y)
+        let x_inter2 = Math.min(box1.x+box1.width,box2.x+box2.width)
+        let y_inter2 = Math.min(box1.y+box1.height,box2.y+box2.height)
+        let interArea = Math.max(0,x_inter2-x_inter1+1)*Math.max(0,y_inter2-y_inter1+1)
+        let area_box1 = (box1.width+1)*(box1.height+1)
+        let area_box2 = (box2.width+1)*(box2.height+1)
+        let iou = interArea/(area_box1+area_box2-interArea)*100
+        let autoRectFeatureId = rectFeature.id.replace("_","")
+        let autoTextHiden = false;
+        if(iou < 80){
+          rectFeature.style.stroke = false
+          autoTextHiden = true
+      
+        }else{
+          rectFeature.style.stroke = true
+          autoTextHiden = false
+        }
+
+        for (let j = 0; j < this.verifyLabel.layers[2].texts.length; j++) {
+          let autoText = this.verifyLabel.layers[2].texts[j];
+          let autoTextFeatureId = autoText.id.match(/\d+/)
+          if(autoRectFeatureId == autoTextFeatureId[0]){ 
+            if(autoTextHiden){
+              autoText.style.fontColor = "rgba(225,225,225,0)"
+              autoText.style.globalAlpha = 0
+            }else{
+              autoText.style.fontColor = "#fff"
+              autoText.style.globalAlpha = 1
+            }
+           }
+        }
+
+
+      }
+    }
+       this.verifyLabel.refresh()
+
   }
 
   onExpandChange(labelTask: LabelTask, checked: boolean): void {
@@ -238,7 +266,6 @@ export class DataVerifyComponent implements OnInit {
         {zIndex: 12, opacity: 1} // style
       );
       that.verifyLabel.addLayer(that.gFirstTextLayer);
-
         try{
           for (let i = 0; i < coordinateData1.length; i++) {
             var testData = coordinateData1[i];
@@ -312,28 +339,26 @@ export class DataVerifyComponent implements OnInit {
               const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}${i}`;
               var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id+"_"+i, 
                 {height:(marks[i].markPolygon.maxY - marks[i].markPolygon.minY)*mutliple,width:(marks[i].markPolygon.maxX - marks[i].markPolygon.minX)*mutliple,x:(marks[i].markPolygon.minX)*mutliple ,y: (marks[i].markPolygon.minY)*mutliple}, 
-                {name:'123',textId: relatedTextId}, 
+                {name:'auto',textId: relatedTextId}, 
                 {fill: true,
                   fillStyle: "#30b1e3",
-                  globalAlpha: .5,
+                  globalAlpha: 0,
                   lineWidth: 1,
                   opacity: 1,
                   stroke: true,
-                  strokeStyle: "#000"}
+                  strokeStyle: "red"}
               );
               this.gfeatureLayer.addFeature(feature)
               const {x: ltx, y: lty} = feature.shape;
               const gFirstText = new AILabel.Text(
                 relatedTextId, // id
                 {text:`机器识别-${marks[i].markPolygon.categoryCn}`  , position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
-                {name: '第一个文本对象'}, // props
+                {name: 'auto'}, // props
                 {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
             );
             this.verifyLabel.layers[2].addText(gFirstText);     
             }
           }
-          console.log(this.verifyLabel)
-          // this.verifyLabel.refresh()
         }
       });
    
@@ -366,12 +391,7 @@ export class DataVerifyComponent implements OnInit {
           });
         }
       }
-
-    
-      // console.log(this.selectClassIndex,index)
-     
-    
-
+      if( this.keyboardVerifySubscription )  this.keyboardVerifySubscription.unsubscribe();
   }
 
   markErrorOrCorrect(enumMarkStatus: string) {
