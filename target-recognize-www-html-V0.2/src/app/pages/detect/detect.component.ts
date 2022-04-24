@@ -11,6 +11,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {VideoState, VideoStateModel} from '../../state/video.state';
 import {VideoAction} from '../../state/video.action';
 import {WebsocketService} from "../../core/websocket.service";
+import axios from 'axios';
 
 
 declare var $:any;
@@ -117,29 +118,61 @@ export class DetectComponent implements OnInit, OnDestroy {
           }
         }else if(paramMap.has('textSearch')){
           let imgtext = paramMap.get('textSearch')
-          // 文字搜图
-          this.http.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
-          }).subscribe((result:any) => {
-            if (HttpResult.succeed(result.code)) {
+          console.log(imgtext)
+          axios.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
+            headers: {
+              'Authorization':'Bearer 123456',
+              // 'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+              'TR-Role': 'TR-Api'
+            }
+          })
+          .then((result) => {
              var that = this
               $(".content-right").css("display","none")
               $(".effect").css("display","none")
-              $(".similar-title")[0].innerHTML =`查询到的图片 共${result.data.length}张`
+              $(".similar-title")[0].innerHTML =`查询到的图片 共${result.data.data.length}张`
               $(".content-bottom").css("overflow","auto")
               $(".content-bottom").css("min-height","100%")
               $(".similar").css("min-height","100%")
               $(".effect-content, .similar-content").css("flex","0 0 auto")
-              $.each(result.data,function(i,n){
+              $.each(result.data.data,function(i,n){
                 that.similarTargets.push({
-                  ossKey: n.split("sample-resource/")[1]
+                  ossKey: JSON.parse(n).url.split("sample-resource/")[1]
                 })
               })  
               setTimeout(()=>{
                 ImagePreview.removed()
                 ImagePreview.init({id:$("#similarImg img")})
               },300)  
-            }
-          });
+        
+          })
+          .catch(e=>{
+            console.log(e)
+          })
+         
+          // 文字搜图
+          // this.http.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
+          // }).subscribe((result:any) => {
+          //   if (HttpResult.succeed(result.code)) {
+          //    var that = this
+          //     $(".content-right").css("display","none")
+          //     $(".effect").css("display","none")
+          //     $(".similar-title")[0].innerHTML =`查询到的图片 共${result.data.length}张`
+          //     $(".content-bottom").css("overflow","auto")
+          //     $(".content-bottom").css("min-height","100%")
+          //     $(".similar").css("min-height","100%")
+          //     $(".effect-content, .similar-content").css("flex","0 0 auto")
+          //     $.each(result.data,function(i,n){
+          //       that.similarTargets.push({
+          //         ossKey: n.split("sample-resource/")[1]
+          //       })
+          //     })  
+          //     setTimeout(()=>{
+          //       ImagePreview.removed()
+          //       ImagePreview.init({id:$("#similarImg img")})
+          //     },300)  
+          //   }
+          // });
         }
       });
    }

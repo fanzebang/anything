@@ -288,7 +288,6 @@ batchDiscern(isDetailOpen:any){
     this.winboxData.modalData.list.total = data.data.data.total
     if(this.winboxData.modalData.list.total>0){$(".ant-table-placeholder").css("display","none")}
     document.querySelector("#modal-container > div > div > div.digital > nz-table > nz-spin > div > div > nz-table-inner-scroll > div > div.ant-table-body.ng-star-inserted").scrollTop = 0
-
   })
   .catch(e=>{
     // if(e.response.status == 401){
