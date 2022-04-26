@@ -85,6 +85,7 @@ export class DataManageService {
    }
 
 loadSarTree(dataManage) {
+
     const httpParams = new HttpParams().append('sampleTypeName', this.type.SAR);
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
@@ -209,9 +210,28 @@ serchImageCount(samplePath,title,tree){
 
 for (let index = 0; index < samplePath.length; index++) {
     const element = samplePath[index];
+
   if(element == title && element != "可见光"  && element != "SAR"  && element != "遥感" && element != "红外"){
-  let key:any = tree.parentNode.key*1
-   let params = new HttpParams().append('sampleUpId', key);
+  let key:any = tree.parentNode.key
+
+   let params 
+   switch (tree.parentNode.key) {
+       case 'KJG': params= new HttpParams().append('sampleTypeName', key);
+       break;
+       case 'SAR': params= new HttpParams().append('sampleTypeName', key);
+       break;
+       case 'HY': params= new HttpParams().append('sampleTypeName', key);
+       break;
+       case 'YG': params= new HttpParams().append('sampleTypeName', key);
+       break;
+      default: 
+      var k:any = key*1; 
+      params= new HttpParams().append('sampleUpId', k);
+       break;
+   }
+   
+  
+ 
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
     if (HttpResult.succeed(result.code)) {
         for (let index = 0; index < result.data.length; index++) {
@@ -238,7 +258,7 @@ changeTree(tree,samplePath){
 }
 
   delect(data1:any,data2:any){
-  
+
     let samplePath = this.trimSpace(data2.samplePath.split('/'))
     // samplePath.shift()
     this.num = data1;
@@ -260,6 +280,7 @@ changeTree(tree,samplePath){
       httpParams = new HttpParams().append('sampleTypeName', this.type.HW);
       this.changeTree(this.infrared[0],samplePath)
     }
+
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
     

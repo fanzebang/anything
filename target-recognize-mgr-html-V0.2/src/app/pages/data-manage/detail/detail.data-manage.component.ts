@@ -548,7 +548,9 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
             if (this.sampleOssFiles[i].id === this.imageId) {
               if (i === 0 && this.sampleOssFiles.length === 1) {
                 // this.route.
+               
                 this.router.navigate(['../leaf', {'sampleUpId': this.sampleOssFiles[0].sampleTypeId}], {relativeTo: this.route});
+                
               } else if (i === this.sampleOssFiles.length - 1) {
                 // this.presentIdx = i + 1;
                 this.imageId = this.sampleOssFiles[i - 1].id;
@@ -588,17 +590,11 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
   }
 
 
-  loadSecondaryImage(sampleUpId: number): void {
-
+  loadSecondaryImage(sampleUpId: number):void{
     const params = new HttpParams().append('typeId', sampleUpId + '');
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getOssFilesByTypeId`, {params})
       .subscribe((result: HttpResult<ApiPage<SampleOssFile>>) => {
         this.sampleOssFiles = result.data.records;
-        // this.secondaryTotal = result.data.total;
-        // const box = this.secondaryData.map((s) => {
-        //   return [{label: '', value: s.id, checked: false, typeId: s.sampleTypeId}];
-        // });
-        // this.checkOptionsOne = box;
       });
   }
 

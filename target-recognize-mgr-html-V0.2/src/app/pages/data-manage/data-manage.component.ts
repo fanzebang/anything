@@ -336,6 +336,7 @@ export class DataManageComponent implements OnInit {
       } else {
         params = new HttpParams().append('sampleTypeName', id);
       }
+    
       this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
           const data = result.data.map((samples:any) => {
