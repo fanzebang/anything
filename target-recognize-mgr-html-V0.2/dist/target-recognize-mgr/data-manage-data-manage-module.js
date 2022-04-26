@@ -5401,8 +5401,26 @@ class DataManageService {
         for (let index = 0; index < samplePath.length; index++) {
             const element = samplePath[index];
             if (element == title && element != "可见光" && element != "SAR" && element != "遥感" && element != "红外") {
-                let key = tree.parentNode.key * 1;
-                let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('sampleUpId', key);
+                let key = tree.parentNode.key;
+                let params;
+                switch (tree.parentNode.key) {
+                    case 'KJG':
+                        params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('sampleTypeName', key);
+                        break;
+                    case 'SAR':
+                        params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('sampleTypeName', key);
+                        break;
+                    case 'HY':
+                        params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('sampleTypeName', key);
+                        break;
+                    case 'YG':
+                        params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('sampleTypeName', key);
+                        break;
+                    default:
+                        var k = key * 1;
+                        params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('sampleUpId', k);
+                        break;
+                }
                 this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_URL}/v1/sample-oss-types`, { params: params }).subscribe((result) => {
                     if (_core_http_entity__WEBPACK_IMPORTED_MODULE_4__["HttpResult"].succeed(result.code)) {
                         for (let index = 0; index < result.data.length; index++) {
@@ -6064,11 +6082,6 @@ class DetailDataManageComponent {
         this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_URL}/v1/sample-oss-file/getOssFilesByTypeId`, { params })
             .subscribe((result) => {
             this.sampleOssFiles = result.data.records;
-            // this.secondaryTotal = result.data.total;
-            // const box = this.secondaryData.map((s) => {
-            //   return [{label: '', value: s.id, checked: false, typeId: s.sampleTypeId}];
-            // });
-            // this.checkOptionsOne = box;
         });
     }
     updateBrowseNumber() {
