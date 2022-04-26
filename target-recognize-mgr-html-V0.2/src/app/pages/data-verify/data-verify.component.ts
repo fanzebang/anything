@@ -49,9 +49,10 @@ export class DataVerifyComponent implements OnInit {
   private listenKeyboard() {
 
     this.keyboardVerifySubscription = fromEvent(window, 'keydown').subscribe((event: any) => {
-        if(event.keyCode == 38){
+
+        if(event.keyCode == 38 || event.keyCode == 87){
           if(this.selectClassIndex1-1>=0)this.changeClassIndex(this.selectClassIndex1-1)
-        }else if(event.keyCode == 40){
+        }else if(event.keyCode == 40|| event.keyCode == 83){
           let featuresLength = 0;
           for (let index = 0; index < this.verifyLabel.layers[1].features.length; index++) {
             const element = this.verifyLabel.layers[1].features[index];
@@ -64,17 +65,48 @@ export class DataVerifyComponent implements OnInit {
     });
   }
 
+  keyboardVerifySubscription2:any;
+  singleTarget:boolean = false;
+  private listenKeyboard2() {
+    this.keyboardVerifySubscription2 = fromEvent(window, 'keydown').subscribe((event: any) => {
+      if(event.keyCode == 192){
+          if(!this.singleTarget){
+            this.singleTarget = true;
+            this.listenKeyboard();
+            this.changeClassIndex(0)
+            return false
+          }else{
+            let featuresLength = 0;
+            for (let index = 0; index < this.verifyLabel.layers[1].features.length; index++) {
+              const element = this.verifyLabel.layers[1].features[index];
+                if(element.props.name != "auto"){
+                  featuresLength++
+                }
+            }
+            if(this.selectClassIndex1-1>=0){
+              this.changeClassIndex(this.selectClassIndex1-1)
+            }else if(this.selectClassIndex1+1<featuresLength){
+              this.changeClassIndex(this.selectClassIndex1+1)
+            }
+            return false
+          }
+
+      }
+    });
+  }
+
 
 
   ngOnInit(): void {
     this.search(true)
-  
+    this.listenKeyboard2()
   }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     if(this.keyboardVerifySubscription)  this.keyboardVerifySubscription.unsubscribe();
+    if(this.keyboardVerifySubscription2)  this.keyboardVerifySubscription2.unsubscribe();
   }
 
   sorLIstOfData(){
@@ -96,7 +128,7 @@ export class DataVerifyComponent implements OnInit {
   }
 
   changeClassIndex(key:any){
-    if(!this.keyboardVerifySubscription || this.keyboardVerifySubscription.closed == true)  this.listenKeyboard()
+    if(!this.keyboardVerifySubscription || this.keyboardVerifySubscription.closed == true) { this.singleTarget = true;  this.listenKeyboard() } 
       $(".audit-picture-item").removeClass('audit-picture-item-active')
       var testData = this.gCoordinateData[key];
       this.selectClassIndex1 = key
@@ -185,7 +217,7 @@ export class DataVerifyComponent implements OnInit {
     }
   }
 
-
+  mutliple:any
   creatAILabel(Imgdata:SampleOssFile) :void{
 
     var that = this
@@ -213,6 +245,7 @@ export class DataVerifyComponent implements OnInit {
       let coordinateData1 = coordinateData.data
       this.gCoordinateData = coordinateData1
       let mutliple;
+     
       let labelZoom;
       if(imgWidth>= imgHeight){
           mutliple = zoom/imgWidth
@@ -225,7 +258,7 @@ export class DataVerifyComponent implements OnInit {
         labelZoom = imgHeight
         imgHeight = zoomH
       }
-
+      this.mutliple = mutliple
       this.verifyLabel= new AILabel.Map(`verifyLabel`,{
         center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
         zoom: labelZoom*1.3,
@@ -310,7 +343,8 @@ export class DataVerifyComponent implements OnInit {
             that.gfeatureLayer.addFeature(feature);
           }
         }
-        this.autoMark(Imgdata.ossKey,mutliple)
+        if(this.collaborativeAudit == 'primary') this.autoMark(Imgdata.ossKey,mutliple)
+     
         return
         }else{
          setTimeout(()=>{
@@ -323,8 +357,16 @@ export class DataVerifyComponent implements OnInit {
   
   }
 
+  collaborativeAudit:any = 'default';
+
+  changeAuditMode(){
+    this.collaborativeAudit = this.collaborativeAudit == 'default'?'primary':'default'
+    if(this.collaborativeAudit == 'primary' &&  this.currentSampleFile) this.autoMark(this.currentSampleFile.ossKey,this.mutliple)
+  }
+
 
   autoMark(ossKey,mutliple) {
+
       this.http.post(`${environment.API_URL}/v1/mark-detect`, {
         "ossKey": ossKey
       }).subscribe((result: HttpResult<any>) => {

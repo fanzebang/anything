@@ -12,7 +12,8 @@
       </nz-select> -->
 
       <!-- <input class="keyword" type="text" (click)="search()"/> -->
-      <button nz-button nzType="primary" (click)="search(true)" style="position: absolute;right: 10px;width: 100px;">查询</button>
+      <button nz-button nzType="primary" (click)="search(true)" style="position: absolute;right: 130px;width: 100px;">查询</button>
+      <button nz-button [nzType]="collaborativeAudit" (click)="changeAuditMode()"  style="position: absolute;right: 10px;width: 100px;">协同审核</button>
     </div>
 
     <div class="audit-table-box" >

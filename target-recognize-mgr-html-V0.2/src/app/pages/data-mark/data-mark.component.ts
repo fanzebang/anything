@@ -65,7 +65,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
    
     this.listenKeyboard(); // 注册键盘监听
-
+    this.listenKeyboard2();
     // var interval
     // window.onfocus=function(){interval=window.setInterval("clipboardData.setData('text','')",100);}
     // window.onblur=function(){window.clearInterval(interval);}
@@ -152,10 +152,68 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
     
   }
 
+  gMapActive(index){
+
+        let feature = this.gMapArr.layers[1].features[index];
+          // if(element.props.name != "uninterested"){
+        this.gMapArr.setActiveFeature(feature);
+          // }
+          for (let index = 0; index < feature.layer.features.length; index++) {
+            const element = feature.layer.features[index];
+            if(element.props.name != "uninterested"){
+            this.drawingRects[index].select = false
+            if(element.id == feature.id){
+              this.drawingRects[index].select = true
+              // console.log(this.drawingRects)
+            }
+            }
+          }
+          
+  }
+
+
+  keyboardVerifySubscription2:any;
+  singleTarget:boolean = false;
+  private listenKeyboard2() {
+    this.keyboardVerifySubscription2 = fromEvent(window, 'keydown').subscribe((event: any) => {
+      if(event.keyCode == 192){
+          if(!this.singleTarget && this.gMapArr.layers[1].features.length > 0 ){
+            this.singleTarget = true;
+            this.gMapActive(0)
+            // this.listenKeyboard();
+            // this.changeClassIndex(0)
+          }else{
+            let feature = this.gMapArr.getActiveFeature();
+            // let featuresLength = 0;
+            for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
+              const element = this.gMapArr.layers[1].features[index];
+              try{
+                if(element.id == feature.id){
+                  this.gMapActive(index+1)
+                }
+              }catch(e){
+                this.gMapActive(0)
+              }
+           
+
+            }
+            // if(this.selectClassIndex1-1>=0){
+            //   this.changeClassIndex(this.selectClassIndex1-1)
+            // }else if(this.selectClassIndex1+1<featuresLength){
+            //   this.changeClassIndex(this.selectClassIndex1+1)
+            // }
+            // return false
+          }
+      }
+    });
+  }
+
+
   removeKeyboard() {
     this.keyboardSubscription.unsubscribe()
     this.keyboardUp.unsubscribe()
     if(this.keyboarChangeFeature) this.keyboarChangeFeature.unsubscribe()
+    if(this.keyboardVerifySubscription2) this.keyboardVerifySubscription2.unsubscribe()
   }
 
  
@@ -458,15 +516,25 @@ this.loadSy()
   });
   
   that.gMapArr.events.on('featureSelected',(feature: any) => {
-  
-    that.gMapArr.setActiveFeature(feature);
-  
+    let index;
+    for (let i = 0; i < feature.layer.features.length; i++) {
+      const element = feature.layer.features[i];
+      if(element.props.name != "uninterested"){
+      this.drawingRects[i].select = false
+      if(element.id == feature.id){
+        index = i
+      }
+      }
+    }
+    that.gMapActive(index)
+    // that.gMapArr.setActiveFeature(feature);
+    // console.log(feature.layer.features)
+
   })
   
   that.gMapArr.events.on('featureUnselected',() => {
-  
-      that.gMapArr.setActiveFeature(null);
-    
+      // that.gMapArr.setActiveFeature(null);
+      that.gMapUnactive()
   })
   
   that.gMapArr.events.on('featureUpdated',(feature: any, shape: any) => {
@@ -817,8 +885,19 @@ removeImg(){
     });
   }
 
+  gMapUnactive(){
+    this.gMapArr.setActiveFeature(null);
+    for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
+      const element = this.gMapArr.layers[1].features[index];
+      if(element.props.name != "uninterested"){
+        this.drawingRects[index].select = false
+      }
+    }
+  }
+
   featuresAllHiden:boolean = false
   allFeaturesHide(){
+    this.gMapUnactive()
     this.labelShowAlone(-1)
     this.featuresAllHiden = true
     if(this.keyboarChangeFeature || !this.keyboarChangeFeature.closed)  this.keyboarChangeFeature.unsubscribe()
@@ -843,6 +922,8 @@ removeImg(){
     this.featuresAllHiden = false
     this.labelShowAlone(-1)
     if(this.keyboarChangeFeature || !this.keyboarChangeFeature.closed)  this.keyboarChangeFeature.unsubscribe()
+    if(this.keyboardVerifySubscription2){this.keyboardVerifySubscription2.unsubscribe()}
+    this.listenKeyboard2()
     for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
       let rectFeature = this.gMapArr.layers[1].features[index];
       let textFeature = this.gMapArr.layers[2].texts[index];
@@ -860,7 +941,9 @@ removeImg(){
 
   labelShowAlone(key){
     this.featuresAllHiden = false
+    this.gMapUnactive()
     if(!this.keyboarChangeFeature || this.keyboarChangeFeature.closed)  this.keyBoardOfFeature()
+    if(this.keyboardVerifySubscription2) this.keyboardVerifySubscription2.unsubscribe()
     this.selectClassIndex1 = key
     // this.keyBoardOfFeature()
     for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
