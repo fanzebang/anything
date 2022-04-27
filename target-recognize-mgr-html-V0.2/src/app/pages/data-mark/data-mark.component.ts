@@ -42,7 +42,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
       MarkedNum:25,
       MarkProgress:50,
   }
-
+  lableAloneStatus:boolean = false
   startX: number;
   startY: number;
   endX: number;
@@ -116,7 +116,9 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
       }else if(event.keyCode == 37){
         this.prevAllocFile()
       }else if(event.keyCode == 32){
+
         this.gMapArr.setMode("PAN")
+
       }else if(event.keyCode  == 46){
         try{
           if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
@@ -137,12 +139,15 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
         }
     
       }
+
+
       if(event.ctrlKey){
         if(event.keyCode == 83){
           event.preventDefault();
           this.saveRect()
         }
       }
+
     });
     this.keyboardUp = fromEvent(window, 'keyup').subscribe((event: any) => {
       if(event.keyCode == 32){
@@ -153,7 +158,8 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   }
 
   gMapActive(index){
-
+        this.lableAloneStatus = false;
+        this.singleTarget = true
         let feature = this.gMapArr.layers[1].features[index];
           // if(element.props.name != "uninterested"){
         this.gMapArr.setActiveFeature(feature);
@@ -175,8 +181,11 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   keyboardVerifySubscription2:any;
   singleTarget:boolean = false;
   private listenKeyboard2() {
+
     this.keyboardVerifySubscription2 = fromEvent(window, 'keydown').subscribe((event: any) => {
       if(event.keyCode == 192){
+  
+        if(!this.lableAloneStatus){
           if(!this.singleTarget && this.gMapArr.layers[1].features.length > 0 ){
             this.singleTarget = true;
             this.gMapActive(0)
@@ -194,16 +203,24 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
               }catch(e){
                 this.gMapActive(0)
               }
-           
-
             }
-            // if(this.selectClassIndex1-1>=0){
-            //   this.changeClassIndex(this.selectClassIndex1-1)
-            // }else if(this.selectClassIndex1+1<featuresLength){
-            //   this.changeClassIndex(this.selectClassIndex1+1)
-            // }
-            // return false
+         
           }
+        }else{
+          if(this.selectClassIndex1+1<this.gMapArr.layers[1].features.length){
+            this.selectClassIndex1++
+          }else{
+            this.selectClassIndex1 = 0
+
+          }
+          this.labelShowAlone(this.selectClassIndex1)
+          // if(this.selectClassIndex1-1>=0){
+          //     this.labelShowAlone(this.selectClassIndex1-1)
+          //   }else if(this.selectClassIndex1+1<this.gMapArr.layers[1].features.length){
+          //     this.labelShowAlone(this.selectClassIndex1+1)
+          //   }
+            // return false
+        }
       }
     });
   }
@@ -809,8 +826,9 @@ removeImg(){
                 sampleId: marks[i].sampleOssType.id,
                 samplePath: marks[i].sampleOssType.sampleTypeName
               })
-              const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}${i}`;
-              var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id+"_"+i, 
+              let newDate = +new Date()
+              const relatedTextId = `label-text-id-${marks[i].sampleOssType.id}${i}${newDate}`;
+              var feature = new AILabel.Feature.Rect(marks[i].sampleOssType.id+"_"+i+`${newDate}`, 
                 {height:marks[i].markPolygon.maxY - marks[i].markPolygon.minY,width:marks[i].markPolygon.maxX - marks[i].markPolygon.minX,x:marks[i].markPolygon.minX ,y: marks[i].markPolygon.minY}, 
                 {name:'123',textId: relatedTextId}, 
                 {fill: true,
@@ -857,7 +875,7 @@ removeImg(){
       this.autoMark();
     } else {
       // 手动标注
-      this.drawingRects = [];
+      // this.drawingRects = [];
       this.redraw();
     }
   }
@@ -921,6 +939,7 @@ removeImg(){
   allFeatures(){
     this.featuresAllHiden = false
     this.labelShowAlone(-1)
+    this.lableAloneStatus = false
     if(this.keyboarChangeFeature || !this.keyboarChangeFeature.closed)  this.keyboarChangeFeature.unsubscribe()
     if(this.keyboardVerifySubscription2){this.keyboardVerifySubscription2.unsubscribe()}
     this.listenKeyboard2()
@@ -939,11 +958,18 @@ removeImg(){
   this.gMapArr.refresh()
 }
 
+featureActive(key){
+
+  
+
+}
+
   labelShowAlone(key){
     this.featuresAllHiden = false
+    this.lableAloneStatus = true
     this.gMapUnactive()
     if(!this.keyboarChangeFeature || this.keyboarChangeFeature.closed)  this.keyBoardOfFeature()
-    if(this.keyboardVerifySubscription2) this.keyboardVerifySubscription2.unsubscribe()
+    // if(this.keyboardVerifySubscription2) this.keyboardVerifySubscription2.unsubscribe()
     this.selectClassIndex1 = key
     // this.keyBoardOfFeature()
     for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
