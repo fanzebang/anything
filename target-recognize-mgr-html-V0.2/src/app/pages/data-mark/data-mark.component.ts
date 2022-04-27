@@ -73,7 +73,6 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-  
     this.loadSampleFiles();
     this.reqMarkCountData();
    this.intervalLoadSampleFiles = setInterval(()=>{
@@ -81,7 +80,6 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
       if((thisTime -this.listenTime)/1000 >= 1*60*10){
         this.loadSampleFiles();
       }
-     
     },1000)
   
   }
@@ -158,7 +156,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   }
 
   gMapActive(index){
-        this.lableAloneStatus = false;
+        // this.lableAloneStatus = false;
         this.singleTarget = true
         let feature = this.gMapArr.layers[1].features[index];
           // if(element.props.name != "uninterested"){
@@ -181,10 +179,8 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   keyboardVerifySubscription2:any;
   singleTarget:boolean = false;
   private listenKeyboard2() {
-
     this.keyboardVerifySubscription2 = fromEvent(window, 'keydown').subscribe((event: any) => {
       if(event.keyCode == 192){
-  
         if(!this.lableAloneStatus){
           if(!this.singleTarget && this.gMapArr.layers[1].features.length > 0 ){
             this.singleTarget = true;

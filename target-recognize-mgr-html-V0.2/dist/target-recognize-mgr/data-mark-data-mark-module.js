@@ -220,7 +220,7 @@ class DataMarkComponent {
         });
     }
     gMapActive(index) {
-        this.lableAloneStatus = false;
+        // this.lableAloneStatus = false;
         this.singleTarget = true;
         let feature = this.gMapArr.layers[1].features[index];
         // if(element.props.name != "uninterested"){
