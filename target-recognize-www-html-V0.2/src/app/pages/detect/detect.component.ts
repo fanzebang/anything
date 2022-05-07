@@ -386,9 +386,11 @@ borderShowHidden(){
    
     // this.selectedTarget = this.currentDetectResult.piecesOssKey[0];
     // this.selectedTargetPolygon = this.currentDetectResult.targetJson[0];
-    this.drwReact(this.currentDetectResult.targetJson[0])
+
+    this.drwReact1(this.currentDetectResult.targetJson)
+
     if (this.currentDetectResult.targetJson.length != 0 ) {
-      this.selectTargetPolygon(this.currentDetectResult.targetJson[0]);
+      // this.selectTargetPolygon(this.currentDetectResult.targetJson[0]);
       this.drawTargetsPolygon(this.currentDetectResult.targetJson);
       // this.baiKeUrl = this.currentDetectResult.baiKeUrl;
     }
@@ -463,7 +465,7 @@ borderShowHidden(){
     let img = new Image();
     img.src = imgUrl
       setTimeout(()=>{
-        $(".bigImg #aiLable").remove()
+      $(".bigImg #aiLable").remove()
       var bigImgDom:any = document.querySelector(".bigImg")
       var image:any = document.querySelector(".showImg")
       image.style.display = "none"
@@ -538,7 +540,7 @@ borderShowHidden(){
     y = selectedTargetPolygon.minY*mutliple
     height = (selectedTargetPolygon.maxY - selectedTargetPolygon.minY)*mutliple
     width = (selectedTargetPolygon.maxX - selectedTargetPolygon.minX)*mutliple
-    console.log(selectedTargetPolygon,x,y,height,width)
+    // console.log(selectedTargetPolygon,x,y,height,width)
       var feature = new AILabel.Feature.Rect(this.imgId, 
       {height,width,x,y}, 
       {name:'123',textId: ""}, 
@@ -574,6 +576,111 @@ borderShowHidden(){
       //   ctx.stroke();
       //   bigImgDom.appendChild(canvas)
 
+      },1000)
+  }
+
+
+  drwReact1(selectedTargetPolygonArr){
+    let imgUrl =`${localStorage.getItem('targetRecognizePath')}/` +  this.currentDetectResult.ossKey
+    let img = new Image();
+    img.src = imgUrl
+      setTimeout(()=>{
+      // $(".bigImg #aiLable").remove()
+      var bigImgDom:any = document.querySelector(".bigImg")
+      var image:any = document.querySelector(".showImg")
+      image.style.display = "none"
+      var labelDiv:any = document.createElement("div");
+      labelDiv.id = "aiLable";
+      bigImgDom.appendChild(labelDiv)
+      $("#aiLable").css({
+        width:"100%",
+        height:"100%",
+        overflow: "hidden",
+        position:"relative",
+      })
+      
+
+      let zoomWidth = $("#aiLable").css("width").replace(/[^\d.]/ig,"")
+      let zoomHeight = $("#aiLable").css("height").replace(/[^\d.]/ig,"")
+      let imgWidth = img.width
+       let imgHeight =  img.height
+       let imgSrc  = image.src;
+       let mutliple;
+       let labelZoom;
+
+
+
+        if(imgWidth >= imgHeight ){
+            mutliple = zoomWidth/imgWidth
+            imgHeight = imgHeight*mutliple
+            imgWidth = zoomWidth
+            labelZoom = imgWidth*1.3
+        }else{  
+          mutliple = zoomHeight/imgHeight
+          imgWidth = imgWidth*mutliple
+          labelZoom = imgHeight*1.3
+          imgHeight = zoomHeight
+        }
+
+      this.gMapArr= new AILabel.Map(`aiLable`,{
+        center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
+        zoom: labelZoom,
+        mode: 'PAN', // 绘制线段
+        refreshDelayWhenZooming: false, // 缩放时是否允许刷新延时，性能更优
+        zoomWhenDrawing: true,
+        panWhenDrawing: false,
+        featureCaptureWhenMove:true,
+        zoomWheelRatio: 5 , // 控制滑轮缩放缩率[0, 10), 值越小，则缩放越快，反之越慢
+        withHotKeys: true ,// 关闭快捷键
+        zoomMax: zoomWidth * 10,
+        zoomMin: zoomWidth / 10
+    }) 
+
+    var imageLayer = new AILabel.Layer.Image(
+      'img', // id
+      {
+        src: imgSrc,
+        width: imgWidth,
+        height: imgHeight,
+        crossOrigin: false, // 如果跨域图片，需要设置为true
+        position: { // 图片左上角对应的坐标位置
+            x: 0,
+            y: 0
+        },
+      },
+      {name: '第一个图片图层'},
+      {zIndex: 1} 
+    );
+    
+    this.gMapArr.addLayer(imageLayer)
+    this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
+    this.gMapArr.addLayer(this.gfeatureLayer)
+    let x,y,height,width;
+
+    for (let index = 0; index < selectedTargetPolygonArr.length; index++) {
+      let selectedTargetPolygon = selectedTargetPolygonArr[index];
+      x = selectedTargetPolygon.minX*mutliple
+      y = selectedTargetPolygon.minY*mutliple
+      height = (selectedTargetPolygon.maxY - selectedTargetPolygon.minY)*mutliple
+      width = (selectedTargetPolygon.maxX - selectedTargetPolygon.minX)*mutliple
+      // console.log(selectedTargetPolygon,x,y,height,width)
+        var feature = new AILabel.Feature.Rect(this.imgId, 
+        {height,width,x,y}, 
+        {name:'123',textId: ""}, 
+        {fill: true,
+          fillStyle: "#0f0",
+          globalAlpha: 0,
+          lineWidth: 1,
+          opacity: 1,
+          stroke: true,
+          strokeStyle: "red"}
+      );
+      this.gfeatureLayer.addFeature(feature)
+      
+    }
+
+
+    
       },1000)
   }
 
@@ -632,11 +739,11 @@ submit(){
 
       const ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase();
       const dataURL = testcanvasElm.toDataURL('image/' + ext);
-      setTimeout(() => {
-        // 这里就是处理的事件
-        // this.markedImageElmRef.nativeElement.src = dataURL;
-        // this.showDetectResult();
-      }, 1000);
+      // setTimeout(() => {
+      //   // 这里就是处理的事件
+      //   // this.markedImageElmRef.nativeElement.src = dataURL;
+      //   // this.showDetectResult();
+      // }, 1000);
     };
 
     img.crossOrigin = 'anonymous';
