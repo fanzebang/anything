@@ -191,26 +191,39 @@ public  mutliple;
 
   for (let i = 0; i < coordinateData.length; i++) {
     var testData = coordinateData[i];
-    var id = +new Date();
+    var feature:any;
+    var id = testData +new Date();
     if( null == testData.id) testData.id = id
     if( null == testData.props.text) testData.props.text = text
     if( null == testData.props.textId) testData.props.textId = id
-    testData.shape.height = testData.shape.height *1* this.mutliple
-    testData.shape.width = testData.shape.width *1* this.mutliple
-    testData.shape.x = testData.shape.x *1* this.mutliple
-    testData.shape.y = testData.shape.y *1* this.mutliple
-
-   
-
     if( null == testData.style) testData.style =  {fill: true,fillStyle: "#0f0",globalAlpha: 0,lineWidth: 1,opacity: 1,stroke: true,strokeStyle: "red"}
-     var feature:any = new AILabel.Feature.Rect(
-      testData.id, 
-      testData.shape, 
-      testData.props, 
-      testData.style
-    );
 
+    if(testData.type == "RECT"){
+
+        testData.shape.height = testData.shape.height *1* this.mutliple
+        testData.shape.width = testData.shape.width *1* this.mutliple
+        testData.shape.x = testData.shape.x *1* this.mutliple
+        testData.shape.y = testData.shape.y *1* this.mutliple
+        feature = new AILabel.Feature.Rect(
+        testData.id, 
+        testData.shape, 
+        testData.props, 
+        testData.style
+      );
+
+    }else if(testData.type == "POLYGON"){
+
+      feature = new AILabel.Feature.Polygon(
+        testData.id, 
+        testData.shape, 
+        testData.props, 
+        testData.style
+      );
+      
+    }
+  
     that.gfeatureLayer.addFeature(feature);
+
     var {x: ltx, y: lty} = feature.shape;
     var gFirstText = new AILabel.Text(
       testData.props.textId, // id
@@ -218,6 +231,7 @@ public  mutliple;
       {name: '第一个文本对象'}, // props
       {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
     );
+
     that.aiLabel.layers[2].addText(gFirstText);
 
 

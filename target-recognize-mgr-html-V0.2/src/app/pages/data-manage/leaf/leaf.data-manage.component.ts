@@ -21,6 +21,8 @@ export class LeafDataManageComponent implements OnInit {
   secondaryData: SampleOssFile[] = [];
   secondaryTotal = 0;
   isOperateButton = true;
+  type = "jpg/png";
+  imgUploadSize = "，且大小不能超过10M";
   // sampleTitle: string;
   checkOptionsOne = [];
   indeterminate = true;
@@ -302,9 +304,79 @@ export class LeafDataManageComponent implements OnInit {
   //   });
   // }
 
+  uploadZip(evt:any):void{
+
+    this.hideUploadingProgress = false;
+    this.hideUploadingPanel = false;
+    this.type = "zip/rar";
+    this.imgUploadSize = "";
+    const fileList = evt.target.files as FileList;
+   
+    if (fileList.length > 500) {
+      // 限制一次最多上传20张
+      this.nzModal.error({
+        nzTitle: '单次最多上传500张'
+      });
+      this.clearFiles();
+      return;
+    }
+    if (fileList.length > 0) {
+      const fileCount = fileList.length;
+      const uploadingFiles = [];
+      for (let i = 0; i < fileCount; i++) {
+        // 每个文件单个上传，这样才能对每个文件有进度条
+        let type = fileList[i].type
+        console.log(fileList[i])
+        if(type == "application/x-zip-compressed" || type == "" ){
+          uploadingFiles.push({
+            file: fileList[i],
+            progress: 0
+          });
+        }else{
+          this.nzMessage.error('文件格式不正确');
+        }
+      }
+      this.uploadingFiles = uploadingFiles;
+
+      this.uploadingFiles.forEach((file, index) => {
+          const formData = new FormData();
+          formData.append('files', file.file);
+          this.uploadWithFiles(index, formData,"zip");
+      });
+
+      const completeInterval = setInterval(() => {
+        let complete = true;
+        for (let j = 0; j < this.uploadingFiles.length; j++){
+
+          if (this.uploadingFiles[j].progress < 100) {
+            complete = false;
+            break;
+          }
+
+        }
+        if (complete) {
+          clearInterval(completeInterval);
+
+          this.clearFiles();
+//oo
+          this.loadSecondaryImage(this.sampleUpId);
+          this.loadSampleType(this.sampleUpId);
+
+        }
+      }, 1000);
+
+    }
+
+
+
+
+  }
+
   uploadImages(evt: any): void {
     this.hideUploadingProgress = false;
     this.hideUploadingPanel = false;
+    this.type = "img/png";
+    this.imgUploadSize =  "，且大小不能超过10M"
     const fileList = evt.target.files as FileList;
     if (fileList.length > 500) {
       // 限制一次最多上传20张
@@ -320,7 +392,6 @@ export class LeafDataManageComponent implements OnInit {
       for (let i = 0; i < fileCount; i++) {
         // 每个文件单个上传，这样才能对每个文件有进度条
         let type = fileList[i].type
-   
         if(type == "image/png" || type == "image/jpeg" ){
           uploadingFiles.push({
             file: fileList[i],
@@ -329,26 +400,24 @@ export class LeafDataManageComponent implements OnInit {
         }else{
           this.nzMessage.error('文件格式不正确');
         }
-      
       }
       this.uploadingFiles = uploadingFiles;
 
       this.uploadingFiles.forEach((file, index) => {
-     
           const formData = new FormData();
           formData.append('files', file.file);
-          this.uploadWithFiles(index, formData);
-        
-      
+          this.uploadWithFiles(index, formData,"images");
       });
 
       const completeInterval = setInterval(() => {
         let complete = true;
-        for (let j = 0; j < this.uploadingFiles.length; j++) {
+        for (let j = 0; j < this.uploadingFiles.length; j++){
+
           if (this.uploadingFiles[j].progress < 100) {
             complete = false;
             break;
           }
+
         }
         if (complete) {
           clearInterval(completeInterval);
@@ -370,9 +439,11 @@ export class LeafDataManageComponent implements OnInit {
   }
 
 
-  uploadWithFiles(index: number, formData: FormData): void {
+  uploadWithFiles(index: number, formData: FormData,type:String): void {
     this.tile = true;
     const httpParams = new HttpParams().append('sampleTypeId', this.sampleUpId + '');
+
+  if(type == "images"){
     this.http.post(`${environment.API_URL}/v1/sample-oss-file`, formData, {
       params: httpParams,
       reportProgress: true,
@@ -394,8 +465,37 @@ export class LeafDataManageComponent implements OnInit {
         this.uploadingFiles[index].progress = 100;
       }
       // this.nzMessage.success('图片已经上传，进度条还没有完，手动刷新.....未完待续');
-
     });
+  }else{
+    console.log(httpParams);
+    this.http.post(`${environment.API_URL}/v1/upload-zip-log/uploadZip?type=3&userId=52`, formData, {
+      params: httpParams,
+      reportProgress: true,
+      responseType: 'text',
+      observe: 'events',
+    }).subscribe((event: HttpEvent<any>) => {
+      if (event.type === HttpEventType.UploadProgress){
+        console.log('upload event is :', event);
+        // 根据每个文件进度
+        // const map = formData.getAll('files').map((f: File) => {
+        //   // this.files = [];
+        //   return {name: f.name, jd: event.loaded, id: f.lastModified};
+        // });
+        // this.files = map;
+        // console.log(event.loaded / event.total + '未付费');
+        this.uploadingFiles[index].progress = Math.ceil(event.loaded * 100 / event.total);
+      } else if (event.type === HttpEventType.Response) {
+        // console.log('上传完成', event.body);
+        this.uploadingFiles[index].progress = 100;
+
+        this.nzMessage.success('上传zip文件成功，文件解析异步执行！');
+      }
+      
+    
+    });
+    
+  }
+
   }
 
 

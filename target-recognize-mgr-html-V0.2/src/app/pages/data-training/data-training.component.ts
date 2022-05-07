@@ -31,6 +31,7 @@ export class DataTrainingComponent implements OnInit {
   pageSize = 10;
   dataTotal = 0;
   isVisible = false;
+  isVisible1 = false;
   listOfData: DataTrain[] = [];
   dataTrain: DataTrain;
   mapOfCheckedId: { [key: string]: boolean } = {};
@@ -78,12 +79,21 @@ export class DataTrainingComponent implements OnInit {
 
   
   checkAll(value: boolean): void {
+   
     this.listOfData.forEach(d => (this.mapOfCheckedId[String(d.id)] = value));
+    
     this.refreshStatus();
   }
 
 
   refreshStatus(): void {
+
+    
+
+    // if(arguments[0])
+
+    // console.log(typeof arguments)
+
     this.isAllDisplayDataChecked = this.listOfData
       .every(item => this.mapOfCheckedId[String(item.id)]);
     this.isIndeterminate =
@@ -460,21 +470,32 @@ listData:any
   }
 
   startCompare() {
-    const modal = this.nzModal.create({
-      nzTitle: '模型对比',
-      nzContent: ModelCompareComponent,
-      nzComponentParams: {
-        comparingDataTrainList: this.comparingDataTrainList
-      },
-      nzOnOk: (modelCompareComponent: ModelCompareComponent) => {
-        // return false;
-      },
-      nzCancelText: '关闭',
-      nzOkText: null
-    });
-    modal.afterClose.subscribe(() => {
-      // this.loadTraining();
-    });
+
+    this.isVisible1 = true
+
+    var dataList = this.listOfData.map((item)=>{
+      if(this.mapOfCheckedId[item.id]){ 
+        return item
+      }
+    })
+
+    this.initModeLineCharts1(dataList)
+
+    // const modal = this.nzModal.create({
+    //   nzTitle: '模型对比',
+    //   nzContent: ModelCompareComponent,
+    //   nzComponentParams: {
+    //     comparingDataTrainList: this.comparingDataTrainList
+    //   },
+    //   nzOnOk: (modelCompareComponent: ModelCompareComponent) => {
+    //     // return false;
+    //   },
+    //   nzCancelText: '关闭',
+    //   nzOkText: null
+    // });
+    // modal.afterClose.subscribe(() => {
+    //   // this.loadTraining();
+    // });
   }
 
   clearCompare() {
@@ -534,8 +555,181 @@ listData:any
     this.isVisible = false;
   }
 
+  handleCancel1(){
+    this.isVisible1 = false;
+  }
+
+  initModeLineCharts1(data:any){
+
+    // var prCurve = result.prCurve.split(" ")
+
+var echartsData1 = []
+  for (let index = 0; index < data.length; index++) {
+    const element = data[index];
+    
+    if(element){
+
+      var aaa:any = [];
+      var xdata:any = [];
+      var ydata:any = [];
+      var echartsData = []
+      var prCurve =  element.prCurve.split(" ")
+     $.each(prCurve,function(i,n){
+      aaa.push(parseFloat(n.trim()))
+      })
+
+      $.each(aaa,function(i,n){
+        if(i%2){
+          ydata.push(n)
+        }else{
+         xdata.push(n)
+        }
+    })
+
+       $.each(xdata,function(i,n){
+      echartsData.push([n,ydata[i]])
+
+     })
+
+     echartsData1.push({echartsData,data:element})
+
+
+    }
+
+    
+  }
+
+
+
+   var dataset = [];
+   var series = []
+  $.each(echartsData1,function(i,x){
+
+    let data1 =  x.echartsData.map(y=>{
+      return y+""
+    })
+       data1 = data1.map(x=>{
+         
+      return x.split(",")
+     
+     })
+
+    dataset.push(
+
+        {source: data1}
+
+      )
+
+      series.push(
+      {
+        name: x.data.taskName+'---'+x.data.typeSourceName,
+        type: 'line',
+        smooth: true,
+        datasetIndex: i,
+        symbolSize: 0.1,
+        symbol: 'circle',
+        label: { show: false, fontSize: 16 },
+        labelLayout: { dx: -20 },
+        encode: { label: 2, tooltip: 1 }
+      })
+   })
+
+
+var option = {
+    dataset:dataset,
+    legend: {
+      show: true, // 是否显示图例
+        type: 'scroll', // 可滚动翻页的图例。当图例数量较多时可以使用。
+        orient:'horizontal', // 图例列表的布局朝向。
+        itemWidth: 8, // 图例标记的图形宽度。
+        itemHeight: 8, // 图例标记的图形高度。
+        textStyle: { // 图例的公用文本样式。
+          color: '#fff',
+          fontSize: 12
+        },
+        icon: 'rect' // 图例项的 icon。
+      },
+     title: {
+      text: '模\n型\n精\n度\n曲\n线',
+      textStyle: {
+        color: "#fff", // 主标题文字的颜色。
+        fontStyle: "normal", // 主标题文字字体的风格。 'normal'  'italic'  'oblique'
+        fontWeight: "normal", // 主标题文字字体的粗细。 'normal' 'bold'  'bolder'  'lighter' 500|600
+        fontFamily: "sans-serif", // 主标题文字的字体系列。
+        fontSize: 15, // 字体大小
+      },
+      textAlign: "auto", //水平对齐'auto'、'left'、'right'、'center'
+      textVerticalAlign: "auto", // 垂直对齐  'auto'、'top'、'bottom'、'middle'
+      left:10, // 距离 left top right bottom
+      top:'40%'
+    },
+    tooltip: {
+      // trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        label:{
+          color:"rgba(14, 24, 142, 1)"
+        }
+      }
+    },
+    xAxis: {
+        name:'召回率',
+        nameLocation: "end",
+        nameTextStyle: {
+                fontSize: 14,//正常是不用添加
+      },
+      splitLine: {
+        lineStyle: {
+          type: 'dashed'
+        }
+      },
+      axisLine:{
+        symbol:['none','arrow'],
+        lineStyle:{
+          color:'#fff'
+        }
+      }
+    },
+    yAxis: {
+      name:'准确率',
+        
+      nameLocation: "end",
+      
+      nameTextStyle: {
+              fontSize: 14,//正常是不用添加
+        },
+      splitLine: {
+        lineStyle: {
+          type: 'dashed',
+         
+        }
+      },
+      axisLine:{
+        symbol:['none','arrow'],
+        lineStyle:{
+          color:'#fff'
+        }
+      },
+    },
+    series: series
+  };
+
+  setTimeout(()=>{
+    var lineChartsDom:any = document.getElementById("lineCharts1")
+      var lineChart:any =  echarts.init(lineChartsDom)
+   lineChart.setOption(option);
+  },10)
+
+
+ 
+
+  }
+
+
+
   initModeLineCharts(data:any){
 
+    
   let data1 =  data.map(x=>{
      return x+""
    })
@@ -545,91 +739,9 @@ listData:any
     
     })
 
-    echarts.registerTransform(ecStat.transform.regression);
-   
-// var option = {
-//         title: {
-//         text: '模\n型\n精\n度\n曲\n线',
-//         textStyle: {
-//           color: "#fff", // 主标题文字的颜色。
-//           fontStyle: "normal", // 主标题文字字体的风格。 'normal'  'italic'  'oblique'
-//           fontWeight: "normal", // 主标题文字字体的粗细。 'normal' 'bold'  'bolder'  'lighter' 500|600
-//           fontFamily: "sans-serif", // 主标题文字的字体系列。
-//           fontSize: 15, // 字体大小
-//         },
-//         textAlign: "auto", //水平对齐'auto'、'left'、'right'、'center'
-//         textVerticalAlign: "auto", // 垂直对齐  'auto'、'top'、'bottom'、'middle'
-//         left:10, // 距离 left top right bottom
-//         top:'40%'
-//       },
-//       dataZoom: [
-//         {
-//           type: 'inside',
-//           start: 0,
-//           end: 100
-//         }
-//       ],
-//       tooltip: {
-//         // trigger: 'axis',
-//         axisPointer: {
-//           type: 'cross',
-//           label:{
-//             color:"rgba(14, 24, 142, 1)"
-//           }
-//         }
-//       },
-//       xAxis: {
-        
-//           name:'召回率',
-//           type: 'category',
-//           nameLocation: "end",
-//           axisTick:{show:false},
-//           nameTextStyle: {
-          
-//                   fontSize: 14,//正常是不用添加
-          
-//         },
-//         splitLine: {
-//           lineStyle: {
-//             type: 'dashed'
-//           }
-//         },
-//         axisLine:{
-//           symbol:['none','arrow'],
-//           lineStyle:{
-//             color:'#fff'
-//           }
-//         }
-//       },
-//       yAxis: {
-//         name:'准确率',
-//         type: 'category',
-//         nameLocation: "end",
-//         axisTick:{show:false},
-//         nameTextStyle: {
-//                 fontSize: 14,//正常是不用添加
-//           },
-//         splitLine: {
-//           lineStyle: {
-          
-           
-//           }
-//         },
-//         axisLine:{
-//           symbol:['none','arrow'],
-//           lineStyle:{
-//             color:'#fff'
-//           }
-//         },
-//       },
-//   series: [
-//     {
-//       data:data1,
-//       type: 'line',
-//       smooth: true
-//     }
-//   ]
-// };
+  
+
+    // echarts.registerTransform(ecStat.transform.regression);
 
     var option = {
       dataset: [
@@ -646,6 +758,7 @@ listData:any
             }
           }
         }
+        
       ],
        title: {
         text: '模\n型\n精\n度\n曲\n线',
@@ -671,15 +784,10 @@ listData:any
         }
       },
       xAxis: {
-        
           name:'召回率',
-          
           nameLocation: "end",
-          
           nameTextStyle: {
-          
                   fontSize: 14,//正常是不用添加
-          
         },
         splitLine: {
           lineStyle: {
@@ -716,18 +824,13 @@ listData:any
       },
       series: [
         {
-          name: 'scatter',
-          type: 'scatter',
-          datasetIndex: 0
-        },
-        {
           name: 'line',
           type: 'line',
           smooth: true,
-          datasetIndex: 1,
-          symbolSize: 0.1,
-          symbol: 'circle',
-          label: { show: true, fontSize: 16 },
+          datasetIndex: 0,
+          symbolSize:5,
+          // symbol: 'circle',
+          // label: { show: true, fontSize: 16 },
           labelLayout: { dx: -20 },
           encode: { label: 2, tooltip: 1 }
         }
@@ -739,6 +842,8 @@ listData:any
     var lineChart:any =  echarts.init(lineChartsDom)
     lineChart.setOption(option);
   }
+
+
 
   test(): void {
     console.log('触发');

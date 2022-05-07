@@ -43,6 +43,15 @@
     </div>
 
     <div class="anootation-area flex-column">
+      <div class="flex-row" style="margin: 10px auto">
+      <nz-select ngModel="通用" style="margin-top: 13px; margin-right: 10px;width: 130px;background-color: none;border-radius: 15px;">
+        <nz-option nzValue="通用" nzLabel="通用"></nz-option>
+        <nz-option nzValue="舰船" nzLabel="舰船"></nz-option>
+        <nz-option nzValue="飞机" nzLabel="飞机"></nz-option>
+        <nz-option nzValue="坦克" nzLabel="坦克"></nz-option>
+        <nz-option nzValue="武器" nzLabel="武器"></nz-option>
+      </nz-select>
+ 
       <div class="anootation-area-btns flex-row">
         <button class="anootation-area-btn-item" [class.active]="markMode === 'manual'" (click)="changeMarkMode('manual')">
           手动标注
@@ -50,8 +59,9 @@
         <button class="anootation-area-btn-item" [class.active]="markMode === 'auto'" (click)="changeMarkMode('auto')">
           人机协同标注
         </button>
-      </div>
 
+      </div>
+    </div>
      
       <div class="anootation-area-operate canvas-group" style="width:100%;left: 0;">
 

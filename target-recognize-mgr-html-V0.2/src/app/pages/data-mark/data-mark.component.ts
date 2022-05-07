@@ -156,7 +156,6 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   }
 
   gMapActive(index){
-        // this.lableAloneStatus = false;
         this.singleTarget = true
         let feature = this.gMapArr.layers[1].features[index];
           // if(element.props.name != "uninterested"){
@@ -168,12 +167,10 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
             this.drawingRects[index].select = false
             if(element.id == feature.id){
               this.drawingRects[index].select = true
-              // console.log(this.drawingRects)
+              }
             }
-            }
-          }
-          
-  }
+          }   
+    }
 
 
   keyboardVerifySubscription2:any;

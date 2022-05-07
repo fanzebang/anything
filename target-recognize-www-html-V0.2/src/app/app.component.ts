@@ -55,6 +55,7 @@ export class AppComponent implements OnInit {
     }else if(access_token == 'access_token'){
    
       window.location.href= `${environment.API_URL}/v1/sso/welcome-detect?access_token=${pointLogin[1]}`
+      
     }
 
     const jwt = localStorage.getItem('Bearer');

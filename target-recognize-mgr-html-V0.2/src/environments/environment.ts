@@ -11,8 +11,8 @@ export const environment = {
 
 // export const environment = {
 //   production: false,
-// //  API_URL: 'http://192.168.0.228:8083',
-//    API_URL: 'http://microismile.cn:8083',
+//  API_URL: 'http://192.168.0.228:8083',
+//   //  API_URL: 'http://microismile.cn:8083',
 //   OSS_URL: 'http://microismile.cn:9000/sample-resource',
 // };
 

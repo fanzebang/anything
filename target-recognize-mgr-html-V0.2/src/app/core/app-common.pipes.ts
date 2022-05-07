@@ -54,7 +54,6 @@ export class LocalImgFilePipe implements PipeTransform {
       subject.next(fr.result);
     };
     fr.readAsDataURL(file);
-
     return subject.asObservable();
   }
 }

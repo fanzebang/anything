@@ -10,10 +10,14 @@
       -->
             <div class="import-samples-btn-wrap">
                 <!-- <button class="upload">导入</button> -->
-                <button class="btn m-r upload">导入</button>
-                <input #filesInput type="file" value="本地上传" multiple (change)="uploadImages($event)" accept="image/jpeg,image/png,.zip">
+                <button class="btn m-r upload">导入图片</button>
+                <input #filesInput type="file" value="本地上传" multiple (change)="uploadImages($event)" accept="image/jpeg,image/png">
             </div>
-
+            <div class="import-samples-btn-wrap">
+                <!-- <button class="upload">导入</button> -->
+                <button class="btn m-r upload">导入压缩包</button>
+                <input #filesInput type="file" value="本地上传" multiple (change)="uploadZip($event)" accept=".zip,.rar">
+            </div>
             <!-- <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button> -->
         </ng-container>
         <ng-container *ngIf="isOperateButton">
@@ -87,7 +91,7 @@
             </div>
         </div>
         <div class="upload-remark">
-            只能上传jpg/png格式的图片，且大小不能超过10M
+            只能上传{{type}}格式的文件{{imgUploadSize}}
         </div>
         <div class="uploading-files" [class.fold]="hideUploadingProgress">
             <div *ngFor="let item of this.uploadingFiles" class="uploading-file">

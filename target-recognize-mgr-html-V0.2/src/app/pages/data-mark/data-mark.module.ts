@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {NzMessageModule, NzModalModule, NzTreeModule,NzInputModule,NzIconModule,NzDropDownModule,NzProgressModule } from 'ng-zorro-antd';
+import {NzMessageModule, NzModalModule, NzTreeModule,NzInputModule,NzIconModule,NzDropDownModule,NzProgressModule,NzSelectModule  } from 'ng-zorro-antd';
 import {DataMarkRoutingModule} from './data-mark-routing.module';
 import {DataMarkComponent} from './data-mark.component';
 import {CommonModule} from "@angular/common";
@@ -10,7 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormsModule } from '@angular/forms';
 import { DataMarkService } from './data-mark.service';
 const APP_COMPONENTS = [DataMarkComponent, MarkSampleTreeComponent];
-const NZ_MODULES = [NzTreeModule, NzModalModule, NzMessageModule,NzSpinModule,NzButtonModule,NzInputModule,NzIconModule,NzDropDownModule,NzProgressModule];
+const NZ_MODULES = [NzTreeModule, NzModalModule, NzMessageModule,NzSpinModule,NzButtonModule,NzInputModule,NzIconModule,NzDropDownModule,NzProgressModule,NzSelectModule ];
 const NG_MODULES = [CommonModule,FormsModule];
 
 @NgModule({

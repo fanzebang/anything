@@ -2,6 +2,56 @@
 
 
 <div class="flex-row" style="height: 100%;">
+
+
+<div *ngIf="isVisible1" nzTitle="The first Modal"
+class="statistics-top flex-column"
+style="height: 80%;
+width:50%;
+position: absolute;
+z-index: 9999;
+background: #031129;
+margin: 50px 15%;
+">
+<div class="statistics-title" style="position: relative;">比对结果
+
+  <div class="close" 
+  style="width: 30px;height: 30px;position: absolute;right: 0px;top: 0px;"
+  > 
+  <i nz-icon nzType="close" nzTheme="outline" style="cursor: pointer;" (click)="handleCancel1()"></i>
+</div>
+
+</div>
+<!-- <nz-tabset nzType="card" (nzSelectChange)="tabChange($event)" > -->
+  <!-- <nz-tab nzTitle="模型精度曲线" > -->
+    <div class="content"> 
+      <div id="lineCharts1" style=" width: 100%;"></div>
+
+      <!-- <div class="main-content imgList" id="csImg1">
+       <h2 class="title" style="font-size:18px">评价样本库中的识别错误</h2>
+        <div class="image-list" style="width: 100%;max-height: 450px;overflow-y: auto;">
+            <div class="cover" *ngFor="let item of jdcurver"><img [src]="item" alt=""></div>
+        </div> 
+      </div> -->
+
+  </div>
+  <!-- </nz-tab> -->
+  <!-- <nz-tab nzTitle="测  试">
+      <div class="content" style="flex-wrap: wrap;">
+        <div style="flex: 0 0 100%;margin-left: 20px;">
+          <label for="upload" style="color: #fff;margin-right: 10px;">测试:  </label>
+          <input type="file" multiple="true" accept="image/*" style="color: #fff;" id="imgInput" >
+        </div>
+        <div class="main-content imgList" id="csImg">
+          <div class="image-list1" style="width: 100%;max-height: 450px;overflow-y: auto;" id="image-list1">
+           
+          </div>
+        </div>
+      </div>
+  </nz-tab> -->
+<!-- </nz-tabset> -->
+</div>
+
 <div *ngIf="isVisible" nzTitle="The first Modal"
 class="statistics-top flex-column"
 style="height: 80%;
@@ -47,9 +97,6 @@ margin: 50px 5%;
       </div>
   </nz-tab>
 </nz-tabset>
-
-
-
   </div>
 
   <div class="train-left flex-row">
@@ -64,6 +111,10 @@ margin: 50px 5%;
         <div class="train-btns">
           <ng-container *ngIf="flag===0">
             <button class="btn" (click)="endTask()">暂停</button>
+          </ng-container>
+
+          <ng-container *ngIf="flag===1">
+            <button class="btn" (click)="startCompare()">开始对比</button>
           </ng-container>
 
           <ng-container *ngIf="flag===1">
@@ -96,10 +147,10 @@ margin: 50px 5%;
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let data of rowSelectionTable.data" (click)="tableClick(data.id)" [class.current-row]="dataTrain?.id === data.id">
+            <tr *ngFor="let data of rowSelectionTable.data;index as ids" (click)="tableClick(data.id)" [class.current-row]="dataTrain?.id === data.id">
               <td nzShowCheckbox
                   [(nzChecked)]="mapOfCheckedId[data.id]"
-                  (nzCheckedChange)="refreshStatus()"></td>
+                  (nzCheckedChange)="refreshStatus(ids)"></td>
               <td>{{ data.taskName }}</td>
               <td>{{ data.typeSourceName }}</td>
               <td>{{ data.taskMode | trainTaskMode}}</td>

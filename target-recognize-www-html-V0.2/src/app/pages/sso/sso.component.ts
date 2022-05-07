@@ -8,8 +8,8 @@ import {Store} from "@ngxs/store";
 })
 export class SsoComponent implements OnInit {
   constructor(private route: ActivatedRoute, private store: Store, private router: Router) {
+    
   }
-
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(paramMap => {
       // console.log(paramMap)
@@ -22,6 +22,4 @@ export class SsoComponent implements OnInit {
       // }
     })
   }
-
-
 }
