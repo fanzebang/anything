@@ -122,7 +122,6 @@ public  mutliple;
       let img = new Image()
       img.src = imgUrl
       if(img.complete) {
-        console.log(img)
       var imgWidth = img.width*1 ;
       var imgHeight =  img.height*1 ;
       let zoomWidth = $("#detailLabel").css("width").replace(/[^\d.]/ig,"")
@@ -189,15 +188,18 @@ public  mutliple;
   this.aiLabel.addLayer(gFirstTextLayer);
   
 
+if (!coordinateData.length){coordinateData = [coordinateData] }
+
   for (let i = 0; i < coordinateData.length; i++) {
     var testData = coordinateData[i];
     var feature:any;
-    var id = testData +new Date();
+    var id = testData +`${+new Date()}`;
     if( null == testData.id) testData.id = id
     if( null == testData.props.text) testData.props.text = text
     if( null == testData.props.textId) testData.props.textId = id
-    if( null == testData.style) testData.style =  {fill: true,fillStyle: "#0f0",globalAlpha: 0,lineWidth: 1,opacity: 1,stroke: true,strokeStyle: "red"}
 
+    testData.style =  {fill: true,fillStyle: "#0f0",globalAlpha: 0,lineWidth: 1,opacity: 1,stroke: true,strokeStyle: "red"}
+   
     if(testData.type == "RECT"){
 
         testData.shape.height = testData.shape.height *1* this.mutliple
