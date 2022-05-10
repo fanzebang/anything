@@ -700,10 +700,30 @@ mismatch(): void {
 
 submit(){
   this.misForm.id = this.detectHistory[this.pageIndex].id
-      this.http.post(`${environment.API_URL}/v1/detect-history/mismatched?id=${this.misForm.id}&errorCorrectionMsg=${this.misForm.errorCorrectionMsg}`,this.misForm).subscribe(() => {
-        $(".wb-close").click()
-      this.nzMessage.success('反馈成功');
-    });
+  this.misForm.errorCorrectionMsg = this.misForm.errorCorrectionMsg.trim()
+
+  if(!this.misForm.errorCorrectionMsg){
+    return   this.nzMessage.error("请填写正确的纠错信息");
+    
+  }
+
+          this.http.post(`${environment.API_URL}/v1/detect-history/mismatched?id=${this.misForm.id}&errorCorrectionMsg=${this.misForm.errorCorrectionMsg}`,this.misForm).subscribe((result:any) => {
+    
+          if(result.code == 1){
+    
+                    $(".wb-close").click()
+                  this.nzMessage.success('反馈成功');
+    
+          }else{
+    
+            this.nzMessage.error(result.message);
+    
+          }
+    
+        });
+
+
+
 }
 
   drawMarkedLines(detectHistory: DetectHistory): void {

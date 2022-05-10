@@ -18,7 +18,7 @@
 
     <div class="detail flex-column">
         <div class="detail-image flex-row">
-            <img class="pre pointer" (click)="lastImage()" src="assets/images/pre.png" alt="上一张">
+            <img class="pre pointer" (click)="lastImage()" src="assets/images/pre.png" alt="上一张" style="user-select: none;">
             <div class="detail-box flex-column">
                 <div class="target-image flex-row" style="position: relative;">
                     <div class="canvas-container ai-label" id="detailLabel" style="height: 100%;width:100%;object-fit: contain;align-items: center;"></div>
@@ -27,7 +27,7 @@
 
                 <div class="target-quantity">{{presentIdx}} / {{sampleOssFiles?.length}}</div>
             </div>
-            <img class="next pointer" (click)="nextImage()" src="assets/images/next.png" alt="下一张">
+            <img class="next pointer" (click)="nextImage()" src="assets/images/next.png" alt="下一张" style="user-select: none;">
         </div>
 
         <div class="detail-info flex-row">

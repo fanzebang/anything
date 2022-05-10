@@ -359,16 +359,16 @@ if (img.complete){
     center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
     zoom: imgWidth*2,
     mode: 'RECT', // 绘制线段
-    refreshDelayWhenZooming: false, // 缩放时是否允许刷新延时，性能更优
+    refreshDelayWhenZooming: true, // 缩放时是否允许刷新延时，性能更优
     zoomWhenDrawing: true,
-    panWhenDrawing: false,
+    panWhenDrawing: true,
     featureCaptureWhenMove:true,
     zoomWheelRatio: 5 , // 控制滑轮缩放缩率[0, 10), 值越小，则缩放越快，反之越慢
     withHotKeys: true ,// 关闭快捷键
     zoomMax: imgWidth * 10,
     zoomMin: imgWidth / 10
 })  
-$(".canvas-container").append("<div id='sy' class='table-sy' style= 'width: 100%;height: 100%;position: absolute;pointer-events: none; /*主要是这个属性*/color:rgba(210, 214, 217,.2);z-index: 99999999999;opacity: .5;'></div>")
+$(".canvas-container").append("<div id='sy' class='table-sy' style= 'width: 100%;height: 100%;position: absolute;pointer-events: none; /*主要是这个属性*/color:rgba(210, 214, 217,.2);z-index: 99999999999;opacity: .5;user-select:none'></div>")
 this.loadSy()
 
 

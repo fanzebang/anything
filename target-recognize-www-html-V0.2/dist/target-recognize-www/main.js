@@ -1681,9 +1681,18 @@ class DetectComponent {
     }
     submit() {
         this.misForm.id = this.detectHistory[this.pageIndex].id;
-        this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].API_URL}/v1/detect-history/mismatched?id=${this.misForm.id}&errorCorrectionMsg=${this.misForm.errorCorrectionMsg}`, this.misForm).subscribe(() => {
-            $(".wb-close").click();
-            this.nzMessage.success('反馈成功');
+        this.misForm.errorCorrectionMsg = this.misForm.errorCorrectionMsg.trim();
+        if (!this.misForm.errorCorrectionMsg) {
+            return this.nzMessage.error("请填写正确的纠错信息");
+        }
+        this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].API_URL}/v1/detect-history/mismatched?id=${this.misForm.id}&errorCorrectionMsg=${this.misForm.errorCorrectionMsg}`, this.misForm).subscribe((result) => {
+            if (result.code == 1) {
+                $(".wb-close").click();
+                this.nzMessage.success('反馈成功');
+            }
+            else {
+                this.nzMessage.error(result.message);
+            }
         });
     }
     drawMarkedLines(detectHistory) {
@@ -4692,6 +4701,9 @@ class HomeComponent {
         option && myChart.setOption(option);
     }
     errorCorrectionRequest() {
+        this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg.trim();
+        if (!this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg)
+            return this.message.error("请填写正确的纠错信息");
         axios__WEBPACK_IMPORTED_MODULE_5___default.a.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].API_URL}/v1/batchDiscern/errorCorrection?id=${this.winboxData.modalData.detail.id}&errorCorrectionMsg=${this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg}`, {
             id: this.winboxData.modalData.detail.id,
             errorCorrectionMsg: this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg

@@ -149,7 +149,7 @@ public  mutliple;
         mode: 'RECT', // 绘制线段
         refreshDelayWhenZooming: false, // 缩放时是否允许刷新延时，性能更优
         zoomWhenDrawing: true,
-        panWhenDrawing: false,
+        panWhenDrawing: true,
         featureCaptureWhenMove:true,
         zoomWheelRatio: 5 , // 控制滑轮缩放缩率[0, 10), 值越小，则缩放越快，反之越慢
         withHotKeys: true ,// 关闭快捷键
@@ -197,11 +197,8 @@ if (!coordinateData.length){coordinateData = [coordinateData] }
     if( null == testData.id) testData.id = id
     if( null == testData.props.text) testData.props.text = text
     if( null == testData.props.textId) testData.props.textId = id
-
     testData.style =  {fill: true,fillStyle: "#0f0",globalAlpha: 0,lineWidth: 1,opacity: 1,stroke: true,strokeStyle: "red"}
-   
     if(testData.type == "RECT"){
-
         testData.shape.height = testData.shape.height *1* this.mutliple
         testData.shape.width = testData.shape.width *1* this.mutliple
         testData.shape.x = testData.shape.x *1* this.mutliple

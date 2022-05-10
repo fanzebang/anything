@@ -1526,6 +1526,8 @@ option && myChart.setOption(option);
 }
 
 errorCorrectionRequest(){
+  this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg.trim();
+  if(!this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg) return this.message.error("请填写正确的纠错信息");
   axios.post(`${environment.API_URL}/v1/batchDiscern/errorCorrection?id=${this.winboxData.modalData.detail.id}&errorCorrectionMsg=${this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg}`, {
     id:this.winboxData.modalData.detail.id,
     errorCorrectionMsg:this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg
