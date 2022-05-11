@@ -584,6 +584,7 @@ borderShowHidden(){
     let imgUrl =`${localStorage.getItem('targetRecognizePath')}/` +  this.currentDetectResult.ossKey
     let img = new Image();
     img.src = imgUrl
+    this.kmsSearch(this.currentDetectResult.id + '', selectedTargetPolygonArr[0].categoryCn);
       setTimeout(()=>{
       // $(".bigImg #aiLable").remove()
       var bigImgDom:any = document.querySelector(".bigImg")
@@ -883,6 +884,8 @@ drawTargetsPolygon(targetJson: Array<{
     this.http.get(`${environment.API_URL}/v1/kms/detect-kms`, {params}).subscribe((result: any) => {
       this.borderShowHidden()
       this.kms = result.data;
+      $("#ifmBox iframe").eq(1).attr("src","")
+      $("#ifmBox iframe").eq(0).attr("src","")
       let baiKeUrl1= this.kms[0].url;
       let sfUrl = this.kms[0].sfUrl;
       // let sfUrl = localStorage.getItem('sfUrl') +'/'+ name
