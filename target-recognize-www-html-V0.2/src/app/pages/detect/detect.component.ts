@@ -414,49 +414,59 @@ borderShowHidden(){
       // this.baiKeUrl = this.currentDetectResult.baiKeUrl;
       // console.log('第一个' + this.baiKeUrl);
     }
-   
-    this.drwReact(targetPolygon)
-    // 查询相似图片
-    if (this.selectedTargetPolygon) {
-      // 去后台查询相似图片
-      ////  console.log('this.selectedTargetPolygon = ', this.selectedTargetPolygon);
-      // if(!this.ishomeToDetect){
-      //   this.drwReact(this.selectedTargetPolygon)
-      // }
-      this.http.get(`${environment.API_URL}/v1/sample-oss-file/getByTypeName?pageIndex=1&pageSize=10000`,{
-        params: {
-          typeName: this.selectedTargetPolygon.categoryCn,
-        }
-      }).subscribe((result: HttpResult<any>) => {
-      
-        if (HttpResult.succeed(result.code)) {
-         
-          if (result.data.records.length > 0) {
-            if (result.data.records.length > 5 && this.searchClass != "5") {
-              this.similarTargets = result.data.records.slice(0, 5);
-            } else {
-              this.similarTargets = result.data.records;
-            }      
-            if(this.searchClass == 5){
-              this.countNum = `    共${result.data.total}张`
-            }else{
-              this.countNum = null
-            }
-         
-            
-          }
-
-          setTimeout(()=>{
-            ImagePreview.removed()
-            ImagePreview.init({id:$("#similarImg img")})
-          },300)
-        }
-      });
-      // 查询kms
     
-      if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
-          this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
+    this.drwReact(targetPolygon)
+    this.getLikeImg();
+    // 查询相似图片
+    // if (this.selectedTargetPolygon) {
+    //   // 去后台查询相似图片
+    //   ////  console.log('this.selectedTargetPolygon = ', this.selectedTargetPolygon);
+    //   // if(!this.ishomeToDetect){
+    //   //   this.drwReact(this.selectedTargetPolygon)
+    //   // }
+     
+    //   // 查询kms
+    
+    //   if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
+    //       this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
+    //   }
+    // }
+  }
+
+  getLikeImg(){
+   if (this.selectedTargetPolygon) {
+    this.http.get(`${environment.API_URL}/v1/sample-oss-file/getByTypeName?pageIndex=1&pageSize=10000`,{
+      params: {
+        typeName: this.selectedTargetPolygon.categoryCn,
       }
+    }).subscribe((result: HttpResult<any>) => {
+    
+      if (HttpResult.succeed(result.code)) {
+       
+        if (result.data.records.length > 0) {
+          if (result.data.records.length > 5 && this.searchClass != "5") {
+            this.similarTargets = result.data.records.slice(0, 5);
+          } else {
+            this.similarTargets = result.data.records;
+          }      
+          if(this.searchClass == 5){
+            this.countNum = `    共${result.data.total}张`
+          }else{
+            this.countNum = null
+          }
+       
+          
+        }
+
+        setTimeout(()=>{
+          ImagePreview.removed()
+          ImagePreview.init({id:$("#similarImg img")})
+        },300)
+      }
+    });
+    if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
+      this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
+    }
     }
   }
 
@@ -585,6 +595,8 @@ borderShowHidden(){
     let img = new Image();
     img.src = imgUrl
     this.kmsSearch(this.currentDetectResult.id + '', selectedTargetPolygonArr[0].categoryCn);
+    this.selectedTargetPolygon =  this.currentDetectResult.targetJson[0]
+    this.getLikeImg()
       setTimeout(()=>{
       // $(".bigImg #aiLable").remove()
       var bigImgDom:any = document.querySelector(".bigImg")
@@ -599,8 +611,6 @@ borderShowHidden(){
         overflow: "hidden",
         position:"relative",
       })
-      
-
       let zoomWidth = $("#aiLable").css("width").replace(/[^\d.]/ig,"")
       let zoomHeight = $("#aiLable").css("height").replace(/[^\d.]/ig,"")
       let imgWidth = img.width
@@ -608,9 +618,6 @@ borderShowHidden(){
        let imgSrc  = image.src;
        let mutliple;
        let labelZoom;
-
-
-
         if(imgWidth >= imgHeight ){
             mutliple = zoomWidth/imgWidth
             imgHeight = imgHeight*mutliple
@@ -622,7 +629,6 @@ borderShowHidden(){
           labelZoom = imgHeight*1.3
           imgHeight = zoomHeight
         }
-
       this.gMapArr= new AILabel.Map(`aiLable`,{
         center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
         zoom: labelZoom,
@@ -636,7 +642,6 @@ borderShowHidden(){
         zoomMax: zoomWidth * 10,
         zoomMin: zoomWidth / 10
     }) 
-
     var imageLayer = new AILabel.Layer.Image(
       'img', // id
       {
@@ -677,11 +682,7 @@ borderShowHidden(){
           strokeStyle: "red"}
       );
       this.gfeatureLayer.addFeature(feature)
-      
     }
-
-
-    
       },1000)
   }
 
@@ -742,9 +743,7 @@ submit(){
       ctx.drawImage(img, 0, 0);
       // ctx.fillStyle = 'transparent';
       ctx.strokeStyle = '#f00';
-
       detectHistory.targetJson.forEach(targetPolygon => {
-
         ctx.beginPath();
         ctx.moveTo(targetPolygon.x1, targetPolygon.y1);
         ctx.lineTo(targetPolygon.x2, targetPolygon.y2);
@@ -754,10 +753,7 @@ submit(){
         ctx.closePath();
         ctx.stroke();
         // ctx.fill();
-
       });
-
-
       const ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase();
       const dataURL = testcanvasElm.toDataURL('image/' + ext);
       // setTimeout(() => {

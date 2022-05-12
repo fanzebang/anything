@@ -1445,13 +1445,22 @@ class DetectComponent {
             // console.log('第一个' + this.baiKeUrl);
         }
         this.drwReact(targetPolygon);
+        this.getLikeImg();
         // 查询相似图片
+        // if (this.selectedTargetPolygon) {
+        //   // 去后台查询相似图片
+        //   ////  console.log('this.selectedTargetPolygon = ', this.selectedTargetPolygon);
+        //   // if(!this.ishomeToDetect){
+        //   //   this.drwReact(this.selectedTargetPolygon)
+        //   // }
+        //   // 查询kms
+        //   if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
+        //       this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
+        //   }
+        // }
+    }
+    getLikeImg() {
         if (this.selectedTargetPolygon) {
-            // 去后台查询相似图片
-            ////  console.log('this.selectedTargetPolygon = ', this.selectedTargetPolygon);
-            // if(!this.ishomeToDetect){
-            //   this.drwReact(this.selectedTargetPolygon)
-            // }
             this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].API_URL}/v1/sample-oss-file/getByTypeName?pageIndex=1&pageSize=10000`, {
                 params: {
                     typeName: this.selectedTargetPolygon.categoryCn,
@@ -1478,7 +1487,6 @@ class DetectComponent {
                     }, 300);
                 }
             });
-            // 查询kms
             if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
                 this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
             }
@@ -1590,6 +1598,8 @@ class DetectComponent {
         let img = new Image();
         img.src = imgUrl;
         this.kmsSearch(this.currentDetectResult.id + '', selectedTargetPolygonArr[0].categoryCn);
+        this.selectedTargetPolygon = this.currentDetectResult.targetJson[0];
+        this.getLikeImg();
         setTimeout(() => {
             // $(".bigImg #aiLable").remove()
             var bigImgDom = document.querySelector(".bigImg");
