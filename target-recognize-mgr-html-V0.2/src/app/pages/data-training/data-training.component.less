@@ -13,6 +13,59 @@
 }
 
 
+.dbcontent{
+  
+  width: 100%;
+  height: 100%;
+  border: 1px solid red;
+  display: flex;
+  .dbCharts{
+    flex: 0 0 50%;
+    height: 70%;
+.dbtitle{
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  .titleText{
+    flex: 1;
+    font-size: 18px;
+    text-align: center;
+  }
+  .leftLine{
+
+    flex: 0 0 37%;
+    height: 5px;
+    background: linear-gradient(to right,#031129,#095495);
+    margin: auto 0;
+  }
+  .leftRect{
+      width: 11px;
+      height: 11px;
+      transform: rotate(45deg);
+      background: #095495;
+      margin: auto 0;
+  }
+  .rightLine{
+    flex: 0 0 37%;
+    height: 5px;
+    background: linear-gradient(to left,#031129,#095495);
+    margin: auto 0;
+  }
+  .rightRect{
+      width: 11px;
+      height: 11px;
+      transform: rotate(45deg);
+      background: #095495;
+      margin: auto 0;
+  }
+
+}
+
+  }
+
+}
+
 
 .echart-box {
   display: flex;

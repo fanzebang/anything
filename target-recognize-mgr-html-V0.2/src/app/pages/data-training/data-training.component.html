@@ -7,11 +7,11 @@
 <div *ngIf="isVisible1" nzTitle="The first Modal"
 class="statistics-top flex-column"
 style="height: 80%;
-width:50%;
+width:70%;
 position: absolute;
 z-index: 9999;
 background: #031129;
-margin: 50px 15%;
+margin: 50px 10%;
 ">
 <div class="statistics-title" style="position: relative;">比对结果
 
@@ -22,34 +22,21 @@ margin: 50px 15%;
 </div>
 
 </div>
-<!-- <nz-tabset nzType="card" (nzSelectChange)="tabChange($event)" > -->
-  <!-- <nz-tab nzTitle="模型精度曲线" > -->
-    <div class="content"> 
-      <div id="lineCharts1" style=" width: 100%;"></div>
 
-      <!-- <div class="main-content imgList" id="csImg1">
-       <h2 class="title" style="font-size:18px">评价样本库中的识别错误</h2>
-        <div class="image-list" style="width: 100%;max-height: 450px;overflow-y: auto;">
-            <div class="cover" *ngFor="let item of jdcurver"><img [src]="item" alt=""></div>
-        </div> 
-      </div> -->
+ <div class="dbcontent"> 
+   <div class="dbCharts">
+     <div class="dbtitle">
+        <div class="leftLine"></div> <div class="leftRect"></div>
+        <div class="titleText">模型精度曲线</div>
+        <div class="rightRect"></div><div class="rightLine"></div> 
+     </div>
+      <div id="lineCharts1" style="width: 100%;height:100%" ></div>
+   </div>
+     
 
   </div>
-  <!-- </nz-tab> -->
-  <!-- <nz-tab nzTitle="测  试">
-      <div class="content" style="flex-wrap: wrap;">
-        <div style="flex: 0 0 100%;margin-left: 20px;">
-          <label for="upload" style="color: #fff;margin-right: 10px;">测试:  </label>
-          <input type="file" multiple="true" accept="image/*" style="color: #fff;" id="imgInput" >
-        </div>
-        <div class="main-content imgList" id="csImg">
-          <div class="image-list1" style="width: 100%;max-height: 450px;overflow-y: auto;" id="image-list1">
-           
-          </div>
-        </div>
-      </div>
-  </nz-tab> -->
-<!-- </nz-tabset> -->
+  
+
 </div>
 
 <div *ngIf="isVisible" nzTitle="The first Modal"
@@ -107,8 +94,17 @@ margin: 50px 5%;
         <button class="train-area-btn-item" [class.active]="flag === 1" (click)="changeStatus(1)">已结束</button>
       </div>
 
-      <div class="train-table-box">
-        <div class="train-btns">
+      <div class="train-table-box" >
+        <div class="train-btns" style="position:relative">
+
+          <ng-container *ngIf="flag===1">
+            <nz-select ngModel="全部"  style="position: absolute;left:0;" class="select">
+              <nz-option nzValue="全部" nzLabel="全部"></nz-option>
+              <nz-option nzValue="战斗机" nzLabel="战斗机"></nz-option>
+              <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
+            </nz-select>
+          </ng-container>
+
           <ng-container *ngIf="flag===0">
             <button class="btn" (click)="endTask()">暂停</button>
           </ng-container>

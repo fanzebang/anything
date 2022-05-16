@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
 
 
     const jwt = localStorage.getItem('Bearer');
+    
     if (jwt) {
       this.store.dispatch(new LoginAction(jwt));
     }
