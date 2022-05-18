@@ -19,6 +19,7 @@ import {ModelPrecisionComponent} from "./model-precision.component";
 import {IconsProviderModule} from "../../icons-provider.module";
 import {ModelCompareComponent} from "./model-compare.component";
 
+
 const APP_COMPONENTS = [DataTrainingComponent, AddTrainingComponent, ModelPrecisionComponent, ModelCompareComponent];
 const NZ_MODULES = [NzModalModule, NzFormModule, NzInputModule, NzMessageModule, NzSelectModule, NzTreeSelectModule, NzProgressModule,
   NzTableModule,NzTabsModule,NzUploadModule];
