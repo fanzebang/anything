@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NzMessageService, NzModalService,NzUploadChangeParam} from 'ng-zorro-antd';
 import {AddTrainingComponent} from './add-training.component';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {DataTrain, HttpResult, ApiPage} from 'src/app/core/http-entity';
+import {DataTrain, HttpResult, ApiPage,SampleOssType} from 'src/app/core/http-entity';
 import {environment} from '../../../environments/environment';
 import {ModelPrecisionComponent} from './model-precision.component';
 import {ModelCompareComponent} from './model-compare.component';
@@ -36,6 +36,7 @@ export class DataTrainingComponent implements OnInit {
   dataTrain: DataTrain;
   mapOfCheckedId: { [key: string]: boolean } = {};
   status = 'STATUS';
+  compareDisplay:boolean = false
   rightComponent = false;
   // listOfData = [{
   //   taskName: 'Minie Ford',
@@ -69,6 +70,8 @@ export class DataTrainingComponent implements OnInit {
   jdcurver:any = [];
   csPic:any = []
   precision:any;
+  selectList:String[] = ["全部"];
+  selectData:String = "全部";
   intervalLoadTraining:any
   onItemChecked(id: number, checked: boolean): void {
     // this.updateCheckedSet(id, checked);
@@ -107,7 +110,8 @@ export class DataTrainingComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTraining();
-
+    
+   
   
   }
 
@@ -131,7 +135,7 @@ export class DataTrainingComponent implements OnInit {
 
       this.loadTraining();
 
-    },1000*2)
+    },1000*60)
     
   }
 
@@ -230,10 +234,35 @@ export class DataTrainingComponent implements OnInit {
         this.listOfData = result.data.records;
         this.dataTotal = result.data.total;
         this.pageIndex = result.data.current;
+ 
+        if(this.status != 'LINE_UP' && this.status != 'STATUS' ){
+     
+
+            this.loadSelectData(this.listOfData);
+
+        }    
+ 
       }
     });
   }
 
+  loadSelectData(listOfData:Array<DataTrain>){
+
+      for (let index = 0; index < listOfData.length; index++) {
+        const element = listOfData[index];
+
+        this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
+
+          if (HttpResult.succeed(result.code)) {
+            this.selectList.push(result.data.sampleTypeName)
+          }
+        });
+
+
+      }
+
+
+  }
   // 暂停
   endTask() {
     const checkedCameraIds = [];
@@ -291,6 +320,8 @@ export class DataTrainingComponent implements OnInit {
     }
      if (flag ==1) {
       console.log('点击已经结束');
+      this.selectList = this.selectList.splice(0,1)
+      this.compareDisplay = false
       this.status = 'OVER';
       //加载进行中的数据
       this.loadTraining();
@@ -300,6 +331,12 @@ export class DataTrainingComponent implements OnInit {
       console.log('点击排队中');
       this.loadTraining();
     }
+  }
+
+  ngModelChange(){
+   
+    this.selectData  == "全部"?this.compareDisplay = false: this.compareDisplay = true
+  
   }
 
   tableClick(id: number) {
@@ -406,15 +443,10 @@ listData:any
 
         })
 
-       
-        
-      
 
         that.initModeLineCharts(echartsData)
         that.jdcurver = JSON.parse(result.valErrorSample)
  
-
-
        
       })
     },50)

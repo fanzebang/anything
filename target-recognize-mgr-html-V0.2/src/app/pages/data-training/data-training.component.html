@@ -30,7 +30,53 @@ margin: 50px 10%;
         <div class="titleText">模型精度曲线</div>
         <div class="rightRect"></div><div class="rightLine"></div> 
      </div>
-      <div id="lineCharts1" style="width: 100%;height:100%" ></div>
+      <div id="lineCharts1" style="width: 100%;height:80%" ></div>
+      <!-- [nzScroll]="{ x: '50%', y: '100%' }" -->
+      <nz-table #basicTable [nzData]="complarelistOfData1" #borderedTable nzBordered style="margin-left: 20px;">
+        <thead>
+          <tr>
+            <th>训练版本</th>
+            <th>训练精度</th>
+            <th>Loss值</th>
+            <th>数据总数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td  nzBreakWord>{{ data.name }}</td>
+            <td  nzBreakWord>{{ data.age }}</td>
+            <td  nzBreakWord>{{ data.address }}</td>
+            <td  nzBreakWord>{{ data.address }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+   </div>
+
+   <div class="dbTable">
+    <div class="dbtitle">
+      <div class="leftLine"></div> <div class="leftRect"></div>
+      <div class="titleText">分类数据详情</div>
+      <div class="rightRect"></div><div class="rightLine"></div> 
+   </div>
+   <!-- [nzScroll]="{ x: '50%', y: '100%' }" -->
+    <nz-table #basicTable [nzData]="complarelistOfData2" #borderedTable nzBordered style="margin-left: 20px;margin-top: 20px;" >
+      <thead>
+        <tr>
+          <th>test1</th>
+          <th>test2</th>
+          <th>test3</th>
+          <th>test4</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzBreakWord>{{ data.name }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+
    </div>
      
 
@@ -98,10 +144,8 @@ margin: 50px 5%;
         <div class="train-btns" style="position:relative">
 
           <ng-container *ngIf="flag===1">
-            <nz-select ngModel="全部"  style="position: absolute;left:0;" class="select">
-              <nz-option nzValue="全部" nzLabel="全部"></nz-option>
-              <nz-option nzValue="战斗机" nzLabel="战斗机"></nz-option>
-              <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
+            <nz-select [(ngModel)]="selectData"  style="position: absolute;left:0;" class="select" (ngModelChange)="ngModelChange()">
+              <nz-option  *ngFor="let item of selectList" [nzValue]="item" [nzLabel]="item"></nz-option>
             </nz-select>
           </ng-container>
 
@@ -109,7 +153,7 @@ margin: 50px 5%;
             <button class="btn" (click)="endTask()">暂停</button>
           </ng-container>
 
-          <ng-container *ngIf="flag===1">
+          <ng-container *ngIf="compareDisplay">
             <button class="btn" (click)="startCompare()">开始对比</button>
           </ng-container>
 

@@ -1,4 +1,37 @@
 :host ::ng-deep {
+  .dbcontent{
+    .ant-table.ant-table-bordered .ant-table-container{
+      border:none;
+    }
+    .ant-table-body{
+      overflow-y: auto !important;
+    }
+    .ant-empty-normal{
+      color: #fff;
+    }
+    .ant-table{
+      background: transparent;
+    }
+    .ant-table-tbody > tr > td{
+      border: 1px solid #15a0ff;
+      border-top: none;
+    }
+    .ant-table-tbody > tr.ant-table-placeholder:hover > td{
+      background: transparent;
+    }
+    .ant-table-thead > tr > th{
+      text-align: center;
+      color: #fff;
+      background: #1d4384;
+      border-right:1px solid #15a0ff;
+      border-top:1px solid #15a0ff;
+      border-bottom:1px solid #15a0ff;
+      &:nth-child(1){
+        border-left: 1px solid #15a0ff;
+      }
+    }
+
+  }
 
   .ant-select-selector{
     

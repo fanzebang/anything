@@ -63,6 +63,7 @@
                 <!-- <input type="checkbox" style="position: absolute;left: 2px; " [(ngModel)]="checkOptionsOne[idx]" (ngModelChange)="updateSingleChecked()"> -->
                 <nz-checkbox-group style="position: absolute;left: 2px; " [(ngModel)]="checkOptionsOne[idx]" (ngModelChange)="updateSingleChecked()">
                 </nz-checkbox-group>
+           
                 <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
                 <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
 

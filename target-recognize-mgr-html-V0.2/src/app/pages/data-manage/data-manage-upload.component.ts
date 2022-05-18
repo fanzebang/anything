@@ -51,6 +51,7 @@ export class DataManageUploadComponent implements OnInit {
 
   beforeImageUpload = (file: File) => {
     return new Observable((observer: Observer<boolean>) => {
+
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isValidFormat = isJPG || isPNG;
