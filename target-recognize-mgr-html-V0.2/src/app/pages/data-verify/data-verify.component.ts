@@ -5,6 +5,7 @@ import {HttpResult, LabelTask, SampleOssFile, StatInfo, User} from '../../core/h
 import {format} from 'date-fns';
 import { fromEvent } from 'rxjs';
 import {NzMessageService, NzModalService} from "ng-zorro-antd";
+import {Router} from '@angular/router';
 declare var $:any
 declare var AILabel:any;
 @Component({
@@ -41,7 +42,7 @@ export class DataVerifyComponent implements OnInit {
   selectClassIndex:any;
   selectClassIndex1 = -1;
   keyboardVerifySubscription:any;
-  constructor(private http: HttpClient,private nzMessage: NzMessageService) {
+  constructor(private http: HttpClient,private nzMessage: NzMessageService,private router: Router) {
 
   }
 
@@ -453,13 +454,24 @@ export class DataVerifyComponent implements OnInit {
               // 下一张图片
               if (i + 1 < this.currentLabelTask.sampleFiles.length) {
                 this.currentSampleFile = this.currentLabelTask.sampleFiles[i + 1];
+              
                 break;
               }
+         
               if(this.currentLabelTask.sampleFiles.length<=(i+1)){
-                this.currentSampleFile = null 
+                // this.currentSampleFile = null 
+                // this.router.navigate(['/console/data-verify']);
+                location.reload();
               }
             }
           }
+
+          // if(null == this.currentSampleFile){
+
+           
+
+          // }
+  
           this.search(false)
           
         }

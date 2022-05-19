@@ -33,6 +33,8 @@ export class DataTrainingComponent implements OnInit {
   isVisible = false;
   isVisible1 = false;
   listOfData: DataTrain[] = [];
+  listOfData1:DataTrain[] = [];
+  listOfData2:DataTrain[] = [];
   dataTrain: DataTrain;
   mapOfCheckedId: { [key: string]: boolean } = {};
   status = 'STATUS';
@@ -163,7 +165,6 @@ export class DataTrainingComponent implements OnInit {
   }
   
   fileChange(){
-    console.log(1111)
     var file = $("#imgInput")[0].files
     var formData = new FormData()
     $.each(file,function(i,n){
@@ -230,24 +231,26 @@ export class DataTrainingComponent implements OnInit {
     }
     this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
       if (HttpResult.succeed(result.code)) {
-
+      
         this.listOfData = result.data.records;
         this.dataTotal = result.data.total;
         this.pageIndex = result.data.current;
- 
+   
         if(this.status != 'LINE_UP' && this.status != 'STATUS' ){
      
 
             this.loadSelectData(this.listOfData);
-
+        
         }    
- 
+        this.listOfData2 = this.listOfData
+
+     
       }
     });
   }
 
   loadSelectData(listOfData:Array<DataTrain>){
-
+    this.selectList = this.selectList.splice(0,1)
       for (let index = 0; index < listOfData.length; index++) {
         const element = listOfData[index];
 
@@ -255,13 +258,10 @@ export class DataTrainingComponent implements OnInit {
 
           if (HttpResult.succeed(result.code)) {
             this.selectList.push(result.data.sampleTypeName)
+            element.lastClass = result.data.sampleTypeName
           }
         });
-
-
       }
-
-
   }
   // 暂停
   endTask() {
@@ -321,6 +321,7 @@ export class DataTrainingComponent implements OnInit {
      if (flag ==1) {
       console.log('点击已经结束');
       this.selectList = this.selectList.splice(0,1)
+      this.selectData = "全部"
       this.compareDisplay = false
       this.status = 'OVER';
       //加载进行中的数据
@@ -333,9 +334,33 @@ export class DataTrainingComponent implements OnInit {
     }
   }
 
+
+ 
   ngModelChange(){
    
+ 
     this.selectData  == "全部"?this.compareDisplay = false: this.compareDisplay = true
+    this.listOfData1 = [];
+
+    if(this.compareDisplay){
+
+      for (let index = 0; index < this.listOfData2.length; index++) {
+        const element = this.listOfData2[index];
+     
+        if(element.lastClass == this.selectData){
+          this.listOfData1.push(element);
+        }
+        
+      }
+
+
+      this.listOfData = this.listOfData1
+      
+    }else{
+
+      this.listOfData = this.listOfData2
+
+    }
   
   }
 
@@ -501,7 +526,21 @@ listData:any
     // });
   }
 
+
+  //对比
   startCompare() {
+
+    const checkedCameraIds = [];
+    for (const k in this.mapOfCheckedId) {
+      if (this.mapOfCheckedId[k]) {
+        checkedCameraIds.push(k);
+      }
+    }
+    if (checkedCameraIds.length < 1) {
+      this.nzMessage.error('最少勾选一项');
+      return;
+    }
+
 
     this.isVisible1 = true
 

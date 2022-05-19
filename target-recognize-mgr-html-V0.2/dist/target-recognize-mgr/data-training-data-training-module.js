@@ -1005,6 +1005,8 @@ class DataTrainingComponent {
         this.isVisible = false;
         this.isVisible1 = false;
         this.listOfData = [];
+        this.listOfData1 = [];
+        this.listOfData2 = [];
         this.mapOfCheckedId = {};
         this.status = 'STATUS';
         this.compareDisplay = false;
@@ -1100,7 +1102,6 @@ class DataTrainingComponent {
         });
     }
     fileChange() {
-        console.log(1111);
         var file = $("#imgInput")[0].files;
         var formData = new FormData();
         $.each(file, function (i, n) {
@@ -1175,15 +1176,18 @@ class DataTrainingComponent {
                 if (this.status != 'LINE_UP' && this.status != 'STATUS') {
                     this.loadSelectData(this.listOfData);
                 }
+                this.listOfData2 = this.listOfData;
             }
         });
     }
     loadSelectData(listOfData) {
+        this.selectList = this.selectList.splice(0, 1);
         for (let index = 0; index < listOfData.length; index++) {
             const element = listOfData[index];
             this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result) => {
                 if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
                     this.selectList.push(result.data.sampleTypeName);
+                    element.lastClass = result.data.sampleTypeName;
                 }
             });
         }
@@ -1246,6 +1250,7 @@ class DataTrainingComponent {
         if (flag == 1) {
             console.log('点击已经结束');
             this.selectList = this.selectList.splice(0, 1);
+            this.selectData = "全部";
             this.compareDisplay = false;
             this.status = 'OVER';
             //加载进行中的数据
@@ -1259,6 +1264,19 @@ class DataTrainingComponent {
     }
     ngModelChange() {
         this.selectData == "全部" ? this.compareDisplay = false : this.compareDisplay = true;
+        this.listOfData1 = [];
+        if (this.compareDisplay) {
+            for (let index = 0; index < this.listOfData2.length; index++) {
+                const element = this.listOfData2[index];
+                if (element.lastClass == this.selectData) {
+                    this.listOfData1.push(element);
+                }
+            }
+            this.listOfData = this.listOfData1;
+        }
+        else {
+            this.listOfData = this.listOfData2;
+        }
     }
     tableClick(id) {
         this.rightComponent = true;
@@ -1399,7 +1417,18 @@ class DataTrainingComponent {
         //   nzCancelText: '关闭'
         // });
     }
+    //对比
     startCompare() {
+        const checkedCameraIds = [];
+        for (const k in this.mapOfCheckedId) {
+            if (this.mapOfCheckedId[k]) {
+                checkedCameraIds.push(k);
+            }
+        }
+        if (checkedCameraIds.length < 1) {
+            this.nzMessage.error('最少勾选一项');
+            return;
+        }
         this.isVisible1 = true;
         var dataList = this.listOfData.map((item) => {
             if (this.mapOfCheckedId[item.id]) {

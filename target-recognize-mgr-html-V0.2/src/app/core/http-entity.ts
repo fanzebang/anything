@@ -81,6 +81,11 @@ export class ProgressDto {
 export class DataTrain {
   id: number;
 
+ /**
+   * 创建任务的类别
+   */
+  lastClass:String;
+
   /**
    * 任务名称
    */
