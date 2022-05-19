@@ -118,6 +118,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
         this.gMapArr.setMode("PAN")
 
       }else if(event.keyCode  == 46){
+    
         try{
           if(this.gMapArr.getActiveFeature().props.name == "uninterested"){
             this.gfeatureLayer.removeFeatureById(this.gMapArr.getActiveFeature().id)
@@ -178,6 +179,7 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   private listenKeyboard2() {
     this.keyboardVerifySubscription2 = fromEvent(window, 'keydown').subscribe((event: any) => {
       if(event.keyCode == 192){
+ 
         if(!this.lableAloneStatus){
           if(!this.singleTarget && this.gMapArr.layers[1].features.length > 0 ){
             this.singleTarget = true;
@@ -583,10 +585,7 @@ this.loadSy()
 
 
 
-  redraw(points?: { startX: number, startY: number, endX: number, endY: number }) {
-    this.gfeatureLayer.removeFeatureById(this.markData.theFeatureId);
-  }
-
+  
   cancelRect(){
     if (this.drawingRects.length > 0) {
       this.drawingRects.splice(0, this.drawingRects.length);
@@ -842,10 +841,6 @@ removeImg(){
                 {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
             );
             this.gMapArr.layers[2].addText(gFirstText);
-
-
-
-
             this.currentAllotFile.relatedTextId.push(relatedTextId)
              this.drawingRects.push({
                       id:marks[i].sampleOssType.id,
@@ -861,8 +856,14 @@ removeImg(){
     }
   }
 
+  redraw(points?: { startX: number, startY: number, endX: number, endY: number }) {
+    // this.gfeatureLayer.removeFeatureById(this.markData.theFeatureId);
+  }
+
+
   changeMarkMode(markMode: string) {
     this.markMode = markMode;
+    this.allFeatures();
     if (this.markMode === 'auto') {
       // 人机协同标注
       this.autoMark();

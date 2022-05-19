@@ -590,9 +590,6 @@ class DataMarkComponent {
             }, 200);
         }
     }
-    redraw(points) {
-        this.gfeatureLayer.removeFeatureById(this.markData.theFeatureId);
-    }
     cancelRect() {
         if (this.drawingRects.length > 0) {
             this.drawingRects.splice(0, this.drawingRects.length);
@@ -835,8 +832,12 @@ class DataMarkComponent {
             });
         }
     }
+    redraw(points) {
+        // this.gfeatureLayer.removeFeatureById(this.markData.theFeatureId);
+    }
     changeMarkMode(markMode) {
         this.markMode = markMode;
+        this.allFeatures();
         if (this.markMode === 'auto') {
             // 人机协同标注
             this.autoMark();
