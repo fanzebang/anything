@@ -313,6 +313,7 @@ export class DataTrainingComponent implements OnInit {
   changeStatus(flag: number) {
     console.log(flag)
     this.flag = flag;
+    this.compareDisplay= false 
     if(flag ==0){
       this.status = 'STATUS';
       console.log('点击进行中');
@@ -322,7 +323,7 @@ export class DataTrainingComponent implements OnInit {
       console.log('点击已经结束');
       this.selectList = this.selectList.splice(0,1)
       this.selectData = "全部"
-      this.compareDisplay = false
+  
       this.status = 'OVER';
       //加载进行中的数据
       this.loadTraining();
