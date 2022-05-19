@@ -23,6 +23,8 @@ margin: 50px 10%;
 
 </div>
 
+
+
  <div class="dbcontent"> 
    <div class="dbCharts">
      <div class="dbtitle">
@@ -30,9 +32,14 @@ margin: 50px 10%;
         <div class="titleText">模型精度曲线</div>
         <div class="rightRect"></div><div class="rightLine"></div> 
      </div>
-      <div id="lineCharts1" style="width: 100%;height:80%" ></div>
-      <!-- [nzScroll]="{ x: '50%', y: '100%' }" -->
-      <nz-table #basicTable [nzData]="complarelistOfData1" #borderedTable nzBordered style="margin-left: 20px;">
+      <div id="lineCharts1" style="width: 100%;height:70%" ></div>
+      <!-- [nzScroll]="{ x: '50%', y: '100%' }"      nzBordered -->
+      <nz-table 
+       #basicTable
+       [nzData]="listOfData" 
+       [nzFrontPagination] = false 
+       [nzScroll]="{x: '', y: '200px' }" 
+       style="margin-left: 20px;text-align: center;" >
         <thead>
           <tr>
             <th>训练版本</th>
@@ -43,10 +50,10 @@ margin: 50px 10%;
         </thead>
         <tbody>
           <tr *ngFor="let data of basicTable.data">
-            <td  nzBreakWord>{{ data.name }}</td>
-            <td  nzBreakWord>{{ data.age }}</td>
-            <td  nzBreakWord>{{ data.address }}</td>
-            <td  nzBreakWord>{{ data.address }}</td>
+            <td  nzBreakWord>{{ data.taskName }}</td>
+            <td  nzBreakWord>{{ data.precision }}</td>
+            <td  nzBreakWord>-</td>
+            <td  nzBreakWord>-</td>
           </tr>
         </tbody>
       </nz-table>
@@ -59,20 +66,85 @@ margin: 50px 10%;
       <div class="titleText">分类数据详情</div>
       <div class="rightRect"></div><div class="rightLine"></div> 
    </div>
-   <!-- [nzScroll]="{ x: '50%', y: '100%' }" -->
-    <nz-table #basicTable [nzData]="complarelistOfData2" #borderedTable nzBordered style="margin-left: 20px;margin-top: 20px;" >
+   <!-- [nzScroll]="{ x: '1px', y: '24px' }" -->
+   <!-- [nzScroll]="{ x: '50%', y: '100%' }" --> 
+    <nz-table #basicTable1 [nzData]="listOfData" [nzFrontPagination] = false [nzScroll]="{ x: '', y: '500px' }" style="margin-left: 20px;margin-top: 20px;" >
       <thead>
         <tr>
-          <th>test1</th>
-          <th>test2</th>
-          <th>test3</th>
-          <th>test4</th>
+          <th *ngFor="let item of listOfData">{{item.taskName}}</th>
           
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td nzBreakWord>{{ data.name }}</td>
+        <!-- <tr *ngFor="let data of basicTable.data">
+          <td nzBreakWord *ngFor="let item of data">{{ item.precision }}</td>
+        </tr> -->
+        <!-- *ngFor="let item of listOfData" -->
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
+        </tr>
+        <tr >
+          <td nzBreakWord *ngFor="let item of listOfData">{{ item.precision }}</td>
         </tr>
       </tbody>
     </nz-table>

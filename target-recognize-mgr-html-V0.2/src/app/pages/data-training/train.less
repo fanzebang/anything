@@ -3,6 +3,10 @@
     .ant-table.ant-table-bordered .ant-table-container{
       border:none;
     }
+
+    .ant-table table{
+      color: #fff;
+    }
     .ant-table-body{
       overflow-y: auto !important;
     }
@@ -12,9 +16,22 @@
     .ant-table{
       background: transparent;
     }
+ .ant-table-tbody{
+      > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
+      background:none !important;
+      //这里是将鼠标移入时的背景色取消掉了
+      }
+    }
+
     .ant-table-tbody > tr > td{
-      border: 1px solid #15a0ff;
+      padding:8px;
+      border-right: 1px solid #15a0ff;
+      border-bottom: 1px solid #15a0ff;
+      text-align: center;
       border-top: none;
+      &:first-child{
+        border-left: 1px solid #15a0ff;
+      }
     }
     .ant-table-tbody > tr.ant-table-placeholder:hover > td{
       background: transparent;

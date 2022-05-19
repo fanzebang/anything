@@ -5756,7 +5756,7 @@ class DetailDataManageComponent {
                     testData.shape.y = testData.shape.y * 1 * this.mutliple;
                     feature = new AILabel.Feature.Rect(testData.id, testData.shape, testData.props, testData.style);
                 }
-                else if (testData.type == "POLYGON") {
+                else { // if(testData.type == "POLYGON")
                     feature = new AILabel.Feature.Polygon(testData.id, testData.shape, testData.props, testData.style);
                 }
                 that.gfeatureLayer.addFeature(feature);

@@ -137,7 +137,7 @@ export class DataTrainingComponent implements OnInit {
 
       this.loadTraining();
 
-    },1000*60)
+    },1000*2)
     
   }
 
@@ -231,20 +231,15 @@ export class DataTrainingComponent implements OnInit {
     }
     this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
       if (HttpResult.succeed(result.code)) {
-      
+      if(this.selectData == "全部") {
         this.listOfData = result.data.records;
         this.dataTotal = result.data.total;
         this.pageIndex = result.data.current;
-   
         if(this.status != 'LINE_UP' && this.status != 'STATUS' ){
-     
-
             this.loadSelectData(this.listOfData);
-        
-        }    
-        this.listOfData2 = this.listOfData
-
-     
+        }
+          this.listOfData2 = this.listOfData 
+        }
       }
     });
   }
@@ -257,7 +252,10 @@ export class DataTrainingComponent implements OnInit {
         this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
 
           if (HttpResult.succeed(result.code)) {
-            this.selectList.push(result.data.sampleTypeName)
+            if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
+              this.selectList.push(result.data.sampleTypeName)
+            }
+           
             element.lastClass = result.data.sampleTypeName
           }
         });

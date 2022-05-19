@@ -209,8 +209,8 @@ if (!coordinateData.length){coordinateData = [coordinateData] }
         testData.props, 
         testData.style
       );
-
-    }else if(testData.type == "POLYGON"){
+    
+    }else{    // if(testData.type == "POLYGON")
 
       feature = new AILabel.Feature.Polygon(
         testData.id, 
