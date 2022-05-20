@@ -40,6 +40,7 @@ export class DataTrainingComponent implements OnInit {
   status = 'STATUS';
   compareDisplay:boolean = false
   rightComponent = false;
+  recommend:String;
   // listOfData = [{
   //   taskName: 'Minie Ford',
   //   taskPattern: '自动',
@@ -704,7 +705,36 @@ var echartsData1 = []
       })
    })
 
+// preY 下底 nextY 上底 nextX-preX 高 
 
+
+var maxArea = -1;
+var maxAreaIndex;
+for (let i = 0; i < dataset.length; i++) {
+  const element = dataset[i];
+  var area = 0;
+  element.source = element.source.reverse();
+  for (let index = 0; index < (element.source.length-1); index++) {
+    const element1 = element.source[index];
+    const element2 = element.source[index+1];
+    // console.log(element1,element2)
+    area += ((element1[1]*1+element2[1]*1)*(element2[0]*1-element1[0]*1))/2
+  }
+
+  if(area>maxArea) maxArea = area;maxAreaIndex = i;
+
+}
+
+this.recommend = series[maxAreaIndex].name.split("---")[0];
+series[maxAreaIndex].name += "(推荐)"
+series[maxAreaIndex].itemStyle = { 
+  normal : { 
+  color:'red', //改变折线点的颜色
+  lineStyle:{ 
+  color:'red' //改变折线颜色
+  } 
+  } 
+}
 var option = {
     dataset:dataset,
     legend: {

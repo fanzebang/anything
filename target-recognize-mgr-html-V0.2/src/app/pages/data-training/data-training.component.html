@@ -49,8 +49,8 @@ margin: 50px 10%;
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td  nzBreakWord>{{ data.taskName }}</td>
+          <tr *ngFor="let data of basicTable.data" [ngClass]="{'recomend': data.taskName == recommend}">
+            <td  nzBreakWord >{{ data.taskName }}</td>
             <td  nzBreakWord>{{ data.precision }}</td>
             <td  nzBreakWord>-</td>
             <td  nzBreakWord>-</td>

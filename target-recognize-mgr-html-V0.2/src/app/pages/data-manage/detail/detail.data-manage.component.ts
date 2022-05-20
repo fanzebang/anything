@@ -211,7 +211,17 @@ if (!coordinateData.length){coordinateData = [coordinateData] }
       );
     
     }else{    // if(testData.type == "POLYGON")
+      // testData.shape.height = testData.shape.height *1* this.mutliple
+      // testData.shape.width = testData.shape.width *1* this.mutliple
+      // testData.shape.x = testData.shape.x *1* this.mutliple
+      // testData.shape.y = testData.shape.y *1* this.mutliple
 
+console.log()   
+for (let index = 0; index < testData.shape.points.length; index++) {
+  const element = testData.shape.points[index];
+  element.x =  element.x *1* this.mutliple
+  element.y =  element.y *1* this.mutliple
+}   
       feature = new AILabel.Feature.Polygon(
         testData.id, 
         testData.shape, 
