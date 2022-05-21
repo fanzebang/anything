@@ -6980,7 +6980,7 @@ class LeafDataManageComponent {
                 console.log();
                 let type = fileList[i].type;
                 let size = fileList[i].size;
-                if ((type == "image/png" || type == "image/jpeg") && size > 1024) {
+                if ((type == "image/png" || type == "image/jpeg") && size > (1024 * 5)) {
                     uploadingFiles.push({
                         file: fileList[i],
                         progress: 0

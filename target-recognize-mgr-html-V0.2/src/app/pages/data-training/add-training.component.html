@@ -41,9 +41,19 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label nzSm="6" [nzXs]="24">类别</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择基准模型!">
+    <nz-form-label nzSm="6" [nzXs]="24">计算平台</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择计算平台!">
+      <nz-select formControlName="computePlatform">
+        <nz-option [nzValue]="1" nzLabel="gpu"></nz-option>
+        <nz-option [nzValue]="2" nzLabel="cpu"></nz-option>
+        <nz-option [nzValue]="3" nzLabel="npu"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
 
+  <nz-form-item>
+    <nz-form-label nzSm="6" [nzXs]="24">数据类别</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择基准模型!">
       <nz-tree-select
         #sampleTreeSelect
         formControlName="sampleCategory"
@@ -57,6 +67,4 @@
       </nz-tree-select>
     </nz-form-control>
   </nz-form-item>
-
-
 </form>

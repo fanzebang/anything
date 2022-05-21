@@ -104,19 +104,17 @@ export class DataTrainingComponent implements OnInit {
     this.isAllDisplayDataChecked = this.listOfData
       .every(item => this.mapOfCheckedId[String(item.id)]);
     this.isIndeterminate =
-      this.listOfData.some(item => this.mapOfCheckedId[String(item.id)]) &&
+  this.listOfData.some(item => this.mapOfCheckedId[String(item.id)]) &&
       !this.isAllDisplayDataChecked;
     this.numberOfChecked = this.listOfData.filter(item => this.mapOfCheckedId[String(item.id)]).length;
   }
 
   constructor(private nzModal: NzModalService, private http: HttpClient, private nzMessage: NzMessageService) {
+
   }
 
   ngOnInit(): void {
     this.loadTraining();
-    
-   
-  
   }
 
   // addTask() {
@@ -131,28 +129,132 @@ export class DataTrainingComponent implements OnInit {
   //   });
   // }
 
+  startInterval(){
+    this.intervalLoadTraining =  setInterval(()=>{
+
+      if(this.status == 'STATUS'){
+        this.loadTraining1();
+      }else{
+        this.loadTraining();
+      }
+     
+
+    },1000*30)
+  }
+
+  stopInterval(){
+    clearInterval(this.intervalLoadTraining)
+  }
+  nzOpenChange(e:any){
+    
+    if(e){
+      this.stopInterval();
+    }else{
+      this.startInterval();
+    }
+  }
+
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-
-   this.intervalLoadTraining =  setInterval(()=>{
-
-      this.loadTraining();
-
-    },1000*60)
+    this.loadTraining1();
+    this.startInterval()
     
   }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    clearInterval(this.intervalLoadTraining)
+    this.stopInterval();
   }
 
-  download(e:any,data:any){
-
+ downloadId:number;
+  download1(e,d){
     this.isVisible2 = true;
+    this.downloadId= d.id
+    
+  }
 
+  download(type){
+
+    let deployModelUrls; 
+    switch (type) {
+      case 'cpu':
+        for (let index = 0; index < this.listOfData.length; index++) {
+          const element = this.listOfData[index];
+            if(element.id == this.downloadId){
+              deployModelUrls= JSON.parse(element.deployModelUrls)
+            }
+        }  
+        for (let index = 0; index < deployModelUrls.length; index++) {
+          const element = deployModelUrls[index];
+            if(element.type == "cpuUrl"){
+              window.open(element.url,"_blank"); 
+            }
+        }
+
+
+        break;
+        case 'gpu':
+        
+          for (let index = 0; index < this.listOfData.length; index++) {
+            const element = this.listOfData[index];
+              if(element.id == this.downloadId){
+                deployModelUrls= JSON.parse(element.deployModelUrls)
+  
+              
+  
+              }
+          }  
+  
+          for (let index = 0; index < deployModelUrls.length; index++) {
+            const element = deployModelUrls[index];
+              if(element.type == "gpuUrl"){
+                window.open(element.url,"_blank"); 
+              }
+          }
+  
+          break;
+          case 'hs':
+          
+            for (let index = 0; index < this.listOfData.length; index++) {
+              const element = this.listOfData[index];
+                if(element.id == this.downloadId){
+                  deployModelUrls= JSON.parse(element.deployModelUrls)
+    
+                
+    
+                }
+            }  
+    
+            for (let index = 0; index < deployModelUrls.length; index++) {
+              const element = deployModelUrls[index];
+                if(element.type == "hisiliconUrl"){
+                  window.open(element.url,"_blank"); 
+                }
+            }
+            break;
+            case 'zx':
+              for (let index = 0; index < this.listOfData.length; index++) {
+                const element = this.listOfData[index];
+                  if(element.id == this.downloadId){
+                    deployModelUrls= JSON.parse(element.deployModelUrls)
+      
+                  
+      
+                  }
+              }  
+      
+              for (let index = 0; index < deployModelUrls.length; index++) {
+                const element = deployModelUrls[index];
+                  if(element.type == "onlineUrl"){
+                    window.open(element.url,"_blank"); 
+                  }
+              }
+              break;
+      default:
+        break;
+    }
     // axios.get(`${environment.API_URL}/v1/data_train/queryById?id=${data.id}`, {
     //   headers: {
     //     'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -165,6 +267,7 @@ export class DataTrainingComponent implements OnInit {
     //   window.open(result.trainUrl,"_blank"); 
 
     // })
+    this.isVisible2 = false;
   }
   
   fileChange(){
@@ -222,7 +325,67 @@ export class DataTrainingComponent implements OnInit {
     }
   }
 
+  loadTraining1() {
+
+
+      let params = new HttpParams().append('status', 'STATUS');
+
+  
+      this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
+        if (HttpResult.succeed(result.code)) {
+          this.listOfData = result.data.records;
+        // if(this.selectData == "全部") {
+        //   this.listOfData = result.data.records;
+        //   this.dataTotal = result.data.total;
+        //   this.pageIndex = result.data.current;
+        //   if(this.status != 'LINE_UP' && this.status != 'STATUS' ){
+        //       this.loadSelectData(this.listOfData);
+        //   }
+        //     this.listOfData2 = this.listOfData 
+        //   }
+        let params = new HttpParams().append('status', 'END');
+        this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
+          if (HttpResult.succeed(result.code)) {
+         
+          // if(this.selectData == "全部") {
+          //   this.listOfData = result.data.records;
+          //   this.dataTotal = result.data.total;
+          //   this.pageIndex = result.data.current;
+          //     this.listOfData2 = this.listOfData 
+          //   }
+
+   
+          if(this.selectData == "全部") {
+            for (let index = 0; index < result.data.records.length; index++) {
+              const element = result.data.records[index];
+              this.listOfData.push(element)
+            }
+            this.dataTotal += result.data.total;
+            this.pageIndex = result.data.current;
+              this.listOfData2 = this.listOfData 
+            }
+            console.log(this.listOfData)
+          }
+        });
+          
+        }
+      });
+
+
+
+  
+
+
+      
+
+
+
+
+  }
+
+
   loadTraining() {
+
     let params;
     //不分页
     if (this.status === 'END') {
@@ -232,21 +395,28 @@ export class DataTrainingComponent implements OnInit {
     }else{
        params = new HttpParams().append('status', this.status);
     }
-    this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
-      if (HttpResult.succeed(result.code)) {
-     
-      if(this.selectData == "全部") {
-        this.listOfData = result.data.records;
-        this.dataTotal = result.data.total;
-        this.pageIndex = result.data.current;
-        if(this.status != 'LINE_UP' && this.status != 'STATUS' ){
-            this.loadSelectData(this.listOfData);
+
+
+    if(this.status != 'STATUS'){
+      this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
+        if (HttpResult.succeed(result.code)) {
+        if(this.selectData == "全部") {
+          this.listOfData = result.data.records;
+          this.dataTotal = result.data.total;
+          this.pageIndex = result.data.current;
+          if(this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END'){
+              this.loadSelectData(this.listOfData);
+          }
+            this.listOfData2 = this.listOfData 
+          }
+          
         }
-          this.listOfData2 = this.listOfData 
-        }
-        
-      }
-    });
+      });
+      
+    }
+
+
+
   }
 
   loadSelectData(listOfData:Array<DataTrain>){
@@ -294,6 +464,7 @@ export class DataTrainingComponent implements OnInit {
                 //   //   this.selectList.push(lastClass)
                 //   //   element.lastClass = lastClass
                 //   // }
+
                 }
 
               }
@@ -335,7 +506,7 @@ export class DataTrainingComponent implements OnInit {
       if (result.code) {
         this.checkAll(false);
         this.nzMessage.success('暂停成功');
-        this.loadTraining();
+        this.loadTraining1();
       } else {
         this.nzMessage.error(result.message);
       }
@@ -373,7 +544,7 @@ export class DataTrainingComponent implements OnInit {
       this.status = 'STATUS';
       console.log('点击进行中');
       this.selectData = "全部"
-      this.loadTraining();
+      this.loadTraining1();
     }
      if (flag ==1) {
       console.log('点击已经结束');
@@ -709,7 +880,7 @@ listData:any
       if (result.code) {
         this.nzMessage.success('继续训练成功');
         this.checkAll(false);
-        this.loadTraining();
+        this.loadTraining1();
       } else {
         this.nzMessage.error(result.message);
       }

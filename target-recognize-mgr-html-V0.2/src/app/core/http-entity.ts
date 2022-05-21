@@ -79,6 +79,7 @@ export class ProgressDto {
 }
 
 export class DataTrain {
+  deployModelUrls:any;
   leftTableData:any;
   id: number;
 

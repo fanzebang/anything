@@ -40,9 +40,11 @@ export class AddTrainingComponent implements OnInit {
       normModel: [null, [Validators.required]],
       taskMode: [null, [Validators.required]],
       sampleCategory: [null, [Validators.required]],
+      computePlatform:[null, [Validators.required]]
     });
 
     this.initSampleTree();
+
   }
 
   initSampleTree() {
@@ -185,6 +187,7 @@ export class AddTrainingComponent implements OnInit {
 
       let sampleIds = formValue.sampleCategory.join(',');
 
+
       if (this.trainId) {
         // 修改
         this.http.put(`${environment.API_URL}/v1/data_train`, {
@@ -193,7 +196,8 @@ export class AddTrainingComponent implements OnInit {
           taskPattern: formValue.taskPattern,
           normModel: formValue.normModel,
           taskMode: formValue.taskMode,
-          taskSampleType: sampleIds
+          taskSampleType: sampleIds,
+          computePlatform:formValue.computePlatform
         }).subscribe((result: HttpResult<any>) => {
           if (HttpResult.succeed(result.code)) {
             this.msg.success('新增成功');
@@ -212,7 +216,8 @@ export class AddTrainingComponent implements OnInit {
           taskPattern: formValue.taskPattern,
           normModel: formValue.normModel,
           taskMode: formValue.taskMode,
-          taskSampleType: sampleIds
+          taskSampleType: sampleIds,
+          computePlatform:formValue.computePlatform
         }).subscribe((result: HttpResult<any>) => {
           if (HttpResult.succeed(result.code)) {
             this.msg.success('新增成功');
