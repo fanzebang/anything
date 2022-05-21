@@ -79,6 +79,7 @@ export class ProgressDto {
 }
 
 export class DataTrain {
+  leftTableData:any;
   id: number;
 
  /**

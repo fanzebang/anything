@@ -6977,15 +6977,17 @@ class LeafDataManageComponent {
             const uploadingFiles = [];
             for (let i = 0; i < fileCount; i++) {
                 // 每个文件单个上传，这样才能对每个文件有进度条
+                console.log();
                 let type = fileList[i].type;
-                if (type == "image/png" || type == "image/jpeg") {
+                let size = fileList[i].size;
+                if ((type == "image/png" || type == "image/jpeg") && size > 1024) {
                     uploadingFiles.push({
                         file: fileList[i],
                         progress: 0
                     });
                 }
                 else {
-                    this.nzMessage.error('文件格式不正确');
+                    this.nzMessage.error('文件格式不正确或文件太小');
                 }
             }
             this.uploadingFiles = uploadingFiles;

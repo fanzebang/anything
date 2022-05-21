@@ -218,7 +218,6 @@ export class AddTrainingComponent implements OnInit {
             this.msg.success('新增成功');
             this.nzModalRef.close('1');
           } else {
-            console.log(result);
             this.msg.error(result.message);
             this.nzModalRef.updateConfig({
               nzOkLoading: false

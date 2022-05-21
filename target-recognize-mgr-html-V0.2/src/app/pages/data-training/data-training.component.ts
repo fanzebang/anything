@@ -41,6 +41,7 @@ export class DataTrainingComponent implements OnInit {
   compareDisplay:boolean = false
   rightComponent = false;
   recommend:String;
+  leftTableData1:any=[];
   // listOfData = [{
   //   taskName: 'Minie Ford',
   //   taskPattern: '自动',
@@ -74,7 +75,7 @@ export class DataTrainingComponent implements OnInit {
   csPic:any = []
   precision:any;
   selectList:String[] = ["全部"];
-  selectData:String = "全部";
+  selectData:any = "全部";
   intervalLoadTraining:any
   onItemChecked(id: number, checked: boolean): void {
     // this.updateCheckedSet(id, checked);
@@ -138,7 +139,7 @@ export class DataTrainingComponent implements OnInit {
 
       this.loadTraining();
 
-    },1000*2)
+    },1000*60)
     
   }
 
@@ -150,19 +151,20 @@ export class DataTrainingComponent implements OnInit {
 
   download(e:any,data:any){
 
+    this.isVisible2 = true;
 
-    axios.get(`${environment.API_URL}/v1/data_train/queryById?id=${data.id}`, {
-      headers: {
-        'Authorization':'Bearer '+localStorage.getItem('Bearer'),
-        'TR-Role': 'TR-User'
-      }
-    })
-    .then((result:any)=>{
+    // axios.get(`${environment.API_URL}/v1/data_train/queryById?id=${data.id}`, {
+    //   headers: {
+    //     'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+    //     'TR-Role': 'TR-User'
+    //   }
+    // })
+    // .then((result:any)=>{
       
-      var result = result.data.data
-      window.open(result.trainUrl,"_blank"); 
+    //   var result = result.data.data
+    //   window.open(result.trainUrl,"_blank"); 
 
-    })
+    // })
   }
   
   fileChange(){
@@ -232,6 +234,7 @@ export class DataTrainingComponent implements OnInit {
     }
     this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
       if (HttpResult.succeed(result.code)) {
+     
       if(this.selectData == "全部") {
         this.listOfData = result.data.records;
         this.dataTotal = result.data.total;
@@ -241,26 +244,78 @@ export class DataTrainingComponent implements OnInit {
         }
           this.listOfData2 = this.listOfData 
         }
+        
       }
     });
   }
 
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
+    var lastClass = [];
       for (let index = 0; index < listOfData.length; index++) {
         const element = listOfData[index];
 
-        this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
+        if(element.taskSampleType.indexOf(",") == -1){
 
-          if (HttpResult.succeed(result.code)) {
-            if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
-              this.selectList.push(result.data.sampleTypeName)
+          this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
+
+            if (HttpResult.succeed(result.code)) {
+              if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
+                this.selectList.push(result.data.sampleTypeName)
+              }
+             
+              element.lastClass = result.data.sampleTypeName
             }
+          });
+
+
+        }else{
+        let  elementArr = element.taskSampleType.split(",");
+ 
+
+        for (let i = 0; i < elementArr.length; i++) {
+            let value = elementArr[i];
+            this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
+              if (HttpResult.succeed(result.code)) {
+
+                if(lastClass.indexOf(result.data.sampleTypeName) == -1){
+                  lastClass.push(result.data.sampleTypeName)
+                }
+
+
+                if(i ==  (elementArr.length-1) ){
+                
+               
+                  element.lastClass = lastClass.join(",")
+                
+                //   console.log(lastClass)
+                //   // if(this.selectList.indexOf(lastClass) == -1){
+                //   //   lastClass = lastClass.substr(0, lastClass.length - 1); 
+                //   //   this.selectList.push(lastClass)
+                //   //   element.lastClass = lastClass
+                //   // }
+                }
+
+              }
+            });
+
            
-            element.lastClass = result.data.sampleTypeName
-          }
-        });
+        }
+ 
+ 
+ 
+        }
+        
+      
+      
       }
+      setTimeout(()=>{
+      
+        this.selectList.push(lastClass.join(","))  
+      
+      },200)
+     
+     
   }
   // 暂停
   endTask() {
@@ -310,19 +365,20 @@ export class DataTrainingComponent implements OnInit {
   }
 
   changeStatus(flag: number) {
+  
     console.log(flag)
     this.flag = flag;
     this.compareDisplay= false 
     if(flag ==0){
       this.status = 'STATUS';
       console.log('点击进行中');
+      this.selectData = "全部"
       this.loadTraining();
     }
      if (flag ==1) {
       console.log('点击已经结束');
       this.selectList = this.selectList.splice(0,1)
       this.selectData = "全部"
-  
       this.status = 'OVER';
       //加载进行中的数据
       this.loadTraining();
@@ -330,6 +386,7 @@ export class DataTrainingComponent implements OnInit {
     if (flag ==-1){
       this.status = 'LINE_UP';
       console.log('点击排队中');
+      this.selectData = "全部"
       this.loadTraining();
     }
   }
@@ -339,15 +396,15 @@ export class DataTrainingComponent implements OnInit {
   ngModelChange(){
    
  
-    this.selectData  == "全部"?this.compareDisplay = false: this.compareDisplay = true
+    this.selectData  == "全部"? this.compareDisplay = false: this.compareDisplay = true
     this.listOfData1 = [];
 
     if(this.compareDisplay){
 
       for (let index = 0; index < this.listOfData2.length; index++) {
         const element = this.listOfData2[index];
-     
-        if(element.lastClass == this.selectData){
+
+        if(element.lastClass.indexOf(this.selectData) != -1 ){
           this.listOfData1.push(element);
         }
         
@@ -526,21 +583,69 @@ listData:any
     // });
   }
 
-
+  tableData:any = [];
   //对比
   startCompare() {
-
+    this.tableData = [];
     const checkedCameraIds = [];
     for (const k in this.mapOfCheckedId) {
       if (this.mapOfCheckedId[k]) {
         checkedCameraIds.push(k);
       }
     }
+
+
     if (checkedCameraIds.length < 1) {
       this.nzMessage.error('最少勾选一项');
       return;
     }
 
+    for (let index = 0; index < this.listOfData.length; index++) {
+      const element = this.listOfData[index];
+        for (let index = 0; index < checkedCameraIds.length; index++) {
+          const element2 = checkedCameraIds[index];
+            if(element.id == element2){
+              this.tableData.push(element)
+            }
+        }
+      
+    }
+
+    var Arr1 = [];
+
+    var leftTableData:any = {
+    id:"",
+    data:[]
+};
+
+    for (let index = 0; index < checkedCameraIds.length; index++) {
+      // checkedCameraIds[index]
+      axios.post(`${environment.API_URL}/v1/data_train/queryTaskSampleType?taskId=${checkedCameraIds[index]}`,{taskId:checkedCameraIds[index]}, {
+        headers: {
+          'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+          'TR-Role': 'TR-User'
+        }
+      })
+      .then((result:any)=>{
+        let resultData = result.data.data
+        let Arr2 = [];
+      for (let index = 0; index < resultData.length; index++) {
+        const element = resultData[index].sampleTypeName;
+        Arr2.push(element)
+        if(Arr1.indexOf(element) == -1) Arr1.push(element)
+      }   
+      leftTableData.id = resultData[0].taskId
+      leftTableData.data = Arr2 
+      for (let index = 0; index < this.listOfData.length; index++) {
+        const element = this.listOfData[index];
+        if(element.id ==  leftTableData.id) element.leftTableData = leftTableData.data
+      }
+
+      })
+    }
+
+    
+   
 
     this.isVisible1 = true
 
@@ -630,6 +735,11 @@ listData:any
     this.isVisible1 = false;
   }
 
+  handleCancel2(){
+
+    this.isVisible2 = false;
+  }
+  isVisible2:boolean = false;
   initModeLineCharts1(data:any){
 
     // var prCurve = result.prCurve.split(" ")
