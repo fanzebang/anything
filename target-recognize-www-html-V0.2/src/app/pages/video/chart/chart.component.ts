@@ -86,7 +86,7 @@ export class ChartComponent implements OnInit {
         },
      
       title:{
-        text: '单位（毫秒）',
+        text: '单位（秒）',
         x: 'left',                 
         y: '25px', 
         backgroundColor: 'rgba(0,0,0,0)',
