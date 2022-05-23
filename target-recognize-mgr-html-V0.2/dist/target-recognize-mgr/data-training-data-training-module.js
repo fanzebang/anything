@@ -578,17 +578,17 @@ __webpack_require__.r(__webpack_exports__);
 
 const _c0 = function (a0) { return { "recomend": a0 }; };
 function DataTrainingComponent_div_1_tr_28_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "tr", 48);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "td", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "tr", 47);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "td", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "td", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "td", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "td", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "td", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "td", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "td", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -606,29 +606,35 @@ function DataTrainingComponent_div_1_tr_28_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](data_r19.samplesTotal);
 } }
 function DataTrainingComponent_div_1_th_41_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "th");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "th", 47);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const item_r20 = ctx.$implicit;
+    const ctx_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction1"](2, _c0, item_r20.taskName == ctx_r17.recommend));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](item_r20.taskName);
 } }
 function DataTrainingComponent_div_1_td_44_div_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 52);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 51);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span", 52);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const item_r23 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", item_r23, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](item_r23);
 } }
 function DataTrainingComponent_div_1_td_44_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "td", 50);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, DataTrainingComponent_div_1_td_44_div_1_Template, 2, 1, "div", 51);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "td", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, DataTrainingComponent_div_1_td_44_div_1_Template, 3, 1, "div", 50);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const items_r21 = ctx.$implicit;
+    const ctx_r18 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction1"](2, _c0, items_r21.taskName == ctx_r18.recommend));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", items_r21.leftTableData);
 } }
@@ -692,12 +698,12 @@ function DataTrainingComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](37, "nz-table", 44, 45);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](39, "thead");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](40, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](41, DataTrainingComponent_div_1_th_41_Template, 2, 1, "th", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](41, DataTrainingComponent_div_1_th_41_Template, 2, 4, "th", 42);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](42, "tbody");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](43, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](44, DataTrainingComponent_div_1_td_44_Template, 2, 1, "td", 47);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](44, DataTrainingComponent_div_1_td_44_Template, 2, 4, "td", 46);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -741,7 +747,7 @@ function DataTrainingComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceHTML"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "button", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function DataTrainingComponent_div_2_Template_button_click_10_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r27); const ctx_r28 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r28.download("cpu"); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](11, "cpu\u4E0B\u8F7D");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](11, "CPU\u8BA1\u7B97");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "div", 55);
@@ -758,7 +764,7 @@ function DataTrainingComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceHTML"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "button", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function DataTrainingComponent_div_2_Template_button_click_20_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r27); const ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r29.download("gpu"); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](21, "gpu\u4E0B\u8F7D");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](21, "GPU\u8BA1\u7B97");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](22, "div", 55);
@@ -771,7 +777,7 @@ function DataTrainingComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceHTML"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](26, "button", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function DataTrainingComponent_div_2_Template_button_click_26_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r27); const ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r30.download("hs"); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](27, "\u6D77\u601Dcpu\u4E0B\u8F7D");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](27, "\u6D77\u601DNNIE");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](28, "div", 55);
@@ -1423,16 +1429,17 @@ class DataTrainingComponent {
     }
     loadSelectData(listOfData) {
         this.selectList = this.selectList.splice(0, 1);
-        var lastClass = [];
+        var lastClass = {};
         for (let index = 0; index < listOfData.length; index++) {
             const element = listOfData[index];
+            lastClass[element.id] = [];
             if (element.taskSampleType.indexOf(",") == -1) {
                 this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result) => {
                     if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
                         if (this.selectList.indexOf(result.data.sampleTypeName) == -1) {
                             this.selectList.push(result.data.sampleTypeName);
                         }
-                        element.lastClass = result.data.sampleTypeName;
+                        lastClass[element.id].push(result.data.sampleTypeName);
                     }
                 });
             }
@@ -1442,26 +1449,28 @@ class DataTrainingComponent {
                     let value = elementArr[i];
                     this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${value}`).subscribe((result) => {
                         if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
-                            if (lastClass.indexOf(result.data.sampleTypeName) == -1) {
-                                lastClass.push(result.data.sampleTypeName);
-                            }
-                            if (i == (elementArr.length - 1)) {
-                                element.lastClass = lastClass.join(",");
-                                //   console.log(lastClass)
-                                //   // if(this.selectList.indexOf(lastClass) == -1){
-                                //   //   lastClass = lastClass.substr(0, lastClass.length - 1); 
-                                //   //   this.selectList.push(lastClass)
-                                //   //   element.lastClass = lastClass
-                                //   // }
-                            }
+                            lastClass[element.id].push(result.data.sampleTypeName);
                         }
                     });
                 }
             }
+            if (index == (listOfData.length - 1)) {
+                setTimeout(() => {
+                    for (const key in lastClass) {
+                        var selectString = lastClass[key].sort().join(",");
+                        if (this.selectList.indexOf(selectString) == -1) {
+                            this.selectList.push(selectString);
+                        }
+                        for (let index = 0; index < listOfData.length; index++) {
+                            const element = listOfData[index];
+                            if (element.id == (parseInt(key))) {
+                                element.lastClass = selectString;
+                            }
+                        }
+                    }
+                }, 200);
+            }
         }
-        setTimeout(() => {
-            this.selectList.push(lastClass.join(","));
-        }, 200);
     }
     // 暂停
     endTask() {
@@ -1541,7 +1550,7 @@ class DataTrainingComponent {
         if (this.compareDisplay) {
             for (let index = 0; index < this.listOfData2.length; index++) {
                 const element = this.listOfData2[index];
-                if (element.lastClass.indexOf(this.selectData) != -1) {
+                if (element.lastClass == this.selectData) {
                     this.listOfData1.push(element);
                 }
             }
@@ -1734,10 +1743,21 @@ class DataTrainingComponent {
                     if (Arr1.indexOf(element) == -1)
                         Arr1.push(element);
                 }
+                if (index == 0) {
+                    Arr2 = Arr2.splice(1, 2);
+                }
+                if (Arr1.join(",") != Arr2.join(",")) {
+                    for (let i = 0; i < Arr1.length; i++) {
+                        const element = Arr1[i];
+                        if (Arr2.indexOf(element) == -1) {
+                            Arr2.splice(i, 0, "-");
+                        }
+                    }
+                }
                 leftTableData.id = resultData[0].taskId;
                 leftTableData.data = Arr2;
-                for (let index = 0; index < this.listOfData.length; index++) {
-                    const element = this.listOfData[index];
+                for (let i = 0; i < this.listOfData.length; i++) {
+                    const element = this.listOfData[i];
                     if (element.id == leftTableData.id)
                         element.leftTableData = leftTableData.data;
                 }
@@ -1750,21 +1770,6 @@ class DataTrainingComponent {
             }
         });
         this.initModeLineCharts1(dataList);
-        // const modal = this.nzModal.create({
-        //   nzTitle: '模型对比',
-        //   nzContent: ModelCompareComponent,
-        //   nzComponentParams: {
-        //     comparingDataTrainList: this.comparingDataTrainList
-        //   },
-        //   nzOnOk: (modelCompareComponent: ModelCompareComponent) => {
-        //     // return false;
-        //   },
-        //   nzCancelText: '关闭',
-        //   nzOkText: null
-        // });
-        // modal.afterClose.subscribe(() => {
-        //   // this.loadTraining();
-        // });
     }
     clearCompare() {
         this.comparingDataTrainList = [];
@@ -2089,7 +2094,7 @@ class DataTrainingComponent {
     ;
 }
 DataTrainingComponent.ɵfac = function DataTrainingComponent_Factory(t) { return new (t || DataTrainingComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ng_zorro_antd__WEBPACK_IMPORTED_MODULE_7__["NzModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ng_zorro_antd__WEBPACK_IMPORTED_MODULE_7__["NzMessageService"])); };
-DataTrainingComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataTrainingComponent, selectors: [["ng-component"]], decls: 58, vars: 28, consts: [[1, "flex-row", 2, "height", "100%"], ["nzTitle", "The first Modal", "class", "statistics-top flex-column", "style", "height: 80%;\nwidth:70%;\nposition: absolute;\nz-index: 9999;\nbackground: #031129;\nmargin: 50px 10%;\n", 4, "ngIf"], ["nzTitle", "The first Modal", "class", "statistics-top flex-column", "style", "height: 50%;\nwidth: 80%;\nposition: absolute;\nz-index: 9999;\nbackground: #031129;\nmargin: 15% 5%;\ndisplay: flex;\n", 4, "ngIf"], ["nzTitle", "The first Modal", "class", "statistics-top flex-column", "style", "height: 80%;\nwidth: 80%;\nposition: absolute;\nz-index: 9999;\nbackground: #031129;\nmargin: 50px 5%;\n", 4, "ngIf"], [1, "train-left", "flex-row"], [1, "train-area", "flex-column"], [1, "train-area-btns", "flex-row"], [1, "train-area-btn-item", 3, "click"], [1, "train-table-box"], [1, "train-btns", 2, "position", "relative"], [4, "ngIf"], [1, "btn", "btn-remove", 3, "click"], ["class", "btn btn-new-task", 3, "click", 4, "ngIf"], [1, "flex-column"], ["nzShowSizeChanger", "", 1, "blue-table", 3, "nzData", "nzShowPagination", "nzTotal", "nzPageIndex", "nzPageSize", "nzPageIndexChange", "nzPageSizeChange"], ["rowSelectionTable", ""], [3, "nzChecked", "nzIndeterminate", "nzCheckedChange"], [3, "current-row", "click", 4, "ngFor", "ngForOf"], [1, "model-compare"], [1, "model-compare-title"], ["nz-icon", "", "nzType", "close", "nzTheme", "outline", 3, "click"], ["class", "compare-model-row", 4, "ngFor", "ngForOf"], [1, "model-compare-btn"], [1, "btn", 3, "click"], [1, "model-compre-del"], ["nz-icon", "", "nzType", "delete", "nzTheme", "outline"], ["nz-button", "", "nzType", "link", 3, "click"], ["nzTitle", "The first Modal", 1, "statistics-top", "flex-column", 2, "height", "80%", "width", "70%", "position", "absolute", "z-index", "9999", "background", "#031129", "margin", "50px 10%"], [1, "statistics-title", 2, "position", "relative"], [1, "close", 2, "width", "30px", "height", "30px", "position", "absolute", "right", "0px", "top", "0px"], ["nz-icon", "", "nzType", "close", "nzTheme", "outline", 2, "cursor", "pointer", 3, "click"], [1, "dbcontent"], [1, "dbCharts"], [1, "dbtitle"], [1, "leftLine"], [1, "leftRect"], [1, "titleText"], [1, "rightRect"], [1, "rightLine"], ["id", "lineCharts1", 2, "width", "100%", "height", "70%"], [2, "margin-left", "20px", "text-align", "center", 3, "nzData", "nzFrontPagination", "nzScroll"], ["basicTable", ""], [3, "ngClass", 4, "ngFor", "ngForOf"], [1, "dbTable"], [2, "margin-left", "20px", "margin-top", "20px", 3, "nzData", "nzFrontPagination", "nzScroll"], ["basicTable1", ""], [4, "ngFor", "ngForOf"], ["nzBreakWord", "", "style", "padding: 0;", 4, "ngFor", "ngForOf"], [3, "ngClass"], ["nzBreakWord", ""], ["nzBreakWord", "", 2, "padding", "0"], ["style", "padding:10px 0;border-bottom: 1px solid #15a0ff;", 4, "ngFor", "ngForOf"], [2, "padding", "10px 0", "border-bottom", "1px solid #15a0ff"], ["nzTitle", "The first Modal", 1, "statistics-top", "flex-column", 2, "height", "50%", "width", "80%", "position", "absolute", "z-index", "9999", "background", "#031129", "margin", "15% 5%", "display", "flex"], [1, "content"], [2, "flex", "0 0 25%", "padding", "2%", "text-align", "center"], [1, "img", 2, "margin-bottom", "10px", "width", "100%", "height", "80%"], ["t", "1653127658106", "viewBox", "0 0 1024 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "8122", "width", "200", "height", "200", 1, "icon"], ["d", "M719.768116 237.449275H304.231884a59.362319 59.362319 0 0 0-59.362319 59.362319v415.536232a59.362319 59.362319 0 0 0 59.362319 59.362319h415.536232a59.362319 59.362319 0 0 0 59.362319-59.362319V296.811594a59.362319 59.362319 0 0 0-59.362319-59.362319z m0 474.898551H304.231884V296.811594h415.536232v415.536232z m267.130435-237.449275a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-89.043478h103.884058a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-50.265044A78.313739 78.313739 0 0 0 801.391304 133.565217H764.289855V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-89.043478V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-89.043478V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-89.043478V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-37.101449C173.516058 133.565217 126.144928 167.698551 126.144928 216.865391V267.130435H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v89.043478H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v89.043478H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v89.043478H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v23.937855A100.826899 100.826899 0 0 0 222.608696 890.434783H259.710145v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h89.043478v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h89.043478v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h89.043478v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h37.101449c49.092638 0 81.623188-45.694145 81.623189-94.786783V771.710145h103.884058a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-89.043478h103.884058a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-89.043478h103.884058zM823.652174 801.391304a29.681159 29.681159 0 0 1-29.68116 29.68116H215.188406a29.681159 29.681159 0 0 1-29.68116-29.68116V222.608696a29.681159 29.681159 0 0 1 29.68116-29.68116h578.782608a29.681159 29.681159 0 0 1 29.68116 29.68116v578.782608z", "p-id", "8123", "fill", "#3f4b61"], ["t", "1653127701971", "viewBox", "0 0 1024 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "9077", "width", "200", "height", "200", 1, "icon"], ["d", "M651.9 120.8l114.7 114.7-21.2 21.2 28.3 28.3 41.8 41.8 28.3 28.3 21-21 28.6 28.6-35.4 35.4-28.3 28.3 21.3 21.3-241.8 241.7-21.3-21.3-28.3 28.3-35.3 35.3-28.3 28.4 21.3 21.3-121.2 121.2-263-263 518.8-518.8m-0.1-56.6l-21.3 21.3 0.1 0.1-554 554 298.3 298.3 21.3 21.3L574 781.4l-21.3-21.3 35.3-35.3 21.3 21.3 298.4-298.4-21.3-21.3 42.5-42.5 0.1-0.1 21-21-85.1-85.1-21 21-41.9-41.9 21.2-21.2L651.8 64.2z", "p-id", "9078", "fill", "#3f4b61"], ["d", "M374.9 528.8c29.6 0 57.4 11.5 78.3 32.4s32.4 48.7 32.4 78.3-11.5 57.4-32.4 78.3-48.7 32.4-78.3 32.4-57.4-11.5-78.3-32.4-32.4-48.7-32.4-78.3 11.5-57.4 32.4-78.3 48.7-32.4 78.3-32.4m0-40c-38.6 0-77.1 14.7-106.6 44.1-58.9 58.9-58.9 154.3 0 213.1 29.4 29.4 68 44.1 106.6 44.1S452 775.4 481.5 746c58.9-58.9 58.9-154.3 0-213.1-29.5-29.4-68.1-44.1-106.6-44.1z", "p-id", "9079", "fill", "#3f4b61"], ["d", "M374.9 639.5m-82.6 0a82.6 82.6 0 1 0 165.2 0 82.6 82.6 0 1 0-165.2 0Z", "p-id", "9080", "fill", "#3f4b61"], ["d", "M630.6 273.1c29.6 0 57.4 11.5 78.3 32.4s32.4 48.7 32.4 78.3-11.5 57.4-32.4 78.3-48.7 32.4-78.3 32.4-57.4-11.5-78.3-32.4-32.4-48.7-32.4-78.3 11.5-57.4 32.4-78.3 48.7-32.4 78.3-32.4m0-40c-38.6 0-77.1 14.7-106.6 44.1-58.9 58.9-58.9 154.3 0 213.1 29.4 29.4 68 44.1 106.6 44.1s77.1-14.7 106.6-44.1c58.9-58.9 58.9-154.3 0-213.1-29.4-29.4-68-44.1-106.6-44.1z", "p-id", "9081", "fill", "#3f4b61"], ["d", "M630.6 383.8m-82.6 0a82.6 82.6 0 1 0 165.2 0 82.6 82.6 0 1 0-165.2 0Z", "p-id", "9082", "fill", "#3f4b61"], ["t", "1653127773031", "viewBox", "0 0 1024 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "10102", "width", "200", "height", "200", 1, "icon"], ["d", "M870.4 661.312H960v59.712h-89.6v89.6c0 41.216-18.496 59.712-59.712 59.712h-89.6V960h-59.712v-89.6H541.888V960h-59.776v-89.6H362.688V960h-59.776v-89.6h-89.6c-41.216 0-59.712-18.496-59.712-59.712v-89.6H64v-59.712h89.6V541.888H64v-59.776h89.6V362.688H64v-59.712h89.6v-89.6c0-41.28 18.496-59.776 59.712-59.776h89.6V64h59.712v89.6h119.488V64h59.712v89.6h119.488V64h59.712v89.6h89.6c41.216 0 59.712 18.496 59.712 59.712v89.6H960v59.712h-89.6v119.488H960v59.712h-89.6v119.488z m-59.712-448H213.312v597.312h597.312V213.312zM332.8 302.912h358.4c20.608 0 29.888 9.216 29.888 29.888v358.4c0 20.608-9.28 29.888-29.888 29.888H332.8c-20.608 0-29.888-9.28-29.888-29.888V332.8c0-20.608 9.28-29.888 29.888-29.888z", "p-id", "10103", "fill", "#3f4b61"], ["t", "1653127811070", "viewBox", "0 0 1448 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "11047", "width", "200", "height", "200", 1, "icon"], ["d", "M960 268.8c-26.88-34.56-62.72-64-102.4-84.48-40.96-20.48-85.76-30.72-133.12-30.72-79.36 0-153.6 30.72-209.92 87.04-53.76 53.76-84.48 125.44-87.04 202.24-56.32 0-110.08 21.76-149.76 62.72-39.68 39.68-62.72 93.44-62.72 149.76 0 56.32 21.76 110.08 62.72 149.76 39.68 39.68 93.44 62.72 149.76 62.72h213.76c19.2 0 33.28-15.36 33.28-33.28 0-19.2-15.36-33.28-33.28-33.28H427.52c-38.4 0-74.24-15.36-101.12-42.24-26.88-26.88-42.24-64-42.24-101.12 0-38.4 15.36-74.24 42.24-101.12 26.88-26.88 64-42.24 101.12-42.24h34.56c8.96 0 17.92-3.84 25.6-11.52 6.4-7.68 8.96-16.64 8.96-25.6-1.28-7.68-1.28-15.36-1.28-23.04 0-61.44 24.32-119.04 66.56-162.56 43.52-43.52 101.12-66.56 162.56-66.56 35.84 0 70.4 7.68 102.4 24.32 30.72 15.36 57.6 38.4 78.08 65.28 6.4 8.96 16.64 12.8 26.88 12.8 7.68 0 14.08-2.56 20.48-7.68 7.68-5.12 11.52-14.08 12.8-23.04 2.56-12.8 0-21.76-5.12-28.16z m192 186.88c0-2.56-1.28-5.12-2.56-8.96l-1.28-2.56c-5.12-10.24-16.64-17.92-28.16-19.2H792.32c-14.08 0-25.6 7.68-32 19.2l-1.28 3.84c-1.28 2.56-1.28 5.12-2.56 7.68l-66.56 234.24c10.24-2.56 20.48-5.12 30.72-5.12h467.2c10.24 0 20.48 2.56 30.72 5.12L1152 455.68z m38.4 253.44H723.2c-25.6 0-46.08 20.48-46.08 44.8s20.48 57.6 46.08 57.6h467.2c25.6 0 46.08-32 46.08-57.6 1.28-24.32-20.48-44.8-46.08-44.8z m-47.36 75.52c-14.08 0-25.6-11.52-25.6-24.32 0-14.08 11.52-24.32 25.6-24.32s25.6 11.52 25.6 24.32-11.52 24.32-25.6 24.32z", "p-id", "11048", "fill", "#3f4b61"], ["nzTitle", "The first Modal", 1, "statistics-top", "flex-column", 2, "height", "80%", "width", "80%", "position", "absolute", "z-index", "9999", "background", "#031129", "margin", "50px 5%"], ["nzType", "card", 3, "nzSelectChange"], ["nzTitle", "\u6A21\u578B\u7CBE\u5EA6\u66F2\u7EBF"], ["id", "lineCharts", 1, "lineCharts"], ["id", "csImg1", 1, "main-content", "imgList"], [1, "title", 2, "font-size", "18px"], [1, "image-list", 2, "width", "100%", "max-height", "450px", "overflow-y", "auto"], ["class", "cover", 4, "ngFor", "ngForOf"], ["nzTitle", "\u6D4B  \u8BD5"], [1, "content", 2, "flex-wrap", "wrap"], [2, "flex", "0 0 100%", "margin-left", "20px"], ["for", "upload", 2, "color", "#fff", "margin-right", "10px"], ["type", "file", "multiple", "true", "accept", "image/*", "id", "imgInput", 2, "color", "#fff"], ["id", "csImg", 1, "main-content", "imgList"], ["id", "image-list1", 1, "image-list1", 2, "width", "100%", "max-height", "450px", "overflow-y", "auto"], [1, "cover"], ["alt", "", 3, "src"], [1, "select", 2, "position", "absolute", "left", "0", 3, "ngModel", "ngModelChange", "nzOpenChange"], [3, "nzValue", "nzLabel", 4, "ngFor", "ngForOf"], [3, "nzValue", "nzLabel"], [1, "btn", "btn-new-task", 3, "click"], [3, "click"], ["nzShowCheckbox", "", 3, "nzChecked", "nzCheckedChange"], [1, "train-right", "flex-column"], [1, "train-classifies", "flex-column"], [1, "train-title"], [1, "echart-box"], ["nzType", "circle", "nzStrokeColor", "#159FFF", "nzStrokeWidth", "12", 3, "nzPercent"], [1, "train-images", "flex-column"], [1, "detail-info-box", "flex-column"], [1, "detail-info-type", "flex-row"], [1, "detail-info-param"], [1, "detail-info-value"], [1, "is_mark"], [1, "btn", "train-btn-edit", 3, "click"], [1, "compare-model-row"]], template: function DataTrainingComponent_Template(rf, ctx) { if (rf & 1) {
+DataTrainingComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataTrainingComponent, selectors: [["ng-component"]], decls: 58, vars: 28, consts: [[1, "flex-row", 2, "height", "100%"], ["nzTitle", "The first Modal", "class", "statistics-top flex-column", "style", "height: 80%;\nwidth:70%;\nposition: absolute;\nz-index: 9999;\nbackground: #031129;\nmargin: 50px 10%;\n", 4, "ngIf"], ["nzTitle", "The first Modal", "class", "statistics-top flex-column", "style", "height: 50%;\nwidth: 80%;\nposition: absolute;\nz-index: 9999;\nbackground: #031129;\nmargin: 15% 5%;\ndisplay: flex;\n", 4, "ngIf"], ["nzTitle", "The first Modal", "class", "statistics-top flex-column", "style", "height: 80%;\nwidth: 80%;\nposition: absolute;\nz-index: 9999;\nbackground: #031129;\nmargin: 50px 5%;\n", 4, "ngIf"], [1, "train-left", "flex-row"], [1, "train-area", "flex-column"], [1, "train-area-btns", "flex-row"], [1, "train-area-btn-item", 3, "click"], [1, "train-table-box"], [1, "train-btns", 2, "position", "relative"], [4, "ngIf"], [1, "btn", "btn-remove", 3, "click"], ["class", "btn btn-new-task", 3, "click", 4, "ngIf"], [1, "flex-column"], ["nzShowSizeChanger", "", 1, "blue-table", 3, "nzData", "nzShowPagination", "nzTotal", "nzPageIndex", "nzPageSize", "nzPageIndexChange", "nzPageSizeChange"], ["rowSelectionTable", ""], [3, "nzChecked", "nzIndeterminate", "nzCheckedChange"], [3, "current-row", "click", 4, "ngFor", "ngForOf"], [1, "model-compare"], [1, "model-compare-title"], ["nz-icon", "", "nzType", "close", "nzTheme", "outline", 3, "click"], ["class", "compare-model-row", 4, "ngFor", "ngForOf"], [1, "model-compare-btn"], [1, "btn", 3, "click"], [1, "model-compre-del"], ["nz-icon", "", "nzType", "delete", "nzTheme", "outline"], ["nz-button", "", "nzType", "link", 3, "click"], ["nzTitle", "The first Modal", 1, "statistics-top", "flex-column", 2, "height", "80%", "width", "70%", "position", "absolute", "z-index", "9999", "background", "#031129", "margin", "50px 10%"], [1, "statistics-title", 2, "position", "relative"], [1, "close", 2, "width", "30px", "height", "30px", "position", "absolute", "right", "0px", "top", "0px"], ["nz-icon", "", "nzType", "close", "nzTheme", "outline", 2, "cursor", "pointer", 3, "click"], [1, "dbcontent"], [1, "dbCharts"], [1, "dbtitle"], [1, "leftLine"], [1, "leftRect"], [1, "titleText"], [1, "rightRect"], [1, "rightLine"], ["id", "lineCharts1", 2, "width", "100%", "height", "70%"], [2, "margin-left", "20px", "text-align", "center", 3, "nzData", "nzFrontPagination", "nzScroll"], ["basicTable", ""], [3, "ngClass", 4, "ngFor", "ngForOf"], [1, "dbTable"], [2, "margin-left", "20px", "margin-top", "20px", 3, "nzData", "nzFrontPagination", "nzScroll"], ["basicTable1", ""], ["nzBreakWord", "", "style", "padding: 0;", 3, "ngClass", 4, "ngFor", "ngForOf"], [3, "ngClass"], ["nzBreakWord", ""], ["nzBreakWord", "", 2, "padding", "0", 3, "ngClass"], ["style", "border-bottom: 1px solid #15a0ff;min-height:70px;text-align: center;", 4, "ngFor", "ngForOf"], [2, "border-bottom", "1px solid #15a0ff", "min-height", "70px", "text-align", "center"], [2, "display", "inline-block", "margin", "15% 0"], ["nzTitle", "The first Modal", 1, "statistics-top", "flex-column", 2, "height", "50%", "width", "80%", "position", "absolute", "z-index", "9999", "background", "#031129", "margin", "15% 5%", "display", "flex"], [1, "content"], [2, "flex", "0 0 25%", "padding", "2%", "text-align", "center"], [1, "img", 2, "margin-bottom", "10px", "width", "100%", "height", "80%"], ["t", "1653127658106", "viewBox", "0 0 1024 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "8122", "width", "200", "height", "200", 1, "icon"], ["d", "M719.768116 237.449275H304.231884a59.362319 59.362319 0 0 0-59.362319 59.362319v415.536232a59.362319 59.362319 0 0 0 59.362319 59.362319h415.536232a59.362319 59.362319 0 0 0 59.362319-59.362319V296.811594a59.362319 59.362319 0 0 0-59.362319-59.362319z m0 474.898551H304.231884V296.811594h415.536232v415.536232z m267.130435-237.449275a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-89.043478h103.884058a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-50.265044A78.313739 78.313739 0 0 0 801.391304 133.565217H764.289855V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-89.043478V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-89.043478V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-89.043478V29.681159a29.681159 29.681159 0 0 0-59.362319 0v103.884058h-37.101449C173.516058 133.565217 126.144928 167.698551 126.144928 216.865391V267.130435H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v89.043478H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v89.043478H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v89.043478H37.101449a29.681159 29.681159 0 0 0 0 59.362319h89.043479v23.937855A100.826899 100.826899 0 0 0 222.608696 890.434783H259.710145v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h89.043478v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h89.043478v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h89.043478v103.884058a29.681159 29.681159 0 0 0 59.362319 0v-103.884058h37.101449c49.092638 0 81.623188-45.694145 81.623189-94.786783V771.710145h103.884058a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-89.043478h103.884058a29.681159 29.681159 0 0 0 0-59.362319h-103.884058v-89.043478h103.884058zM823.652174 801.391304a29.681159 29.681159 0 0 1-29.68116 29.68116H215.188406a29.681159 29.681159 0 0 1-29.68116-29.68116V222.608696a29.681159 29.681159 0 0 1 29.68116-29.68116h578.782608a29.681159 29.681159 0 0 1 29.68116 29.68116v578.782608z", "p-id", "8123", "fill", "#3f4b61"], ["t", "1653127701971", "viewBox", "0 0 1024 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "9077", "width", "200", "height", "200", 1, "icon"], ["d", "M651.9 120.8l114.7 114.7-21.2 21.2 28.3 28.3 41.8 41.8 28.3 28.3 21-21 28.6 28.6-35.4 35.4-28.3 28.3 21.3 21.3-241.8 241.7-21.3-21.3-28.3 28.3-35.3 35.3-28.3 28.4 21.3 21.3-121.2 121.2-263-263 518.8-518.8m-0.1-56.6l-21.3 21.3 0.1 0.1-554 554 298.3 298.3 21.3 21.3L574 781.4l-21.3-21.3 35.3-35.3 21.3 21.3 298.4-298.4-21.3-21.3 42.5-42.5 0.1-0.1 21-21-85.1-85.1-21 21-41.9-41.9 21.2-21.2L651.8 64.2z", "p-id", "9078", "fill", "#3f4b61"], ["d", "M374.9 528.8c29.6 0 57.4 11.5 78.3 32.4s32.4 48.7 32.4 78.3-11.5 57.4-32.4 78.3-48.7 32.4-78.3 32.4-57.4-11.5-78.3-32.4-32.4-48.7-32.4-78.3 11.5-57.4 32.4-78.3 48.7-32.4 78.3-32.4m0-40c-38.6 0-77.1 14.7-106.6 44.1-58.9 58.9-58.9 154.3 0 213.1 29.4 29.4 68 44.1 106.6 44.1S452 775.4 481.5 746c58.9-58.9 58.9-154.3 0-213.1-29.5-29.4-68.1-44.1-106.6-44.1z", "p-id", "9079", "fill", "#3f4b61"], ["d", "M374.9 639.5m-82.6 0a82.6 82.6 0 1 0 165.2 0 82.6 82.6 0 1 0-165.2 0Z", "p-id", "9080", "fill", "#3f4b61"], ["d", "M630.6 273.1c29.6 0 57.4 11.5 78.3 32.4s32.4 48.7 32.4 78.3-11.5 57.4-32.4 78.3-48.7 32.4-78.3 32.4-57.4-11.5-78.3-32.4-32.4-48.7-32.4-78.3 11.5-57.4 32.4-78.3 48.7-32.4 78.3-32.4m0-40c-38.6 0-77.1 14.7-106.6 44.1-58.9 58.9-58.9 154.3 0 213.1 29.4 29.4 68 44.1 106.6 44.1s77.1-14.7 106.6-44.1c58.9-58.9 58.9-154.3 0-213.1-29.4-29.4-68-44.1-106.6-44.1z", "p-id", "9081", "fill", "#3f4b61"], ["d", "M630.6 383.8m-82.6 0a82.6 82.6 0 1 0 165.2 0 82.6 82.6 0 1 0-165.2 0Z", "p-id", "9082", "fill", "#3f4b61"], ["t", "1653127773031", "viewBox", "0 0 1024 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "10102", "width", "200", "height", "200", 1, "icon"], ["d", "M870.4 661.312H960v59.712h-89.6v89.6c0 41.216-18.496 59.712-59.712 59.712h-89.6V960h-59.712v-89.6H541.888V960h-59.776v-89.6H362.688V960h-59.776v-89.6h-89.6c-41.216 0-59.712-18.496-59.712-59.712v-89.6H64v-59.712h89.6V541.888H64v-59.776h89.6V362.688H64v-59.712h89.6v-89.6c0-41.28 18.496-59.776 59.712-59.776h89.6V64h59.712v89.6h119.488V64h59.712v89.6h119.488V64h59.712v89.6h89.6c41.216 0 59.712 18.496 59.712 59.712v89.6H960v59.712h-89.6v119.488H960v59.712h-89.6v119.488z m-59.712-448H213.312v597.312h597.312V213.312zM332.8 302.912h358.4c20.608 0 29.888 9.216 29.888 29.888v358.4c0 20.608-9.28 29.888-29.888 29.888H332.8c-20.608 0-29.888-9.28-29.888-29.888V332.8c0-20.608 9.28-29.888 29.888-29.888z", "p-id", "10103", "fill", "#3f4b61"], ["t", "1653127811070", "viewBox", "0 0 1448 1024", "version", "1.1", "xmlns", "http://www.w3.org/2000/svg", "p-id", "11047", "width", "200", "height", "200", 1, "icon"], ["d", "M960 268.8c-26.88-34.56-62.72-64-102.4-84.48-40.96-20.48-85.76-30.72-133.12-30.72-79.36 0-153.6 30.72-209.92 87.04-53.76 53.76-84.48 125.44-87.04 202.24-56.32 0-110.08 21.76-149.76 62.72-39.68 39.68-62.72 93.44-62.72 149.76 0 56.32 21.76 110.08 62.72 149.76 39.68 39.68 93.44 62.72 149.76 62.72h213.76c19.2 0 33.28-15.36 33.28-33.28 0-19.2-15.36-33.28-33.28-33.28H427.52c-38.4 0-74.24-15.36-101.12-42.24-26.88-26.88-42.24-64-42.24-101.12 0-38.4 15.36-74.24 42.24-101.12 26.88-26.88 64-42.24 101.12-42.24h34.56c8.96 0 17.92-3.84 25.6-11.52 6.4-7.68 8.96-16.64 8.96-25.6-1.28-7.68-1.28-15.36-1.28-23.04 0-61.44 24.32-119.04 66.56-162.56 43.52-43.52 101.12-66.56 162.56-66.56 35.84 0 70.4 7.68 102.4 24.32 30.72 15.36 57.6 38.4 78.08 65.28 6.4 8.96 16.64 12.8 26.88 12.8 7.68 0 14.08-2.56 20.48-7.68 7.68-5.12 11.52-14.08 12.8-23.04 2.56-12.8 0-21.76-5.12-28.16z m192 186.88c0-2.56-1.28-5.12-2.56-8.96l-1.28-2.56c-5.12-10.24-16.64-17.92-28.16-19.2H792.32c-14.08 0-25.6 7.68-32 19.2l-1.28 3.84c-1.28 2.56-1.28 5.12-2.56 7.68l-66.56 234.24c10.24-2.56 20.48-5.12 30.72-5.12h467.2c10.24 0 20.48 2.56 30.72 5.12L1152 455.68z m38.4 253.44H723.2c-25.6 0-46.08 20.48-46.08 44.8s20.48 57.6 46.08 57.6h467.2c25.6 0 46.08-32 46.08-57.6 1.28-24.32-20.48-44.8-46.08-44.8z m-47.36 75.52c-14.08 0-25.6-11.52-25.6-24.32 0-14.08 11.52-24.32 25.6-24.32s25.6 11.52 25.6 24.32-11.52 24.32-25.6 24.32z", "p-id", "11048", "fill", "#3f4b61"], ["nzTitle", "The first Modal", 1, "statistics-top", "flex-column", 2, "height", "80%", "width", "80%", "position", "absolute", "z-index", "9999", "background", "#031129", "margin", "50px 5%"], ["nzType", "card", 3, "nzSelectChange"], ["nzTitle", "\u6A21\u578B\u7CBE\u5EA6\u66F2\u7EBF"], ["id", "lineCharts", 1, "lineCharts"], ["id", "csImg1", 1, "main-content", "imgList"], [1, "title", 2, "font-size", "18px"], [1, "image-list", 2, "width", "100%", "max-height", "450px", "overflow-y", "auto"], ["class", "cover", 4, "ngFor", "ngForOf"], ["nzTitle", "\u6D4B  \u8BD5"], [1, "content", 2, "flex-wrap", "wrap"], [2, "flex", "0 0 100%", "margin-left", "20px"], ["for", "upload", 2, "color", "#fff", "margin-right", "10px"], ["type", "file", "multiple", "true", "accept", "image/*", "id", "imgInput", 2, "color", "#fff"], ["id", "csImg", 1, "main-content", "imgList"], ["id", "image-list1", 1, "image-list1", 2, "width", "100%", "max-height", "450px", "overflow-y", "auto"], [1, "cover"], ["alt", "", 3, "src"], [1, "select", 2, "position", "absolute", "left", "0", 3, "ngModel", "ngModelChange", "nzOpenChange"], [3, "nzValue", "nzLabel", 4, "ngFor", "ngForOf"], [3, "nzValue", "nzLabel"], [1, "btn", "btn-new-task", 3, "click"], [3, "click"], ["nzShowCheckbox", "", 3, "nzChecked", "nzCheckedChange"], [1, "train-right", "flex-column"], [1, "train-classifies", "flex-column"], [1, "train-title"], [1, "echart-box"], ["nzType", "circle", "nzStrokeColor", "#159FFF", "nzStrokeWidth", "12", 3, "nzPercent"], [1, "train-images", "flex-column"], [1, "detail-info-box", "flex-column"], [1, "detail-info-type", "flex-row"], [1, "detail-info-param"], [1, "detail-info-value"], [1, "is_mark"], [1, "btn", "train-btn-edit", 3, "click"], [1, "compare-model-row"]], template: function DataTrainingComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, DataTrainingComponent_div_1_Template, 45, 11, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, DataTrainingComponent_div_2_Template, 34, 0, "div", 2);

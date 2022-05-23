@@ -468,8 +468,8 @@ export class LeafDataManageComponent implements OnInit {
       // this.nzMessage.success('图片已经上传，进度条还没有完，手动刷新.....未完待续');
     });
   }else{
-    console.log(httpParams);
-    this.http.post(`${environment.API_URL}/v1/upload-zip-log/uploadZip?type=3&userId=52`, formData, {
+    var id = JSON.parse(localStorage.getItem("userInfo")).id
+    this.http.post(`${environment.API_URL}/v1/upload-zip-log/uploadZip?type=3&userId=${id}`, formData, {
       params: httpParams,
       reportProgress: true,
       responseType: 'text',

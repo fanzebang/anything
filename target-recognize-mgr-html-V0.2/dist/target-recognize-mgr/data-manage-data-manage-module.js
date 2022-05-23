@@ -7046,8 +7046,8 @@ class LeafDataManageComponent {
             });
         }
         else {
-            console.log(httpParams);
-            this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_URL}/v1/upload-zip-log/uploadZip?type=3&userId=52`, formData, {
+            var id = JSON.parse(localStorage.getItem("userInfo")).id;
+            this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_URL}/v1/upload-zip-log/uploadZip?type=3&userId=${id}`, formData, {
                 params: httpParams,
                 reportProgress: true,
                 responseType: 'text',

@@ -176,7 +176,6 @@ export class DataTrainingComponent implements OnInit {
   }
 
   download(type){
-
     let deployModelUrls; 
     switch (type) {
       case 'cpu':
@@ -421,72 +420,55 @@ export class DataTrainingComponent implements OnInit {
 
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
-    var lastClass = [];
-      for (let index = 0; index < listOfData.length; index++) {
+    var lastClass = { };
+  for (let index = 0; index < listOfData.length; index++) {
         const element = listOfData[index];
-
+        lastClass[element.id]=[];
         if(element.taskSampleType.indexOf(",") == -1){
-
           this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
-
             if (HttpResult.succeed(result.code)) {
               if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
                 this.selectList.push(result.data.sampleTypeName)
               }
-             
-              element.lastClass = result.data.sampleTypeName
+              lastClass[element.id].push(result.data.sampleTypeName)
             }
           });
-
-
         }else{
-        let  elementArr = element.taskSampleType.split(",");
- 
-
+     
+        let elementArr = element.taskSampleType.split(",");
         for (let i = 0; i < elementArr.length; i++) {
             let value = elementArr[i];
             this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
               if (HttpResult.succeed(result.code)) {
-
-                if(lastClass.indexOf(result.data.sampleTypeName) == -1){
-                  lastClass.push(result.data.sampleTypeName)
-                }
-
-
-                if(i ==  (elementArr.length-1) ){
-                
-               
-                  element.lastClass = lastClass.join(",")
-                
-                //   console.log(lastClass)
-                //   // if(this.selectList.indexOf(lastClass) == -1){
-                //   //   lastClass = lastClass.substr(0, lastClass.length - 1); 
-                //   //   this.selectList.push(lastClass)
-                //   //   element.lastClass = lastClass
-                //   // }
-
-                }
+                lastClass[element.id].push(result.data.sampleTypeName)
 
               }
             });
-
-           
         }
- 
- 
- 
         }
         
-      
+        if(index == (listOfData.length-1)) {
+          setTimeout(()=>{
+            for (const key in lastClass) {
+              var selectString =lastClass[key].sort().join(",")
+              if(this.selectList.indexOf(selectString) == -1){
+                this.selectList.push(selectString)
+              }
+              for (let index = 0; index < listOfData.length; index++) {
+                const element = listOfData[index];
+                if(element.id == (parseInt(key))){
+                  element.lastClass = selectString
+                }
+              }
+            }
+          },200)
+        }
+
       
       }
-      setTimeout(()=>{
-      
-        this.selectList.push(lastClass.join(","))  
-      
-      },200)
-     
-     
+
+
+
   }
   // 暂停
   endTask() {
@@ -574,16 +556,13 @@ export class DataTrainingComponent implements OnInit {
 
       for (let index = 0; index < this.listOfData2.length; index++) {
         const element = this.listOfData2[index];
-
-        if(element.lastClass.indexOf(this.selectData) != -1 ){
+        if(element.lastClass == this.selectData){
           this.listOfData1.push(element);
         }
-        
       }
+   
+      this.listOfData = this.listOfData1 
 
-
-      this.listOfData = this.listOfData1
-      
     }else{
 
       this.listOfData = this.listOfData2
@@ -798,51 +777,41 @@ listData:any
         }
       })
       .then((result:any)=>{
-        let resultData = result.data.data
-        let Arr2 = [];
+
+      let resultData = result.data.data
+      let Arr2 = [];
+
       for (let index = 0; index < resultData.length; index++) {
         const element = resultData[index].sampleTypeName;
         Arr2.push(element)
         if(Arr1.indexOf(element) == -1) Arr1.push(element)
-      }   
+      }
+      if(index == 0 ){Arr2 = Arr2.splice(1,2)}
+
+     
+      if( Arr1.join(",") != Arr2.join(",")){
+        for (let i = 0; i < Arr1.length; i++) {
+          const element = Arr1[i];
+          if( Arr2.indexOf(element) == -1){
+            Arr2.splice(i,0,"-")
+          }
+        }
+      }
       leftTableData.id = resultData[0].taskId
       leftTableData.data = Arr2 
-      for (let index = 0; index < this.listOfData.length; index++) {
-        const element = this.listOfData[index];
+      for (let i = 0; i < this.listOfData.length; i++) {
+        const element = this.listOfData[i];
         if(element.id ==  leftTableData.id) element.leftTableData = leftTableData.data
       }
-
       })
     }
-
-    
-   
-
     this.isVisible1 = true
-
     var dataList = this.listOfData.map((item)=>{
       if(this.mapOfCheckedId[item.id]){ 
         return item
       }
     })
-
     this.initModeLineCharts1(dataList)
-
-    // const modal = this.nzModal.create({
-    //   nzTitle: '模型对比',
-    //   nzContent: ModelCompareComponent,
-    //   nzComponentParams: {
-    //     comparingDataTrainList: this.comparingDataTrainList
-    //   },
-    //   nzOnOk: (modelCompareComponent: ModelCompareComponent) => {
-    //     // return false;
-    //   },
-    //   nzCancelText: '关闭',
-    //   nzOkText: null
-    // });
-    // modal.afterClose.subscribe(() => {
-    //   // this.loadTraining();
-    // });
   }
 
   clearCompare() {

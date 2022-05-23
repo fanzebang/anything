@@ -78,7 +78,7 @@ export class TimeComponent implements OnInit {
       right:'20%',
     },
       title:{
-        text: '单位（毫秒）',
+        text: '单位（秒）',
         x: 'left',                 
         y: '25px', 
         backgroundColor: 'rgba(0,0,0,0)',
