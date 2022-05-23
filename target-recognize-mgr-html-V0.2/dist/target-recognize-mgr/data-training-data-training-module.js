@@ -1294,16 +1294,6 @@ class DataTrainingComponent {
             default:
                 break;
         }
-        // axios.get(`${environment.API_URL}/v1/data_train/queryById?id=${data.id}`, {
-        //   headers: {
-        //     'Authorization':'Bearer '+localStorage.getItem('Bearer'),
-        //     'TR-Role': 'TR-User'
-        //   }
-        // })
-        // .then((result:any)=>{
-        //   var result = result.data.data
-        //   window.open(result.trainUrl,"_blank"); 
-        // })
         this.isVisible2 = false;
     }
     fileChange() {
@@ -1378,12 +1368,6 @@ class DataTrainingComponent {
                 let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('status', 'END');
                 this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/data_train/`, { params }).subscribe((result) => {
                     if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
-                        // if(this.selectData == "全部") {
-                        //   this.listOfData = result.data.records;
-                        //   this.dataTotal = result.data.total;
-                        //   this.pageIndex = result.data.current;
-                        //     this.listOfData2 = this.listOfData 
-                        //   }
                         if (this.selectData == "全部") {
                             for (let index = 0; index < result.data.records.length; index++) {
                                 const element = result.data.records[index];
@@ -1520,7 +1504,6 @@ class DataTrainingComponent {
         });
     }
     changeStatus(flag) {
-        console.log(flag);
         this.flag = flag;
         this.compareDisplay = false;
         if (flag == 0) {
@@ -1742,9 +1725,6 @@ class DataTrainingComponent {
                     Arr2.push(element);
                     if (Arr1.indexOf(element) == -1)
                         Arr1.push(element);
-                }
-                if (index == 0) {
-                    Arr2 = Arr2.splice(1, 2);
                 }
                 if (Arr1.join(",") != Arr2.join(",")) {
                     for (let i = 0; i < Arr1.length; i++) {

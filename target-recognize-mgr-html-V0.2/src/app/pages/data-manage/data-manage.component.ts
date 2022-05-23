@@ -279,6 +279,7 @@ export class DataManageComponent implements OnInit {
  
     if (event.node.isLeaf) {
       // 袁攀 如果是最后一级
+     
       this.router.navigate(['leaf', {'sampleUpId': event.node.key}], {relativeTo: this.route});
     } else {
       // 袁攀 如果不是最后一级
@@ -294,6 +295,7 @@ export class DataManageComponent implements OnInit {
     console.log(event.eventName + '选中的是谁');
     if (event.eventName === 'click') {
       if (!isNaN(parseInt(id))) {
+      
       } else {
         switch (id) {
           case this.type.KJG:
@@ -326,6 +328,8 @@ export class DataManageComponent implements OnInit {
       } else {
         this.sampleUpId = null;
       }
+
+      
     }
 
     //只加载树菜单
@@ -339,6 +343,8 @@ export class DataManageComponent implements OnInit {
     
       this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
+       
+     
           const data = result.data.map((samples:any) => {
             return new NzTreeNode({
               markTitle: samples.data.sampleTypeName,
@@ -359,6 +365,7 @@ export class DataManageComponent implements OnInit {
       });
     }
   }
+
 
   //互斥click事件
   mutexType(type: string) {
@@ -527,6 +534,7 @@ export class DataManageComponent implements OnInit {
       this.http.get(`${environment.API_URL}/v1/sample-oss-types/${this.currentNode.key}`).subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
           const currentSampleType = result.data;
+    
           console.log('currentSampleType is :', currentSampleType);
           const addModal = this.nzModal.create({
             nzTitle: '重命名分类',

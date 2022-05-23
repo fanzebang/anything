@@ -62,7 +62,7 @@ export class SampleOssFile {
   width: number;
   height: number;
   sampleStatus: number;
-  markStatus: number;
+  markStatus: any;
   createdTime: string;
   createdBy: number;
   downloadNumber: number;
@@ -70,6 +70,7 @@ export class SampleOssFile {
   browseNumber: number;
   labelMessage?: string;
   createdName?: string;
+  markStatusText:string;
 }
 
 export class ProgressDto {

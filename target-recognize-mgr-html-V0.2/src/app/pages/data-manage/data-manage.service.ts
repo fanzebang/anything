@@ -20,7 +20,7 @@ declare var $:any;
 
 
 export class DataManageService {
-
+  upLoadZipIsVisible:boolean = true
   num:any;
   name:any;
   visibleLightRootNode: NzTreeNode;
@@ -89,6 +89,7 @@ loadSarTree(dataManage) {
     const httpParams = new HttpParams().append('sampleTypeName', this.type.SAR);
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
+   
         if (result.data) {
           const sar = result.data.map((samples: any) => {
             return new NzTreeNode({
@@ -113,6 +114,7 @@ loadSarTree(dataManage) {
     const httpParams = new HttpParams().append('sampleTypeName', this.type.YG);
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
+
         if (result.data) {
           const remote = result.data.map((samples: any) => {
             return new NzTreeNode({
@@ -140,7 +142,7 @@ loadSarTree(dataManage) {
     const httpParams = new HttpParams().append('sampleTypeName', this.type.HW);
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
-
+   
         const infrared = result.data.map((samples: any) => {
           return new NzTreeNode({
             title: samples.data.sampleTypeName + '    ' + samples.imageCount,
@@ -164,6 +166,7 @@ loadSarTree(dataManage) {
     const httpParams = new HttpParams().append('sampleTypeName', this.type.KJG);
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
+ 
         const visibleLight = result.data.map((samples: any) => {
           return new NzTreeNode({
             title: samples.data.sampleTypeName + '    ' + samples.imageCount,
@@ -234,17 +237,31 @@ for (let index = 0; index < samplePath.length; index++) {
  
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: params}).subscribe((result: HttpResult<any>) => {
     if (HttpResult.succeed(result.code)) {
+    
         for (let index = 0; index < result.data.length; index++) {
           let data =  result.data[index].data;
             if(data.sampleTypeName == title){
               tree.imageCount = result.data[index].imageCount
+          
+              // var String1 = data.samplePath.split("/")[0]
+              
+           
+
+            
             }
         }
+    
       tree.title = `${element}   ${tree.imageCount}`
     }
   });
 }
 }
+  if(samplePath[0] == "可见光" || samplePath[0] == "红外") {
+          this.upLoadZipIsVisible = true;
+    }else{
+            this.upLoadZipIsVisible = false;
+         }
+         
 
 }
 
@@ -283,7 +300,7 @@ changeTree(tree,samplePath){
 
     this.http.get(`${environment.API_URL}/v1/sample-oss-types`, {params: httpParams}).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
-    
+
         if(samplePath[0] == "可见光"){
           let count = 0
           for (let index = 0; index < result.data.length; index++) {

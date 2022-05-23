@@ -220,9 +220,6 @@ export class DataTrainingComponent implements OnInit {
               const element = this.listOfData[index];
                 if(element.id == this.downloadId){
                   deployModelUrls= JSON.parse(element.deployModelUrls)
-    
-                
-    
                 }
             }  
     
@@ -238,9 +235,6 @@ export class DataTrainingComponent implements OnInit {
                 const element = this.listOfData[index];
                   if(element.id == this.downloadId){
                     deployModelUrls= JSON.parse(element.deployModelUrls)
-      
-                  
-      
                   }
               }  
       
@@ -254,18 +248,7 @@ export class DataTrainingComponent implements OnInit {
       default:
         break;
     }
-    // axios.get(`${environment.API_URL}/v1/data_train/queryById?id=${data.id}`, {
-    //   headers: {
-    //     'Authorization':'Bearer '+localStorage.getItem('Bearer'),
-    //     'TR-Role': 'TR-User'
-    //   }
-    // })
-    // .then((result:any)=>{
-      
-    //   var result = result.data.data
-    //   window.open(result.trainUrl,"_blank"); 
-
-    // })
+ 
     this.isVisible2 = false;
   }
   
@@ -345,15 +328,6 @@ export class DataTrainingComponent implements OnInit {
         let params = new HttpParams().append('status', 'END');
         this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
           if (HttpResult.succeed(result.code)) {
-         
-          // if(this.selectData == "全部") {
-          //   this.listOfData = result.data.records;
-          //   this.dataTotal = result.data.total;
-          //   this.pageIndex = result.data.current;
-          //     this.listOfData2 = this.listOfData 
-          //   }
-
-   
           if(this.selectData == "全部") {
             for (let index = 0; index < result.data.records.length; index++) {
               const element = result.data.records[index];
@@ -384,7 +358,6 @@ export class DataTrainingComponent implements OnInit {
 
 
   loadTraining() {
-
     let params;
     //不分页
     if (this.status === 'END') {
@@ -439,7 +412,7 @@ export class DataTrainingComponent implements OnInit {
         for (let i = 0; i < elementArr.length; i++) {
             let value = elementArr[i];
             this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
-              if (HttpResult.succeed(result.code)) {
+              if (HttpResult.succeed(result.code)){
                 lastClass[element.id].push(result.data.sampleTypeName)
 
               }
@@ -519,7 +492,6 @@ export class DataTrainingComponent implements OnInit {
 
   changeStatus(flag: number) {
   
-    console.log(flag)
     this.flag = flag;
     this.compareDisplay= false 
     if(flag ==0){
@@ -786,9 +758,7 @@ listData:any
         Arr2.push(element)
         if(Arr1.indexOf(element) == -1) Arr1.push(element)
       }
-      if(index == 0 ){Arr2 = Arr2.splice(1,2)}
-
-     
+  
       if( Arr1.join(",") != Arr2.join(",")){
         for (let i = 0; i < Arr1.length; i++) {
           const element = Arr1[i];

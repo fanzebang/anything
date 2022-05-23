@@ -13,10 +13,10 @@
                 <button class="btn m-r upload">导入图片</button>
                 <input #filesInput type="file" value="本地上传" multiple (change)="uploadImages($event)" accept="image/jpeg,image/png">
             </div>
-            <div class="import-samples-btn-wrap">
+            <div class="import-samples-btn-wrap" *ngIf="upLoadZipIsVisible">
                 <!-- <button class="upload">导入</button> -->
-                <button class="btn m-r upload">导入压缩包</button>
-                <input #filesInput type="file" value="本地上传" multiple (change)="uploadZip($event)" accept=".zip,.rar">
+                <button class="btn m-r upload" >导入压缩包</button>
+                <input #filesInput1 type="file" value="本地上传" multiple (change)="uploadZip($event)" id="zipInput" accept=".zip,.rar">
             </div>
             <!-- <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button> -->
         </ng-container>
@@ -63,8 +63,9 @@
                 <!-- <input type="checkbox" style="position: absolute;left: 2px; " [(ngModel)]="checkOptionsOne[idx]" (ngModelChange)="updateSingleChecked()"> -->
                 <nz-checkbox-group style="position: absolute;left: 2px; " [(ngModel)]="checkOptionsOne[idx]" (ngModelChange)="updateSingleChecked()">
                 </nz-checkbox-group>
-           
-                <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
+             
+                
+                <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)" title="{{item.markStatusText}}">
                 <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
 
                 <i nz-icon nzType="clock-circle" nzTheme="fill" style="color: rgb(19, 111, 182);position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 0"></i>

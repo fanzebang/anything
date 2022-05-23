@@ -9,6 +9,7 @@ import {Observable} from "rxjs";
 import {RenameSampleOssTypeState, RenameSampleOssTypeStateModel} from "../../../state/rename-sample-oss-type.state";
 import { DataManageService } from '../data-manage.service';
 import DragSelect from 'dragselect';
+import { DomElementSchemaRegistry } from '@angular/compiler';
 
 declare var $:any;
 // declare var DragSelect:any;
@@ -17,6 +18,7 @@ declare var $:any;
   styleUrls: ['./leaf.data-manage.component.less']
 })
 export class LeafDataManageComponent implements OnInit {
+  upLoadZipIsVisible:boolean;
   sampleUpId: number;
   secondaryData: SampleOssFile[] = [];
   secondaryTotal = 0;
@@ -52,15 +54,19 @@ export class LeafDataManageComponent implements OnInit {
           this.sampleUpId = +params.get('sampleUpId');
           this.loadSecondaryImage(this.sampleUpId);
           this.loadSampleType(this.sampleUpId);
+          
         }
       },
     );
     this.sampleOssTypeName$.subscribe(renameModel => {
       if (renameModel.name) {
         this.sampleOssType.sampleTypeName = renameModel.name;
+  
       }
     });
    
+   
+
   }
 
   dragSelectInit(){
@@ -96,8 +102,31 @@ export class LeafDataManageComponent implements OnInit {
     const params = new HttpParams().append('typeId', sampleUpId + '').append('pageSize', 300 + '').append('pageIndex', this.pageIndex + '');
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getOssFilesByTypeId`, {params})
       .subscribe((result: HttpResult<ApiPage<SampleOssFile>>) => {
-        console.log(result)
+        setTimeout(()=>{
+          this.upLoadZipIsVisible = this.dataManageService.upLoadZipIsVisible
+        },300)
+        // console.log(this.dataManageService.upLoadZipIsVisible)
+        // 
+          
+   
         this.secondaryData = result.data.records;
+        console.log( this.secondaryData)
+
+        this.secondaryData.map(x=>{
+          if(x.markStatus == 0){
+            x.markStatusText = "未标注"
+          }else if(x.markStatus == 1){
+            x.markStatusText = "已标注"
+          }else if(x.markStatus == 2){
+            x.markStatusText = "标注错误" 
+          }else if(x.markStatus == 3){
+            x.markStatusText = "正确的标注(审核通过)" 
+          }else if(x.markStatus == 4){
+            x.markStatusText = "客户端图片检测纠错过来的数据" 
+          } 
+
+        })
+        
         this.secondaryTotal = result.data.total;
         this.imgNum = this.secondaryData.length
         // let str = $(".search-form-title")[0].innerText
@@ -116,7 +145,7 @@ export class LeafDataManageComponent implements OnInit {
         });
         this.checkOptionsOne = box;
         this.allSelect = false
-        this.dragSelectInit()
+        // this.dragSelectInit()
       });
   }
 
@@ -278,8 +307,7 @@ export class LeafDataManageComponent implements OnInit {
     this.http.patch(`${environment.API_URL}/v1/sample-oss-file/patch_status`, null, {params})
       .subscribe((result: HttpResult<SampleOssFile[]>) => {
         if (HttpResult.succeed(result.code)) {
-          
-          //
+
           this.nzMessage.success('删除成功');
           this.loadSecondaryImage(+sampleTypeId);
        
@@ -289,29 +317,13 @@ export class LeafDataManageComponent implements OnInit {
       });
   }
 
-  // uploadImages(): void {
-  //   const modal = this.nzModal.create({
-  //     nzWidth: 1000,
-  //     nzContent: DataManageUploadComponent,
-  //     nzFooter: null,
-  //     nzComponentParams: {
-  //       sampleUpId: this.sampleUpId
-  //     },
-  //   });
-  //   modal.afterClose.subscribe(() => {
-  //     // 重新加载图片
-  //     this.loadSecondaryImage(this.sampleUpId);
-  //   });
-  // }
-
   uploadZip(evt:any):void{
-
     this.hideUploadingProgress = false;
     this.hideUploadingPanel = false;
     this.type = "zip/rar";
     this.imgUploadSize = "";
     const fileList = evt.target.files as FileList;
-   
+ 
     if (fileList.length > 500) {
       // 限制一次最多上传20张
       this.nzModal.error({
@@ -326,7 +338,6 @@ export class LeafDataManageComponent implements OnInit {
       for (let i = 0; i < fileCount; i++) {
         // 每个文件单个上传，这样才能对每个文件有进度条
         let type = fileList[i].type
-        console.log(fileList[i])
         if(type == "application/x-zip-compressed" || type == "" ){
           uploadingFiles.push({
             file: fileList[i],
@@ -337,7 +348,6 @@ export class LeafDataManageComponent implements OnInit {
         }
       }
       this.uploadingFiles = uploadingFiles;
-
       this.uploadingFiles.forEach((file, index) => {
           const formData = new FormData();
           formData.append('files', file.file);
@@ -347,21 +357,16 @@ export class LeafDataManageComponent implements OnInit {
       const completeInterval = setInterval(() => {
         let complete = true;
         for (let j = 0; j < this.uploadingFiles.length; j++){
-
           if (this.uploadingFiles[j].progress < 100) {
             complete = false;
             break;
           }
-
         }
         if (complete) {
           clearInterval(completeInterval);
-
           this.clearFiles();
-//oo
           this.loadSecondaryImage(this.sampleUpId);
           this.loadSampleType(this.sampleUpId);
-
         }
       }, 1000);
 
@@ -437,6 +442,8 @@ export class LeafDataManageComponent implements OnInit {
 
   clearFiles(): void {
     this.filesInputElm.nativeElement.value = '';
+    var zipDom:HTMLInputElement = document.querySelector("#zipInput")
+    zipDom.value = ""
   }
 
 
@@ -469,7 +476,23 @@ export class LeafDataManageComponent implements OnInit {
     });
   }else{
     var id = JSON.parse(localStorage.getItem("userInfo")).id
-    this.http.post(`${environment.API_URL}/v1/upload-zip-log/uploadZip?type=3&userId=${id}`, formData, {
+    var parentClassString:String  = this.sampleOssType.samplePath.split("/")[0]
+    var classValue:number;
+    switch(parentClassString){
+      case '可见光':
+        classValue = 1;
+      break;
+      case '红外':
+        classValue = 3;
+      break;
+
+      default: 
+        classValue = undefined;
+      break
+    }
+
+   
+    this.http.post(`${environment.API_URL}/v1/upload-zip-log/uploadZip?type=${classValue}&userId=${id}`, formData, {
       params: httpParams,
       reportProgress: true,
       responseType: 'text',
