@@ -83,7 +83,7 @@ export class DataTrain {
   deployModelUrls:any;
   leftTableData:any;
   id: number;
-
+  computePlatform:any;
  /**
    * 创建任务的类别
    */

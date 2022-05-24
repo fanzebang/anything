@@ -22,7 +22,7 @@ export class AddTrainingComponent implements OnInit {
   trainId: number;
   validateForm!: FormGroup;
   dataTrain: DataTrain;
-
+  computePlatform:any = 1;
   nodes: NzTreeNodeOptions[] = [];
 
   @ViewChild('sampleTreeSelect', {static: false})
@@ -186,8 +186,24 @@ export class AddTrainingComponent implements OnInit {
       const formValue = this.validateForm.value;
 
       let sampleIds = formValue.sampleCategory.join(',');
-
-
+      var computePlatform ;
+      switch (formValue.computePlatform) {
+        case 1:
+          computePlatform = "GPU"
+          break;
+        case 2:
+          computePlatform = "CPU"
+          break;
+        case 3:
+          computePlatform = "hisilicon asic"
+          break;
+        case 4:
+          computePlatform = "online"
+          break;
+        default: 
+          computePlatform = "GPU"
+          break;
+      }
       if (this.trainId) {
         // 修改
         this.http.put(`${environment.API_URL}/v1/data_train`, {
@@ -197,7 +213,7 @@ export class AddTrainingComponent implements OnInit {
           normModel: formValue.normModel,
           taskMode: formValue.taskMode,
           taskSampleType: sampleIds,
-          computePlatform:formValue.computePlatform
+          computePlatform
         }).subscribe((result: HttpResult<any>) => {
           if (HttpResult.succeed(result.code)) {
             this.msg.success('新增成功');
@@ -217,7 +233,7 @@ export class AddTrainingComponent implements OnInit {
           normModel: formValue.normModel,
           taskMode: formValue.taskMode,
           taskSampleType: sampleIds,
-          computePlatform:formValue.computePlatform
+          computePlatform
         }).subscribe((result: HttpResult<any>) => {
           if (HttpResult.succeed(result.code)) {
             this.msg.success('新增成功');
@@ -272,6 +288,29 @@ export class AddTrainingComponent implements OnInit {
       if (HttpResult.succeed(result.code)) {
 
         this.dataTrain = result.data;
+
+        console.log()
+
+        switch (result.data.computePlatform) {
+          case "GPU":
+            this.computePlatform = 1
+            break;
+          case "CPU":
+
+            this.computePlatform = 2
+            break;
+          case "hisilicon asic":
+
+            this.computePlatform = 3
+            break;
+          case "online":
+
+            this.computePlatform = 4
+            break;
+          default:
+            this.computePlatform = 1
+            break;
+        }
 
         // 需要回填树形数据
         const taskSampleType: string[] = this.dataTrain.taskSampleType.split(',');

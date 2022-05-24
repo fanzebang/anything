@@ -43,10 +43,11 @@
   <nz-form-item>
     <nz-form-label nzSm="6" [nzXs]="24">计算平台</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择计算平台!">
-      <nz-select formControlName="computePlatform">
+      <nz-select formControlName="computePlatform" [(ngModel)]="computePlatform">
         <nz-option [nzValue]="1" nzLabel="gpu"></nz-option>
         <nz-option [nzValue]="2" nzLabel="cpu"></nz-option>
-        <nz-option [nzValue]="3" nzLabel="npu"></nz-option>
+        <nz-option [nzValue]="3" nzLabel="hisilicon asic"></nz-option>
+        <nz-option [nzValue]="4" nzLabel="online"></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>
