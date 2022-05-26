@@ -18,12 +18,13 @@ declare var $:any;
 declare var ImagePreview:any;
 declare var WinBox:any;
 declare var AILabel:any;
+
 @Component({
   templateUrl: './detect.component.html',
   styleUrls: ['./detect.component.less']
 })
-export class DetectComponent implements OnInit, OnDestroy {
 
+export class DetectComponent implements OnInit, OnDestroy {
   @Select(DetectState)
   detect$: Observable<DetectStateModel>;
   detectSubscription: Subscription;
@@ -46,7 +47,6 @@ export class DetectComponent implements OnInit, OnDestroy {
   total = 0;
   gfeatureLayer:any;
   currentDetectResult: DetectHistory = new DetectHistory();
-
   selectedTarget: { ossKey: string, category: string, similarity: string };
 
   selectedTargetPolygon: {
@@ -84,6 +84,12 @@ export class DetectComponent implements OnInit, OnDestroy {
   similarTargets = [];
   searchClass:any;
   samplePath:any;
+
+
+  imgPageIndex = 1
+  imgTotal
+  imgPageSize = 51
+
   searchClassIsRight:any = true
   detectImagePreview:any
   isSlectTab:any = false;
@@ -117,6 +123,7 @@ export class DetectComponent implements OnInit, OnDestroy {
             },200)
           }
         }else if(paramMap.has('textSearch')){
+                // 文字搜图
           let imgtext = paramMap.get('textSearch')
           console.log(imgtext)
           axios.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
@@ -131,7 +138,7 @@ export class DetectComponent implements OnInit, OnDestroy {
               $(".content-right").css("display","none")
               $(".effect").css("display","none")
               $(".similar-title")[0].innerHTML =`查询到的图片 共${result.data.data.length}张`
-              $(".content-bottom").css("overflow","auto")
+              // $(".content-bottom").css("overflow","auto")
               $(".content-bottom").css("min-height","100%")
               $(".similar").css("min-height","100%")
               $(".effect-content, .similar-content").css("flex","0 0 auto")
@@ -149,30 +156,6 @@ export class DetectComponent implements OnInit, OnDestroy {
           .catch(e=>{
             console.log(e)
           })
-         
-          // 文字搜图
-          // this.http.get(`${environment.API_URL}/v1/similar-targets-api?typeName=${imgtext}`, {
-          // }).subscribe((result:any) => {
-          //   if (HttpResult.succeed(result.code)) {
-          //    var that = this
-          //     $(".content-right").css("display","none")
-          //     $(".effect").css("display","none")
-          //     $(".similar-title")[0].innerHTML =`查询到的图片 共${result.data.length}张`
-          //     $(".content-bottom").css("overflow","auto")
-          //     $(".content-bottom").css("min-height","100%")
-          //     $(".similar").css("min-height","100%")
-          //     $(".effect-content, .similar-content").css("flex","0 0 auto")
-          //     $.each(result.data,function(i,n){
-          //       that.similarTargets.push({
-          //         ossKey: n.split("sample-resource/")[1]
-          //       })
-          //     })  
-          //     setTimeout(()=>{
-          //       ImagePreview.removed()
-          //       ImagePreview.init({id:$("#similarImg img")})
-          //     },300)  
-          //   }
-          // });
         }
       });
    }
@@ -193,35 +176,6 @@ export class DetectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    // this.route.paramMap.subscribe((paramMap) => {
-    
-    //   if (paramMap.has('borderShow')) {
-    //     this.searchClass = paramMap.get('borderShow')
-    //     if(this.searchClass == "5"){
-
-    //       $(".content-right") .css("display","none")
-    //     }
-    //   }
-    //   if (paramMap.has('detectId')) {
-    //     // 图片的解析
-    //     const detectId = paramMap.get('detectId');
-    //     this.imgId = detectId
-    //     this.loadDetectHistory(detectId);
-    //     if(paramMap.has('homeToDetect')){
-    //       this.ishomeToDetect = true
-    //       setTimeout(()=>{
-    //         setTimeout(()=>{
-    //           this.drwReact(this.currentDetectResult.targetJson[0])
-    //         },1000)
-      
-    //       },200)
-    //     }
-    //   }else {
-    //     // 视频的解析
-    //   }
-
-    // });
-  
     const startTime = new Date().getTime();
     this.detectingInterval = setInterval(() => {
       // 重复循环显示loading的
@@ -231,10 +185,12 @@ export class DetectComponent implements OnInit, OnDestroy {
         this.detectingSceneType++;
       }
       this.currentDetectResult.sceneType = this.detectingSceneType + '';
+
     if (new Date().getTime() - startTime > 60000) {
         // 超过1分钟就不loading了
         clearInterval(this.detectingInterval)
       }
+
     }, 200);
 
     this.videoSubscription = this.video$.subscribe((videoStateModel) => {
@@ -242,7 +198,7 @@ export class DetectComponent implements OnInit, OnDestroy {
         this.video = videoStateModel.video;
       }
     });
-
+  
     this.recognizeSubscription = this.recognize$.subscribe((recognizeStateModel) => {
       if (recognizeStateModel == null || recognizeStateModel.recognizeJson == null) {
         return;
@@ -262,12 +218,10 @@ export class DetectComponent implements OnInit, OnDestroy {
       }
     });
 
-
-
   }
 
 ngAfterViewInit(): void{
-  var that = this
+  
 
 }
 
@@ -299,7 +253,9 @@ ngAfterViewInit(): void{
         this.detectHistory = result.data.records;
         this.total = result.data.total;
         if (this.total > 0) {
+         
           this.currentDetectResult = this.detectHistory[0];
+        
           this.showDetectResult();
         }
 
@@ -308,35 +264,32 @@ ngAfterViewInit(): void{
     });
   }
 
-borderShowHidden(){
-    var Item = localStorage.getItem("detectResult")
-    var Item2 = JSON.parse(Item)[this.pageIndex]
-    var detectResult = JSON.parse(Item2)
+borderShowHidden(detectResult){
+    // var Item = localStorage.getItem("detectResult")
+    // var Item2 = JSON.parse(Item)[this.pageIndex]
+    // var detectResult = JSON.parse(Item2)
  
     if(this.searchClass == "2" || this.searchClass == "1" || this.searchClass == "3" ||  this.searchClass == "5"){
-
       if(detectResult.sampleTypeName != "wuqi" && this.searchClass == "2" ){
         this.searchClassIsRight = false
-    
           $(".similar-content").empty()
           $(".content-item iframe").remove() 
           $(".effect").empty() 
-     
       }else if(detectResult.sampleTypeName != "person" && this.searchClass == "1"){
         this.searchClassIsRight = false
-    
           $(".similar-content").empty()
           $(".content-item iframe").remove() 
           $(".effect").empty() 
-     
       }else if(detectResult.sceneType != "1"  && this.searchClass == "3"){
         this.searchClassIsRight = false
-        setTimeout(()=>{
+        // setTimeout(()=>{
           $(".similar-content").empty()
           $(".content-item iframe").remove() 
           $(".effect").empty() 
-        },100)
-      }else if(this.searchClass == "5"){
+        // },100)
+      }
+
+      if(this.searchClass == "5"){
         this.isPic = false
         $(".content-top").css("display","none")
         $(".content-bottom").css("min-height","100%")
@@ -344,7 +297,7 @@ borderShowHidden(){
         $(".similar-content").css("flex","none")
         $(".content-bottom").css("min-height","100%")
         $(".effect").css("max-height","30%")
-        $(".similar").css("overflow","auto")
+        // $(".similar").css("overflow","auto")
       }
   
     }
@@ -364,7 +317,6 @@ borderShowHidden(){
       this.pageIndex--;
       this.currentDetectResult = this.detectHistory[this.pageIndex];
       this.showDetectResult();
-    
     }
   }
 
@@ -379,21 +331,29 @@ borderShowHidden(){
 
   //范
   showDetectResult(): void {
+ 
     this.isPic = true
     clearInterval(this.detectingInterval);
-    this.drawMarkedLines(this.currentDetectResult);
-    // this.drwReact(this.detectHistory[0].targetJson[0])
-   
-    // this.selectedTarget = this.currentDetectResult.piecesOssKey[0];
-    // this.selectedTargetPolygon = this.currentDetectResult.targetJson[0];
+    // console.log(this.currentDetectResult,this.searchClass)
+    if(this.currentDetectResult.sampleTypeName) 
+    {
 
+      this.borderShowHidden(this.currentDetectResult)
+      if(this.searchClass == 5){
+        $(".content-right").hide();
+      }
+    
+    } 
+    this.drawMarkedLines(this.currentDetectResult);
     this.drwReact1(this.currentDetectResult.targetJson)
 
     if (this.currentDetectResult.targetJson.length != 0 ) {
-      // this.selectTargetPolygon(this.currentDetectResult.targetJson[0]);
+
       this.drawTargetsPolygon(this.currentDetectResult.targetJson);
-      // this.baiKeUrl = this.currentDetectResult.baiKeUrl;
+
     }
+
+ 
   }
 
   selectTarget(selectedTarget: { ossKey: string, category: string, similarity: string }): void {
@@ -408,34 +368,25 @@ borderShowHidden(){
     this.selectedTargetPolygon = targetPolygon;
     $(".similarImg").remove()
     if (this.selectedTargetPolygon) {
-     //  console.log('百分比', targetPolygon.similarity);
-     //  console.log('卧槽', this.currentDetectResult);
+
       this.similarity = Math.round(this.selectedTargetPolygon.similarity * 100.00);
-      // this.baiKeUrl = this.currentDetectResult.baiKeUrl;
-      // console.log('第一个' + this.baiKeUrl);
+
     }
     
     this.drwReact(targetPolygon)
     this.getLikeImg();
-    // 查询相似图片
-    // if (this.selectedTargetPolygon) {
-    //   // 去后台查询相似图片
-    //   ////  console.log('this.selectedTargetPolygon = ', this.selectedTargetPolygon);
-    //   // if(!this.ishomeToDetect){
-    //   //   this.drwReact(this.selectedTargetPolygon)
-    //   // }
-     
-    //   // 查询kms
-    
-    //   if (!(this.selectedTargetPolygon.categoryCn === '未识别')) {
-    //       this.kmsSearch(this.currentDetectResult.id + '', this.selectedTargetPolygon.categoryCn);
-    //   }
-    // }
+  
   }
+
+
+pageIndexChange(){
+  this. getLikeImg();
+
+}
 
   getLikeImg(){
    if (this.selectedTargetPolygon) {
-    this.http.get(`${environment.API_URL}/v1/sample-oss-file/getByTypeName?pageIndex=1&pageSize=10000`,{
+    this.http.get(`${environment.API_URL}/v1/sample-oss-file/getByTypeName?pageIndex=${this.imgPageIndex}&pageSize=${this.imgPageSize}`,{
       params: {
         typeName: this.selectedTargetPolygon.categoryCn,
       }
@@ -446,11 +397,14 @@ borderShowHidden(){
         if (result.data.records.length > 0) {
           if (result.data.records.length > 5 && this.searchClass != "5") {
             this.similarTargets = result.data.records.slice(0, 5);
+            this.imgTotal = 5
           } else {
             this.similarTargets = result.data.records;
-          }      
+          }   
+
           if(this.searchClass == 5){
             this.countNum = `    共${result.data.total}张`
+            this.imgTotal = result.data.total
           }else{
             this.countNum = null
           }
@@ -564,27 +518,6 @@ borderShowHidden(){
     );
     this.gfeatureLayer.addFeature(feature)
 
-      // var canvas:any = document.createElement("canvas");
-      // canvas.width = image.width;
-      // canvas.height = image.height;
-      // var ctx=canvas.getContext("2d");
-      //   ctx.drawImage(image, 0, 0);//0, 0参数画布上的坐标点，图片将会拷贝到这个地方
-      //   var bigImgDom:any = document.querySelector(".bigImg")
-      //   // 红色矩形
-      //     ctx.beginPath();
-      //     ctx.lineWidth="2";
-      //     ctx.strokeStyle="red";
-      //   if(selectedTargetPolygon){
-      //     if(selectedTargetPolygon.xPoints){
-      //       var maxX = selectedTargetPolygon.maxX+40 >= canvas.width+selectedTargetPolygon.xPoints[0] ? canvas.width-selectedTargetPolygon.xPoints[0]-40 :selectedTargetPolygon.maxX-selectedTargetPolygon.xPoints[0]
-      //       ctx.rect(selectedTargetPolygon.xPoints[0],selectedTargetPolygon.yPoints[0],maxX,selectedTargetPolygon.maxY-selectedTargetPolygon.yPoints[0]);
-      //     }else{
-      //       var maxX = selectedTargetPolygon.maxX+40 >= canvas.width+selectedTargetPolygon.xpoints[0] ? canvas.width-selectedTargetPolygon.xpoints[0]-40 :selectedTargetPolygon.maxX-selectedTargetPolygon.xpoints[0]
-      //       ctx.rect(selectedTargetPolygon.xpoints[0],selectedTargetPolygon.ypoints[0],maxX,selectedTargetPolygon.maxY-selectedTargetPolygon.ypoints[0]);
-      //     }
-      //   }
-      //   ctx.stroke();
-      //   bigImgDom.appendChild(canvas)
 
       },1000)
   }
@@ -869,7 +802,7 @@ drawTargetsPolygon(targetJson: Array<{
     img.src = videoFrame.dataURL;
     if (this.currentDetectResult == null || this.currentDetectResult.id !== videoFrame.detectHistory.id) {
       this.currentDetectResult = videoFrame.detectHistory;
-      // this.selectedTargetPolygon = this.currentDetectResult.targetJson[0];
+ 
       this.selectTargetPolygon(this.currentDetectResult.targetJson[0]);
       this.drawTargetsPolygon(this.currentDetectResult.targetJson);
     }
@@ -878,14 +811,12 @@ drawTargetsPolygon(targetJson: Array<{
   kmsSearch(historyId: string, name: string): void {
     const params = new HttpParams().append('historyId', historyId).append('name', name);
     this.http.get(`${environment.API_URL}/v1/kms/detect-kms`, {params}).subscribe((result: any) => {
-      this.borderShowHidden()
+ 
       this.kms = result.data;
       $("#ifmBox iframe").eq(1).attr("src","")
       $("#ifmBox iframe").eq(0).attr("src","")
       let baiKeUrl1= this.kms[0].url;
       let sfUrl = this.kms[0].sfUrl;
-      // let sfUrl = localStorage.getItem('sfUrl') +'/'+ name
-      // let baiKeUrl1 = "http://demo.kgtdata.com:15017/#/index?search_id=c1f66651ccfd457681ce5493d0ff1975&kg_id=kg_c1f66651ccfd457681ce5493d0ff1975&showSearch=1&instanceId=87613c8be489c04ec9834702ce554f59"
     setTimeout(()=>{
       $("#ifmBox iframe").eq(1).attr("src",baiKeUrl1)
       $("#ifmBox iframe").eq(0).attr("src",sfUrl)

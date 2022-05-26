@@ -5,6 +5,16 @@
 .target-selected {
   border: 2px solid #E29426;
 }
+
+.sameTarget{
+  overflow: hidden;
+  .pictures{
+    padding-bottom: 50px;
+    height: 100%;
+    overflow: auto;
+  }
+}
+
 .scaning {
   position: relative;
   background: url("../../../assets/images/scan-area.png") no-repeat;
@@ -99,5 +109,24 @@
   }
 }
 
+.picSearch{
+  max-height: 30%;
+}
+
+:host ::ng-deep{
+  .ant-pagination{
+    color: #fff;
+    li{
+      a{
+        color: #Fff;
+      }
+      
+    }
+  }
+  .ant-pagination-item-active{
+    background: transparent;
+  }
+
+}
 
 

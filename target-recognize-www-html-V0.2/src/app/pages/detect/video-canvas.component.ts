@@ -146,7 +146,7 @@ export class VideoCanvasComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
           this.recognizeVideoFrame();
-        }, 1000)
+        }, 33)
 
       };
 
@@ -161,7 +161,6 @@ export class VideoCanvasComponent implements OnInit, OnDestroy {
       return;
     }
     const frame = ffdecjs.get_next_frame();
-
     //var frame = yuv_init();
     if (frame) {
       this.retryGetFrameTimes = 0;
@@ -213,8 +212,9 @@ export class VideoCanvasComponent implements OnInit, OnDestroy {
       if ((this.lastVideoFrameIndex - 1) % 24 !== 0) {
         // 每隔8帧取一个图片
         this.frameRecognized.emit(new VideoFrame(dataURL, this.lastDetectHistory, viewpointWidth, viewpointHeight, viewpointX, viewpointY));
-
         this.recognizeVideoFrame();
+
+
       } else {
 
         const blob = this.videoService.dataURLToBlob(dataURL);
@@ -245,7 +245,7 @@ export class VideoCanvasComponent implements OnInit, OnDestroy {
       if (this.retryGetFrameTimes < 10) {
         setTimeout(() => {
           this.recognizeVideoFrame();
-        }, 1000);
+        }, 33);
       } else {
         // 取10次都没取到，则认为视频已经结束了
 

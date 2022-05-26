@@ -21,7 +21,7 @@ export class RecognizeState {
     console.log('RecognizeAction is :', action);
     let detectResult =  JSON.parse(localStorage.getItem("detectResult"))
     detectResult.push(action.recognizeJson)
-    localStorage.setItem("detectResult",JSON.stringify(detectResult))
+    // localStorage.setItem("detectResult",JSON.stringify(detectResult))
     const state = ctx.getState();
     ctx.setState({
       ...state,

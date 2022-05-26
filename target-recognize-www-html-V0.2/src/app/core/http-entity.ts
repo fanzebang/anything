@@ -46,6 +46,7 @@ export class DetectHistory {
   originWidth: number;
   originHeight: number;
   baiKeUrl: string;
+  sampleTypeName:string;
 }
 
 export class VideoFrame {

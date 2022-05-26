@@ -203,7 +203,7 @@ keyboardSubscription:any
   ngOnInit(): void {
 
 
-    localStorage.setItem("detectResult","[]")
+    // localStorage.setItem("detectResult","[]")
     var that = this
     axios.get(`${environment.API_URL}/v1/detect-history/detect-search-status`, {
       headers: {

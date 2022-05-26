@@ -14,7 +14,7 @@
   <div class="operations flex-row">
 
     
-  <div id="backstore" style="display: none">
+  <div id="backstore" style="display: none" *ngIf="video == null">
     <div id="content">
         <h1 style="text-align: center;"></h1>
         <div nz-row style="padding: 10px;">
@@ -35,7 +35,7 @@
       <a class="btn-goback" [routerLink]="['/home']">返回</a>
     </div> -->
     <button class="mismatching" [routerLink]="['/home']" style="right: 150px;"><i nz-icon nzType="left" style="font-size: 20px; padding: inherit;color:#fff"></i><span style="font-size: 15px;margin-left: 10px;color: #fff;">返回</span></button>
-    <button class="mismatching" (click)="mismatch()"><i nz-icon nzType="edit" style="font-size: 20px; padding: inherit;color:#fff"></i><span style="font-size: 15px;margin-left: 10px;color: #fff;">纠错</span></button>
+    <button class="mismatching" *ngIf="video == null" (click)="mismatch()"><i nz-icon nzType="edit" style="font-size: 20px; padding: inherit;color:#fff"></i><span style="font-size: 15px;margin-left: 10px;color: #fff;">纠错</span></button>
   </div>
 
   <div class="contents flex-row">
@@ -104,10 +104,31 @@
             </div>
           </div>
 
-          <div class="similar flex-column">
-            <div class="similar-title">相似图片目标<span>{{countNum}}</span></div>
-            <div class="similar-content flex-row">
-              <div class="similar-item flex-row similarImg" *ngFor="let similarImg of similarTargets"  id="similarImg">
+          <div class="similar flex-column sameTarget">  
+
+           
+
+            <div class="similar-title" style="display: flex;">
+              <div>
+                相似图片目标<span>{{countNum}}</span>
+              </div>
+              <div style="padding: 10px;">
+                <nz-pagination
+                [(nzPageIndex)]="imgPageIndex"
+                [(nzPageSize)] = "imgPageSize"
+                [nzTotal]="imgTotal"
+                [nzSize]="'small'"
+                [nzHideOnSinglePage] = "true"
+                (nzPageIndexChange) = "pageIndexChange()"
+                nzShowQuickJumper
+              ></nz-pagination>
+              </div>
+           
+            <!-- <ng-template #totalTemplate let-total>Total {{ total }} items</ng-template> -->
+
+            </div>
+            <div class="similar-content flex-row pictures">
+              <div class="similar-item flex-row similarImg" *ngFor="let similarImg of similarTargets"  id="similarImg" [ngClass]="{'picSearch': searchClass==5}">
                 <img class="img-responsive"
                      [src]="similarImg.ossKey | sampleOssPath"
                      alt="图片"> 
@@ -136,65 +157,6 @@
       </div>
 
 
-
-        <!--sll
-                <iframe *ngIf="kmsUrl" style="flex-grow: 1;border: 0px;" [src]="kmsUrl | safe">
-                </iframe>
-
-
-                <div class="content-top flex-column border">
-                  <div class="flex-row" style="padding: 10px 5px;color: white;justify-content: center;">
-
-                  </div>
-
-
-                </div>
-        -->
-
-
-        <!--sll
-                  <div class="content-top flex-column border">
-                    <div class="flex-row" style="padding: 10px 5px;color: white;justify-content: center;">
-                      <div class="result-info-text">匹配度</div>
-                      <div class="result-info-progress">
-                        <img src="assets/images/progress-tick.png" [ngStyle]="{left:(similarity - 100)+'%'}">
-                      </div>
-                      <div class="result-info-number">{{similarity}}%</div>
-                    </div>
-
-                    <iframe *ngIf="kmsUrl" style="flex-grow: 1;border: 0px;" [src]="kmsUrl | safe">
-                    </iframe>
-                  </div>
-
-                  <div class="content-bottom flex-column" style="overflow-y: auto;overflow-x: hidden;">
-                    <div class="content-title matching">扩展资料</div>
-                    <div class="information flex-column" *ngFor="let data of kms">
-                      <ng-container
-                        *ngIf="data?.url!==undefined && data?.url!==null && data?.url!==''&& data?.url!=='undefined'">
-                        <a class="information-item" target="_blank" href="{{data?.url}}">{{ data.name }}</a>
-                      </ng-container>
-                    </div>
-                    <div class="trimming"></div>
-                  </div>
-
-                </div>
-        -->
-
-
-        <!--        <div class="content-item flex-column" *ngIf="selectedTargetPolygon?.category === 'aeroplane'" app-jet></div>-->
-
-
-        <!--
-        <div class="tabs flex-column" app-warship></div>
-        -->
-        <!--
-                  <div class="tabs flex-column" app-personage></div>
-
-                  <div class="tabs flex-column" app-jet></div>
-                  -->
-
-
-        <!-- </div>-->
       </div>
     </div>
   </div>
