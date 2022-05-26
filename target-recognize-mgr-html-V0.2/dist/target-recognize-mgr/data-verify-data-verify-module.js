@@ -11163,7 +11163,7 @@ function DataVerifyComponent_ng_container_32_div_19_div_1_Template(rf, ctx) { if
     const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassProp"]("current-sample", (ctx_r10.currentSampleFile == null ? null : ctx_r10.currentSampleFile.id) === sampleFile_r11.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("src", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](2, 3, sampleFile_r11.ossKey), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsanitizeUrl"]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("src", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](2, 3, sampleFile_r11), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsanitizeUrl"]);
 } }
 function DataVerifyComponent_ng_container_32_div_19_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 27);
@@ -11318,6 +11318,7 @@ class DataVerifyComponent {
         };
         this.selectClassIndex1 = -1;
         this.singleTarget = false;
+        this.toDown = true;
         this.collaborativeAudit = 'default';
     }
     listenKeyboard() {
@@ -11356,12 +11357,18 @@ class DataVerifyComponent {
                             featuresLength++;
                         }
                     }
-                    if (this.selectClassIndex1 - 1 >= 0) {
-                        this.changeClassIndex(this.selectClassIndex1 - 1);
-                    }
-                    else if (this.selectClassIndex1 + 1 < featuresLength) {
+                    if (this.selectClassIndex1 + 1 == featuresLength)
+                        this.toDown = false;
+                    if (this.selectClassIndex1 == 0)
+                        this.toDown = true;
+                    var picturesDom = document.querySelector(".audit-pictures");
+                    if (this.toDown) {
                         this.changeClassIndex(this.selectClassIndex1 + 1);
                     }
+                    else {
+                        this.changeClassIndex(this.selectClassIndex1 - 1);
+                    }
+                    picturesDom.scrollTop = (picturesDom.scrollHeight - 400) * ((this.selectClassIndex1 + 1) / featuresLength);
                     return false;
                 }
             }
@@ -11489,13 +11496,27 @@ class DataVerifyComponent {
     creatAILabel(Imgdata) {
         var that = this;
         $("#verifyLabel").empty();
+        $("#verifyLabel").append('<nz-spin nzSimple  style="text-align: center;"></nz-spin>');
         var str = $("#verifyLabel").css("width");
         var str1 = $("#verifyLabel").css("height");
         var zoom = str.match(/\d+(\.\d+)?/g)[0] * 2;
         var zoomH = str1.match(/\d+(\.\d+)?/g)[0] * 2;
         let coordinateData = JSON.parse(Imgdata.labelMessage);
         let ossKey = Imgdata.ossKey;
-        let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey;
+        // let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey
+        var itemKey;
+        switch (Imgdata.bucketName) {
+            case "sample-resource":
+                itemKey = "sampleResourcePath";
+                break;
+            case "target-recognize":
+                itemKey = "targetRecognizePath";
+                break;
+            default:
+                itemKey = "sampleResourcePath";
+                break;
+        }
+        var imgUrl = localStorage.getItem(itemKey) + '/' + ossKey;
         let text;
         try {
             text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length - 2];
@@ -11665,6 +11686,7 @@ class DataVerifyComponent {
                 });
             }
         }
+        console.log(this.markedRects);
         if (this.keyboardVerifySubscription)
             this.keyboardVerifySubscription.unsubscribe();
     }
@@ -11774,7 +11796,7 @@ class DataVerifyComponent {
     }
 }
 DataVerifyComponent.ɵfac = function DataVerifyComponent_Factory(t) { return new (t || DataVerifyComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ng_zorro_antd__WEBPACK_IMPORTED_MODULE_6__["NzMessageService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"])); };
-DataVerifyComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataVerifyComponent, selectors: [["ng-component"]], decls: 43, vars: 10, consts: [[1, "flex-row"], [1, "audit-left", "flex-column"], [1, "search-form", "flex-row", 2, "position", "relative"], [2, "position", "relative", "left", "25px"], ["for", "datePice", 2, "color", "#fff"], ["name", "datePice", 1, "blue-datepicker", 2, "position", "relative", "left", "20px", 3, "ngModel", "ngModelChange"], ["nz-button", "", "nzType", "primary", 2, "position", "absolute", "right", "130px", "width", "100px", 3, "click"], ["nz-button", "", 2, "position", "absolute", "right", "10px", "width", "100px", 3, "nzType", "click"], [1, "audit-table-box"], ["nzTableLayout", "fixed", 1, "blue-table", 3, "nzData", "nzShowPagination"], ["auditTable", ""], ["nzWidth", "60px"], [4, "ngFor", "ngForOf"], [1, "audit-right", "flex-column"], [1, "audit-picture", "flex-row"], ["id", "verifyLabel"], [1, "audit-pictures"], ["style", "cursor: pointer;", "class", "audit-picture-item flex-row", "title", "\u6309\u6570\u5B57\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "audit-operate"], ["class", "btn btn-remove m-r", 3, "click", 4, "ngIf"], ["class", "btn", 3, "click", 4, "ngIf"], ["class", "btn btn-remove m-r", 4, "ngIf"], ["class", "btn", 4, "ngIf"], [3, "nzExpand", "nzExpandChange"], [3, "nzPercent"], [3, "nzExpand"], ["class", "audit-image-wrap", 4, "ngIf"], [1, "audit-image-wrap"], [3, "current-sample", "click", 4, "ngFor", "ngForOf"], [3, "click"], [3, "src"], [2, "margin", "0", "text-align", "center", "width", "100%"], ["title", "\u6309\u6570\u5B57\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 1, "audit-picture-item", "flex-row", 2, "cursor", "pointer", 3, "ngClass", "click"], [1, "audit-picture-item-photo", 2, "flex-basis", "auto"], [2, "width", "auto", "height", "100px", "max-width", "300px", 3, "src"], [1, "audit-picture-item-text", "flex-row"], [1, "audit-picture-item-text", "flex-row", "classId", 2, "display", "none"], [1, "btn", "btn-remove", "m-r", 3, "click"], [1, "btn", 3, "click"], [1, "btn", "btn-remove", "m-r"], [1, "btn"]], template: function DataVerifyComponent_Template(rf, ctx) { if (rf & 1) {
+DataVerifyComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataVerifyComponent, selectors: [["ng-component"]], decls: 43, vars: 10, consts: [[1, "flex-row"], [1, "audit-left", "flex-column"], [1, "search-form", "flex-row", 2, "position", "relative"], [2, "position", "relative", "left", "25px"], ["for", "datePice", 2, "color", "#fff"], ["name", "datePice", 1, "blue-datepicker", 2, "position", "relative", "left", "20px", 3, "ngModel", "ngModelChange"], ["nz-button", "", "nzType", "primary", 2, "position", "absolute", "right", "130px", "width", "100px", 3, "click"], ["nz-button", "", 2, "position", "absolute", "right", "10px", "width", "100px", 3, "nzType", "click"], [1, "audit-table-box"], ["nzTableLayout", "fixed", 1, "blue-table", 3, "nzData", "nzShowPagination"], ["auditTable", ""], ["nzWidth", "60px"], [4, "ngFor", "ngForOf"], [1, "audit-right", "flex-column"], [1, "audit-picture", "flex-row"], ["id", "verifyLabel"], [1, "audit-pictures"], ["style", "cursor: pointer;", "class", "audit-picture-item flex-row", "title", "\u6309~\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "audit-operate"], ["class", "btn btn-remove m-r", 3, "click", 4, "ngIf"], ["class", "btn", 3, "click", 4, "ngIf"], ["class", "btn btn-remove m-r", 4, "ngIf"], ["class", "btn", 4, "ngIf"], [3, "nzExpand", "nzExpandChange"], [3, "nzPercent"], [3, "nzExpand"], ["class", "audit-image-wrap", 4, "ngIf"], [1, "audit-image-wrap"], [3, "current-sample", "click", 4, "ngFor", "ngForOf"], [3, "click"], [3, "src"], [2, "margin", "0", "text-align", "center", "width", "100%"], ["title", "\u6309~\u952E\u53EF\u5FEB\u901F\u9009\u62E9", 1, "audit-picture-item", "flex-row", 2, "cursor", "pointer", 3, "ngClass", "click"], [1, "audit-picture-item-photo", 2, "flex-basis", "auto"], [2, "width", "auto", "height", "100px", "max-width", "300px", 3, "src"], [1, "audit-picture-item-text", "flex-row"], [1, "audit-picture-item-text", "flex-row", "classId", 2, "display", "none"], [1, "btn", "btn-remove", "m-r", 3, "click"], [1, "btn", 3, "click"], [1, "btn", "btn-remove", "m-r"], [1, "btn"]], template: function DataVerifyComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);

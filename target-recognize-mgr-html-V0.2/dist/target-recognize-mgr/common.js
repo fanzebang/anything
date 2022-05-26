@@ -60,6 +60,19 @@ __webpack_require__.r(__webpack_exports__);
 
 class OssPathPipe {
     transform(tiem) {
+        var bucketName = tiem.bucketName;
+        var itemKey;
+        switch (bucketName) {
+            case "sample-resource":
+                itemKey = "sampleResourcePath";
+                break;
+            case "target-recognize":
+                itemKey = "targetRecognizePath";
+                break;
+            default:
+                itemKey = "sampleResourcePath";
+                break;
+        }
         // .ossKey
         // if(tiem.ossKey){
         //   var xhr = new XMLHttpRequest()
@@ -77,7 +90,7 @@ class OssPathPipe {
         // }else{
         //   return localStorage.getItem('sampleResourcePath') + '/' + tiem;
         // }
-        return localStorage.getItem('sampleResourcePath') + '/' + tiem;
+        return localStorage.getItem(itemKey) + '/' + tiem.ossKey;
     }
 }
 OssPathPipe.ɵfac = function OssPathPipe_Factory(t) { return new (t || OssPathPipe)(); };
@@ -155,8 +168,22 @@ class MarkedRectImagePipe {
             const dataURL = tempCanvasElm.toDataURL('image/jpeg');
             subject.next(dataURL);
         };
+        console.log(sampleFile);
+        var itemKey;
+        switch (sampleFile.bucketName) {
+            case "sample-resource":
+                itemKey = "sampleResourcePath";
+                break;
+            case "target-recognize":
+                itemKey = "targetRecognizePath";
+                break;
+            default:
+                itemKey = "sampleResourcePath";
+                break;
+        }
         image.crossOrigin = 'anonymous';
-        image.src = localStorage.getItem('sampleResourcePath') + `/${sampleFile.ossKey}`;
+        // image.src = localStorage.getItem('sampleResourcePath')+`/${sampleFile.ossKey}`;
+        image.src = localStorage.getItem(itemKey) + `/${sampleFile.ossKey}`;
         return subject.asObservable();
     }
 }

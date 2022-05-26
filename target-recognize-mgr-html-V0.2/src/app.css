@@ -180,3 +180,7 @@ html {
 .btn-remove {
   background-color: #c04444;
 }
+
+.dropdown-style ::-webkit-scrollbar-track {
+  background: transparent;
+  }

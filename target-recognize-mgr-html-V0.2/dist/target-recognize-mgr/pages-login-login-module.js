@@ -1153,18 +1153,14 @@ class LoginComponent {
                             jwt = jwt.substring(1, jwt.length - 1);
                             var sampleResourcePath = JSON.stringify(str.sampleResourcePath);
                             sampleResourcePath = sampleResourcePath.substring(1, sampleResourcePath.length - 1);
+                            var targetRecognizePath = JSON.stringify(str.targetRecognizePath);
+                            targetRecognizePath = targetRecognizePath.substring(1, targetRecognizePath.length - 1);
                             localStorage.setItem('Bearer', jwt);
                             localStorage.setItem('sampleResourcePath', sampleResourcePath);
+                            localStorage.setItem('targetRecognizePath', targetRecognizePath);
                             this.store.dispatch(new _state_login_action__WEBPACK_IMPORTED_MODULE_7__["LoginAction"](jwt)).subscribe(() => {
                                 this.router.navigate(['/console/data-manage']);
                             });
-                            // var data=JSON.stringify(loginResult.data);
-                            // var str=JSON.parse(data);
-                            // localStorage.setItem('Bearer', str);
-                            // localStorage.setItem('sampleResourcePath','http://microismile.cn:9000/sample-resource');
-                            // this.store.dispatch(new LoginAction(str)).subscribe(() => {
-                            //   this.router.navigate(['/console/data-manage']);
-                            // });
                         }
                         else {
                             this.errMsg = loginResult.message;

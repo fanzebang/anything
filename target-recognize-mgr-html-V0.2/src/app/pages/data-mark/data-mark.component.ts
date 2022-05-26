@@ -336,8 +336,11 @@ loadSy () {
 
 }
 
+aiLableStatus = false;
+
 drawFileInCanvas(allotFile: AllotFile) {
   $("#aiLabel").empty()
+
   this.setImgSizeInfo ={
     isBigImg : false,
     src : "assets/images/icon06.png",
@@ -347,14 +350,29 @@ this.listenTime = new Date();
 this.drawingRects = []
  var that = this
  var drawingStyle;
- var imgSrc:any = localStorage.getItem('sampleResourcePath')+`/${allotFile.file.ossKey}`;
- if(localStorage.getItem('sampleResourcePath').split("/")[3] != allotFile.file.bucketName){imgSrc=`${localStorage.getItem('sampleResourcePath').split("/")[0]}//${localStorage.getItem('sampleResourcePath').split("/")[2]}/${allotFile.file.bucketName}/${allotFile.file.ossKey}`}
+
+ var itemKey;
+ 
+ switch(allotFile.file.bucketName){
+  case "sample-resource":
+    itemKey = "sampleResourcePath"
+  break;
+  case "target-recognize":
+    itemKey = "targetRecognizePath"
+  break;
+  default:
+    itemKey = "sampleResourcePath"
+    break;
+}
+
+ var imgSrc:any = localStorage.getItem(itemKey)+`/${allotFile.file.ossKey}`;
+//  if(localStorage.getItem('sampleResourcePath').split("/")[3] != allotFile.file.bucketName){
+//    imgSrc=
+//    `${localStorage.getItem('sampleResourcePath').split("/")[0]}//${localStorage.getItem('sampleResourcePath').split("/")[2]}/${allotFile.file.bucketName}/${allotFile.file.ossKey}`}
  var img = new Image();
   img.src = imgSrc;
 
 if (img.complete){
-
-
  const imgWidth =  img.width ;
  const imgHeight =  img.height ;
  this.gMapArr= new AILabel.Map(`aiLabel`,{

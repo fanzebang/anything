@@ -33,7 +33,7 @@
     <ng-container *ngIf="!isOperateButton">
         <div class="picture-item leaf-picture-item">
             <div class="picture-box" *ngFor="let item of secondaryData;index as idx;">
-                <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)">
+                <img class="picture-m" [src]="item | ossPath" alt="图片" (click)="amplify(item.id)">
                 <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
 
 
@@ -65,7 +65,7 @@
                 </nz-checkbox-group>
              
                 
-                <img class="picture-m" [src]="item.ossKey | ossPath" alt="图片" (click)="amplify(item.id)" title="{{item.markStatusText}}">
+                <img class="picture-m" [src]="item | ossPath" alt="图片" (click)="amplify(item.id)" title="{{item.markStatusText}}">
                 <img *ngIf="item.sampleStatus===1" class="picture-mark" src="assets/images/lock.png" alt="问题图片">
 
                 <i nz-icon nzType="clock-circle" nzTheme="fill" style="color: rgb(19, 111, 182);position: absolute;bottom: 0;right: 0;" *ngIf="item.markStatus == 0"></i>

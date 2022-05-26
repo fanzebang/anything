@@ -80,6 +80,7 @@ export class ProgressDto {
 }
 
 export class DataTrain {
+  prCurve:String;
   deployModelUrls:any;
   leftTableData:any;
   id: number;

@@ -214,7 +214,13 @@ margin: 50px 5%;
         <div class="train-btns" style="position:relative">
 
           <ng-container *ngIf="flag===1">
-            <nz-select [(ngModel)]="selectData" (nzOpenChange)="nzOpenChange($event)"  style="position: absolute;left:0;" class="select" (ngModelChange)="ngModelChange()">
+            <nz-select [(ngModel)]="selectData" 
+            (nzOpenChange)="nzOpenChange($event)" 
+             style="position: absolute;left:0;" 
+             class="select"
+              (ngModelChange)="ngModelChange()"
+              nzDropdownClassName="dropdown-style"
+              >
               <nz-option  *ngFor="let item of selectList" [nzValue]="item" [nzLabel]="item"></nz-option>
             </nz-select>
           </ng-container>
@@ -296,6 +302,12 @@ margin: 50px 5%;
            </nz-progress>
         </div>
       </div>
+  
+      <div class="train-classifies flex-column" *ngIf="status == 'STATUS' || status == 'END'">
+        <div class="train-title">精度曲线</div>
+        <div class="lineCharts2" id="lineCharts2" #lineCharts2 style="height: 100%;">
+        </div>
+      </div>
 
       <div class="train-images flex-column">
         <div class="train-title">详细信息</div>
@@ -335,6 +347,12 @@ margin: 50px 5%;
             <span class="detail-info-param">任务方式</span>
             <span class="detail-info-value">{{ dataTrain?.taskMode | trainTaskMode}}</span>
           </div>
+
+          <div class="detail-info-type flex-row" style="color: red;">
+            <span class="detail-info-param">学习率</span>
+            <span class="detail-info-value">{{ dataTrain?.studyRate}}</span>
+          </div>
+
         </div>
 
         <button class="btn train-btn-edit" (click)="addTask(dataTrain.id)">编辑</button>

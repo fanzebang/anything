@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit,ViewChild,ElementRef} from '@angular/core';
 import {NzMessageService, NzModalService,NzUploadChangeParam} from 'ng-zorro-antd';
 import {AddTrainingComponent} from './add-training.component';
 import {HttpClient, HttpParams} from '@angular/common/http';
@@ -23,7 +23,13 @@ declare var ecStat:any
   templateUrl: './data-training.component.html',
   styleUrls: ['./data-training.component.less', './train.less']
 })
+
+
 export class DataTrainingComponent implements OnInit {
+
+
+
+
   showCompare = false;
   tabIndex = 0;
   flag = 0;
@@ -42,6 +48,7 @@ export class DataTrainingComponent implements OnInit {
   rightComponent = false;
   recommend:String;
   leftTableData1:any=[];
+  
   // listOfData = [{
   //   taskName: 'Minie Ford',
   //   taskPattern: '自动',
@@ -117,18 +124,7 @@ export class DataTrainingComponent implements OnInit {
     this.loadTraining();
   }
 
-  // addTask() {
-  //   this.nzModal.create({
-  //     nzTitle: '创建任务',
-  //     nzContent: AddTrainingComponent,
-  //     nzOkText: '提交请求',
-  //     nzOnOk: (addComponent: AddTrainingComponent) => {
-  //       addComponent.submitForm();
-  //       return false;
-  //     }
-  //   });
-  // }
-
+  
   startInterval(){
     this.intervalLoadTraining =  setInterval(()=>{
 
@@ -138,8 +134,9 @@ export class DataTrainingComponent implements OnInit {
         this.loadTraining();
       }
      
+      if(this.dataTrain && (this.status == "STATUS" || this.status == "END" )) this.tableClick(this.dataTrain.id)
 
-    },1000*30)
+    },1000*2)
   }
 
   stopInterval(){
@@ -316,15 +313,7 @@ export class DataTrainingComponent implements OnInit {
       this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
         if (HttpResult.succeed(result.code)) {
           this.listOfData = result.data.records;
-        // if(this.selectData == "全部") {
-        //   this.listOfData = result.data.records;
-        //   this.dataTotal = result.data.total;
-        //   this.pageIndex = result.data.current;
-        //   if(this.status != 'LINE_UP' && this.status != 'STATUS' ){
-        //       this.loadSelectData(this.listOfData);
-        //   }
-        //     this.listOfData2 = this.listOfData 
-        //   }
+
         let params = new HttpParams().append('status', 'END');
         this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
           if (HttpResult.succeed(result.code)) {
@@ -337,7 +326,9 @@ export class DataTrainingComponent implements OnInit {
             this.pageIndex = result.data.current;
               this.listOfData2 = this.listOfData 
             }
-            console.log(this.listOfData)
+
+            if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
+
           }
         });
           
@@ -381,7 +372,9 @@ export class DataTrainingComponent implements OnInit {
           }
             this.listOfData2 = this.listOfData 
           }
-          
+
+          if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
+
         }
       });
       
@@ -491,9 +484,11 @@ export class DataTrainingComponent implements OnInit {
   }
 
   changeStatus(flag: number) {
-  
+    this.rightComponent = false;
     this.flag = flag;
     this.compareDisplay= false 
+    this.dataTrain = null;
+  
     if(flag ==0){
       this.status = 'STATUS';
       console.log('点击进行中');
@@ -514,13 +509,17 @@ export class DataTrainingComponent implements OnInit {
       this.selectData = "全部"
       this.loadTraining();
     }
+
+ 
+
+
   }
 
 
  
   ngModelChange(){
    
- 
+    this.dataTrain = null;
     this.selectData  == "全部"? this.compareDisplay = false: this.compareDisplay = true
     this.listOfData1 = [];
 
@@ -540,6 +539,8 @@ export class DataTrainingComponent implements OnInit {
       this.listOfData = this.listOfData2
 
     }
+
+    if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
   
   }
 
@@ -573,6 +574,29 @@ export class DataTrainingComponent implements OnInit {
         this.dataTrain = this.listOfData[i];
       }
     }
+    var prCurve;
+ if( this.dataTrain.prCurve) prCurve = this.dataTrain.prCurve.split(" ") 
+    var aaa:any = [];
+    var xdata:any = [];
+    var ydata:any = [];
+    var echartsData = []
+    $.each(prCurve,function(i,n){
+      aaa.push(parseFloat(n.trim()))
+    })
+    $.each(aaa,function(i,n){
+        if(i%2){
+          ydata.push(n)
+        }else{
+            xdata.push(n)
+        }
+    })
+    $.each(xdata,function(i,n){
+      echartsData.push([n,ydata[i]])
+    })
+    if (this.status == "STATUS" || this.status == "END") {
+      this.initModeLineCharts2(echartsData)
+    } 
+
   }
 
   addTask(id: number) {
@@ -646,12 +670,12 @@ listData:any
           echartsData.push([n,ydata[i]])
 
         })
-
-
         that.initModeLineCharts(echartsData)
-        that.jdcurver = JSON.parse(result.valErrorSample)
- 
-       
+        var imgArr = JSON.parse(result.valErrorSample)      
+        for (let index = 0; index < imgArr.length; index++) {
+          const element = imgArr[index];
+          that.jdcurver.push(element.replace(",",""))
+        }
       })
     },50)
    
@@ -1045,6 +1069,131 @@ var option = {
 
   }
 
+
+
+  initModeLineCharts2(data:any){
+
+  
+    
+    let data1 =  data.map(x=>{
+       return x+""
+     })
+        data1 = data1.map(x=>{
+          
+       return x.split(",")
+      
+      })
+  
+    
+  
+      echarts.registerTransform(ecStat.transform.regression);
+  
+      var option = {
+        dataset: [
+          {
+            source: data1
+          },
+          {
+            transform: {
+              type: 'ecStat:regression',
+              config: {
+                method: 'exponential',
+                // 'end' by default
+                // formulaOn: 'start'
+              }
+            }
+          }
+          
+        ],
+        grid:{
+          bottom:50,
+          top:40,
+        },
+         title: {
+          text: '模型精度曲线',
+          textStyle: {
+            color: "#fff", // 主标题文字的颜色。
+            fontStyle: "normal", // 主标题文字字体的风格。 'normal'  'italic'  'oblique'
+            fontWeight: "normal", // 主标题文字字体的粗细。 'normal' 'bold'  'bolder'  'lighter' 500|600
+            fontFamily: "sans-serif", // 主标题文字的字体系列。
+            fontSize: 15, // 字体大小
+          },
+          textAlign: "auto", //水平对齐'auto'、'left'、'right'、'center'
+          textVerticalAlign: "top", // 垂直对齐  'auto'、'top'、'bottom'、'middle'
+          left:'35%', // 距离 left top right bottom
+          top:'10'
+        },
+        tooltip: {
+          // trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label:{
+              color:"rgba(14, 24, 142, 1)"
+            }
+          }
+        },
+        xAxis: {
+            name:'召回率',
+            nameLocation: "middle",
+            nameTextStyle: {
+                    fontSize: 14,//正常是不用添加
+                    padding: [5, 0, 0, 250] 
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed'
+            }
+          },
+          axisLine:{
+            symbol:['none','arrow'],
+            lineStyle:{
+              color:'#fff'
+            }
+          }
+        },
+        yAxis: {
+          name:'准确率',
+            
+          nameLocation: "end",
+          
+          nameTextStyle: {
+                  fontSize: 14,//正常是不用添加
+            },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed',
+             
+            }
+          },
+          axisLine:{
+            symbol:['none','arrow'],
+            lineStyle:{
+              color:'#fff'
+            }
+          },
+        },
+        series: [
+          {
+            name: 'line',
+            type: 'line',
+            smooth: true,
+            datasetIndex: 0,
+            symbolSize:3,
+            // symbol: 'circle',
+            // label: { show: true, fontSize: 16 },
+            labelLayout: { dx: -20 },
+            encode: { label: 2, tooltip: 1 }
+          }
+        ]
+      };
+
+      setTimeout(() => {
+        var lineChartsDom:any = document.getElementById("lineCharts2")
+        var lineChart:any =  echarts.init(lineChartsDom)
+        lineChart.setOption(option);
+      }, 100);
+    
+    }
 
 
   initModeLineCharts(data:any){

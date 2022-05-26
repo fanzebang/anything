@@ -314,14 +314,6 @@ export class AddTrainingComponent implements OnInit {
 
         // 需要回填树形数据
         const taskSampleType: string[] = this.dataTrain.taskSampleType.split(',');
-        // this.validateForm.patchValue({
-        //   taskName: this.dataTrain.taskName,
-        //   taskPattern: this.dataTrain.taskPattern,
-        //   normModel: this.dataTrain.normModel,
-        //   taskMode: this.dataTrain.taskMode,
-        //   sampleCategory: taskSampleType
-        // });
-
         taskSampleType.forEach(sampleId => {
           this.checkTreePath(sampleId, []);
         });

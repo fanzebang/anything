@@ -8,6 +8,22 @@ declare var Tiff:any;
 @Pipe({name: 'ossPath'})
 export class OssPathPipe implements PipeTransform {
   transform(tiem: any): string {
+
+    var bucketName = tiem.bucketName
+    var itemKey;
+    switch(bucketName){
+      case "sample-resource":
+        itemKey = "sampleResourcePath"
+      break;
+      case "target-recognize":
+        itemKey = "targetRecognizePath"
+      break;
+      default:
+        itemKey = "sampleResourcePath"
+        break;
+    }
+
+
     // .ossKey
 
     // if(tiem.ossKey){
@@ -32,7 +48,7 @@ export class OssPathPipe implements PipeTransform {
     // }
 
 
-    return localStorage.getItem('sampleResourcePath') + '/' + tiem;
+    return localStorage.getItem(itemKey) + '/' + tiem.ossKey;
   
   }
 }
@@ -100,9 +116,26 @@ export class MarkedRectImagePipe implements PipeTransform {
       subject.next(dataURL);
     };
   
-    image.crossOrigin = 'anonymous';
-    image.src = localStorage.getItem('sampleResourcePath')+`/${sampleFile.ossKey}`;
+    console.log(sampleFile)
 
+    var itemKey;
+    switch(sampleFile.bucketName){
+     case "sample-resource":
+       itemKey = "sampleResourcePath"
+     break;
+     case "target-recognize":
+       itemKey = "targetRecognizePath"
+     break;
+     default:
+       itemKey = "sampleResourcePath"
+       break;
+   }
+   
+  
+
+    image.crossOrigin = 'anonymous';
+    // image.src = localStorage.getItem('sampleResourcePath')+`/${sampleFile.ossKey}`;
+    image.src= localStorage.getItem(itemKey)+`/${sampleFile.ossKey}`;
     return subject.asObservable();
   }
 }

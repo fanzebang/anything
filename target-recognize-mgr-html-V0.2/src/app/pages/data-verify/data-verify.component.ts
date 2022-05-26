@@ -68,6 +68,7 @@ export class DataVerifyComponent implements OnInit {
 
   keyboardVerifySubscription2:any;
   singleTarget:boolean = false;
+  toDown:boolean = true;
   private listenKeyboard2() {
     this.keyboardVerifySubscription2 = fromEvent(window, 'keydown').subscribe((event: any) => {
       if(event.keyCode == 192){
@@ -84,18 +85,29 @@ export class DataVerifyComponent implements OnInit {
                   featuresLength++
                 }
             }
-            if(this.selectClassIndex1-1>=0){
-              this.changeClassIndex(this.selectClassIndex1-1)
-            }else if(this.selectClassIndex1+1<featuresLength){
+        
+            if(this.selectClassIndex1+1 == featuresLength) this.toDown = false
+            if(this.selectClassIndex1 == 0) this.toDown = true
+            var picturesDom =  document.querySelector(".audit-pictures")
+            if( this.toDown){
+
               this.changeClassIndex(this.selectClassIndex1+1)
+
+
+            }else{
+
+              this.changeClassIndex(this.selectClassIndex1-1)
+           
+
             }
+
+            picturesDom.scrollTop = (picturesDom.scrollHeight-400)*((this.selectClassIndex1+1)/featuresLength)
             return false
           }
 
       }
     });
   }
-
 
 
   ngOnInit(): void {
@@ -223,14 +235,31 @@ export class DataVerifyComponent implements OnInit {
 
     var that = this
     $("#verifyLabel").empty();
+    $("#verifyLabel").append('<nz-spin nzSimple  style="text-align: center;"></nz-spin>')
     var str = $("#verifyLabel").css("width")
     var str1 = $("#verifyLabel").css("height")
     var zoom = str.match(/\d+(\.\d+)?/g)[0]*2
     var zoomH = str1.match(/\d+(\.\d+)?/g)[0]*2
         let coordinateData = JSON.parse(Imgdata.labelMessage);
         let ossKey:String = Imgdata.ossKey
-        let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey
+        // let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey
+        var itemKey;
+        switch(Imgdata.bucketName){
+         case "sample-resource":
+           itemKey = "sampleResourcePath"
+         break;
+         case "target-recognize":
+           itemKey = "targetRecognizePath"
+         break;
+         default:
+           itemKey = "sampleResourcePath"
+           break;
+       }
+      
+        var imgUrl:any = localStorage.getItem(itemKey)+'/' + ossKey;
+
         let text;
+
         try{
           text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length-2]
         }catch(e){
@@ -434,6 +463,7 @@ export class DataVerifyComponent implements OnInit {
           });
         }
       }
+      console.log(this.markedRects)
       if( this.keyboardVerifySubscription )  this.keyboardVerifySubscription.unsubscribe();
   }
 
@@ -467,9 +497,6 @@ export class DataVerifyComponent implements OnInit {
           }
 
           // if(null == this.currentSampleFile){
-
-           
-
           // }
   
           this.search(false)
