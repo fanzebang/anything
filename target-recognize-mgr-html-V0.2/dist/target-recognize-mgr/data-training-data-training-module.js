@@ -975,7 +975,7 @@ function DataTrainingComponent_tr_43_td_19_Template(rf, ctx) { if (rf & 1) {
 function DataTrainingComponent_tr_43_Template(rf, ctx) { if (rf & 1) {
     const _r62 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "tr", 90);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function DataTrainingComponent_tr_43_Template_tr_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r62); const data_r51 = ctx.$implicit; const ctx_r61 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r61.tableClick(data_r51.id); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function DataTrainingComponent_tr_43_Template_tr_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r62); const data_r51 = ctx.$implicit; const ctx_r61 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r61.tableClick(data_r51.id, "handClick"); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "td", 91);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("nzCheckedChange", function DataTrainingComponent_tr_43_Template_td_nzCheckedChange_1_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r62); const data_r51 = ctx.$implicit; const ctx_r63 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return (ctx_r63.mapOfCheckedId[data_r51.id] = $event); })("nzCheckedChange", function DataTrainingComponent_tr_43_Template_td_nzCheckedChange_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r62); const ids_r52 = ctx.index; const ctx_r64 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r64.refreshStatus(ids_r52); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -1218,6 +1218,10 @@ class DataTrainingComponent {
         this.selectList = ["全部"];
         this.selectData = "全部";
         this.comparingDataTrainList = [];
+        this.Training1Datax = [];
+        this.Training1Datay = [];
+        this.now = new Date();
+        this.oneDay = 24 * 3600 * 1000;
         this.tableData = [];
         this.isVisible2 = false;
     }
@@ -1241,6 +1245,9 @@ class DataTrainingComponent {
     }
     ngOnInit() {
         this.loadTraining();
+        window.onresize = () => {
+            this.lineChart2.resize();
+        };
     }
     startInterval() {
         this.intervalLoadTraining = setInterval(() => {
@@ -1251,7 +1258,7 @@ class DataTrainingComponent {
                 this.loadTraining();
             }
             if (this.dataTrain && (this.status == "STATUS" || this.status == "END"))
-                this.tableClick(this.dataTrain.id);
+                this.tableClick(this.dataTrain.id, 'autoClick');
         }, 1000 * 2);
     }
     stopInterval() {
@@ -1417,7 +1424,7 @@ class DataTrainingComponent {
                             this.listOfData2 = this.listOfData;
                         }
                         if (this.listOfData.length > 0 && !this.dataTrain)
-                            this.tableClick(this.listOfData[0].id);
+                            this.tableClick(this.listOfData[0].id, 'handClick');
                     }
                 });
             }
@@ -1448,7 +1455,7 @@ class DataTrainingComponent {
                         this.listOfData2 = this.listOfData;
                     }
                     if (this.listOfData.length > 0 && !this.dataTrain)
-                        this.tableClick(this.listOfData[0].id);
+                        this.tableClick(this.listOfData[0].id, "handClick");
                 }
             });
         }
@@ -1588,9 +1595,30 @@ class DataTrainingComponent {
             this.listOfData = this.listOfData2;
         }
         if (this.listOfData.length > 0 && !this.dataTrain)
-            this.tableClick(this.listOfData[0].id);
+            this.tableClick(this.listOfData[0].id, "handClick");
     }
-    tableClick(id) {
+    tableClick(id, type) {
+        var now = new Date();
+        var timeName = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}` + "";
+        let value = Math.random() * 1000;
+        value = value + Math.random() * 21 - 10;
+        if (type == "handClick") {
+            this.lineChart2 = null;
+            this.Training1Datax = [];
+            this.Training1Datay = [];
+        }
+        else {
+            if (this.Training1Datax.length > 60) {
+                this.Training1Datax.shift();
+                this.Training1Datay.shift();
+                this.Training1Datax.push(timeName);
+                this.Training1Datay.push(this.dataTrain.lossRate);
+            }
+            else {
+                this.Training1Datax.push(timeName);
+                this.Training1Datay.push(this.dataTrain.lossRate);
+            }
+        }
         this.rightComponent = true;
         for (let i = 0; i < this.listOfData.length; i++) {
             if (this.listOfData[i].id === id) {
@@ -1640,10 +1668,8 @@ class DataTrainingComponent {
             echartsData.push([n, ydata[i]]);
         });
         if (this.status == "STATUS" || this.status == "END") {
-            this.initModeLineCharts2(echartsData);
+            this.initModeLineCharts2(this.Training1Datax, this.Training1Datay);
         }
-        console.log(this.dataTrain);
-        console.log(this.dataTrain.taskProgress);
     }
     addTask(id) {
         const modal = this.nzModal.create({
@@ -1716,48 +1742,6 @@ class DataTrainingComponent {
                 }
             });
         }, 50);
-        // // console.log('data', data);
-        // this.createTestTask(data.id);
-        // // this.nzMessage.warning('正在创建测试任务.........');
-        // event.stopPropagation();
-        // this.nzModal.create({
-        //   nzTitle: '模型精度',
-        //   nzContent: ModelPrecisionComponent,
-        //   nzOkText: '加入对比',
-        //   nzComponentParams: {
-        //     'trainId': data.id,
-        //   },
-        //   nzOnOk: (modelPrecisionComponent: ModelPrecisionComponent) => {
-        //     // 判断是否重复添加
-        //     let duplicated = false;
-        //     for (let i = 0; i < this.comparingDataTrainList.length; i++) {
-        //       if (this.comparingDataTrainList[i].id === modelPrecisionComponent.dataTrain.id) {
-        //         duplicated = true;
-        //         break;
-        //       }
-        //     }
-        //     if (duplicated) {
-        //       this.nzMessage.error('请勿重复添加');
-        //       return false;
-        //     } else if (this.comparingDataTrainList.length < 3) {
-        //       let compareName: string;
-        //       if (this.comparingDataTrainList.length == 0) {
-        //         compareName = '模型一';
-        //       } else if (this.comparingDataTrainList.length == 1) {
-        //         compareName = '模型二';
-        //       } else if (this.comparingDataTrainList.length == 2) {
-        //         compareName = '模型三';
-        //       }
-        //       modelPrecisionComponent.dataTrain.compareName = compareName;
-        //       this.comparingDataTrainList.push(modelPrecisionComponent.dataTrain);
-        //       this.showCompare = true;
-        //     } else {
-        //       this.nzMessage.error('最多对比3个模型');
-        //       return false;
-        //     }
-        //   },
-        //   nzCancelText: '关闭'
-        // });
     }
     //对比
     startCompare() {
@@ -2046,34 +2030,14 @@ class DataTrainingComponent {
             lineChart.setOption(option);
         }, 10);
     }
-    initModeLineCharts2(data) {
-        let data1 = data.map(x => {
-            return x + "";
-        });
-        data1 = data1.map(x => {
-            return x.split(",");
-        });
-        echarts.registerTransform(ecStat.transform.regression);
+    initModeLineCharts2(datax, datay) {
         var option = {
-            dataset: [
-                {
-                    source: data1
-                },
-                {
-                    transform: {
-                        type: 'ecStat:regression',
-                        config: {
-                            method: 'exponential',
-                        }
-                    }
-                }
-            ],
             grid: {
                 bottom: 50,
                 top: 40,
             },
             title: {
-                text: '模型精度曲线',
+                text: 'loss曲线',
                 textStyle: {
                     color: "#fff",
                     fontStyle: "normal",
@@ -2087,25 +2051,26 @@ class DataTrainingComponent {
                 top: '10'
             },
             tooltip: {
-                // trigger: 'axis',
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    return (params.axisValue + "/" + params.data);
+                },
                 axisPointer: {
-                    type: 'cross',
-                    label: {
-                        color: "rgba(14, 24, 142, 1)"
-                    }
+                    animation: false
                 }
             },
             xAxis: {
-                name: '召回率',
+                name: '时间',
+                type: 'category',
+                data: datax,
                 nameLocation: "middle",
                 nameTextStyle: {
                     fontSize: 14,
                     padding: [5, 0, 0, 250]
                 },
                 splitLine: {
-                    lineStyle: {
-                        type: 'dashed'
-                    }
+                    show: false
                 },
                 axisLine: {
                     symbol: ['none', 'arrow'],
@@ -2115,15 +2080,14 @@ class DataTrainingComponent {
                 }
             },
             yAxis: {
-                name: '准确率',
+                name: 'loss',
+                type: 'value',
                 nameLocation: "end",
                 nameTextStyle: {
                     fontSize: 14,
                 },
                 splitLine: {
-                    lineStyle: {
-                        type: 'dashed',
-                    }
+                    show: false
                 },
                 axisLine: {
                     symbol: ['none', 'arrow'],
@@ -2136,20 +2100,29 @@ class DataTrainingComponent {
                 {
                     name: 'line',
                     type: 'line',
+                    showSymbol: false,
+                    data: datay,
                     smooth: true,
-                    datasetIndex: 0,
-                    symbolSize: 3,
-                    // symbol: 'circle',
-                    // label: { show: true, fontSize: 16 },
-                    labelLayout: { dx: -20 },
-                    encode: { label: 2, tooltip: 1 }
+                    itemStyle: {
+                        normal: {
+                            color: '#0c6cc3',
+                            lineStyle: {
+                                color: '#0c6cc3' //改变折线颜色
+                            }
+                        }
+                    }
                 }
             ]
         };
         setTimeout(() => {
-            var lineChartsDom = document.getElementById("lineCharts2");
-            var lineChart = echarts.init(lineChartsDom);
-            lineChart.setOption(option);
+            if (!this.lineChart2) {
+                this.lineChartsDom = document.getElementById("lineCharts2");
+                this.lineChart2 = echarts.init(this.lineChartsDom);
+                this.lineChart2.setOption(option);
+            }
+            else {
+                this.lineChart2.setOption(option);
+            }
         }, 100);
     }
     initModeLineCharts(data) {

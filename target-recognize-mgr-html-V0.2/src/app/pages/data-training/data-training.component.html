@@ -263,7 +263,7 @@ margin: 50px 5%;
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let data of listOfData;index as ids" (click)="tableClick(data.id)" [class.current-row]="dataTrain?.id === data.id">
+            <tr *ngFor="let data of listOfData;index as ids" (click)="tableClick(data.id,'handClick')" [class.current-row]="dataTrain?.id === data.id">
               <td nzShowCheckbox
                   [(nzChecked)]="mapOfCheckedId[data.id]"
                   (nzCheckedChange)="refreshStatus(ids)"></td>

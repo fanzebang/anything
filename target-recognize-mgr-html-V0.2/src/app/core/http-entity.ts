@@ -80,6 +80,7 @@ export class ProgressDto {
 }
 
 export class DataTrain {
+  lossRate:string;
   prCurve:String;
   deployModelUrls:any;
   leftTableData:any;

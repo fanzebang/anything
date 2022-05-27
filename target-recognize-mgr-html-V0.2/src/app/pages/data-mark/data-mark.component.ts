@@ -352,7 +352,7 @@ this.drawingRects = []
  var drawingStyle;
 
  var itemKey;
- 
+
  switch(allotFile.file.bucketName){
   case "sample-resource":
     itemKey = "sampleResourcePath"
@@ -765,6 +765,7 @@ removeImg(){
       this.redraw();
     }
   }
+
   selectAllocFile(index:any){
     this.currentIndex = index
     // this.currentIndex = this.currentIndex + 1;
@@ -813,11 +814,20 @@ removeImg(){
     this.dataMarkService.creatNzModal(this,idx,fileSample)
   }
 
+
+  autoMarkRequest(){
+    return this.http.post(`${environment.API_URL}/v1/mark-detect`, {
+      "ossKey": this.currentAllotFile.file.ossKey
+    })
+  }
+
   autoMark() {
+
     if (this.currentAllotFile) {
-      this.http.post(`${environment.API_URL}/v1/mark-detect`, {
-        "ossKey": this.currentAllotFile.file.ossKey
-      }).subscribe((result: HttpResult<any>) => {
+
+  
+
+      this.autoMarkRequest().subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
           const marks = result.data;
           const rects = []
@@ -825,7 +835,6 @@ removeImg(){
             this.nzMessage.error("无法识别");
           }else{
             this.nzMessage.success("识别成功");
-
             for (let i = 0; i < marks.length; i++) {
               rects.push({
                 startX: Math.floor(marks[i].markPolygon.minX * this.currentAllotFile.scaleRatio),

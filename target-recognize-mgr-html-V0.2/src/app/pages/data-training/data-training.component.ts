@@ -122,6 +122,11 @@ export class DataTrainingComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTraining();
+
+  window.onresize = () => {
+      this.lineChart2.resize();
+  };
+
   }
 
   
@@ -134,7 +139,7 @@ export class DataTrainingComponent implements OnInit {
         this.loadTraining();
       }
      
-      if(this.dataTrain && (this.status == "STATUS" || this.status == "END" )) this.tableClick(this.dataTrain.id)
+      if(this.dataTrain && (this.status == "STATUS" || this.status == "END" )) this.tableClick(this.dataTrain.id,'autoClick')
 
     },1000*2)
   }
@@ -304,16 +309,13 @@ export class DataTrainingComponent implements OnInit {
     }
   }
 
+
+
   loadTraining1() {
-
-
       let params = new HttpParams().append('status', 'STATUS');
-
-  
       this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
         if (HttpResult.succeed(result.code)) {
-          this.listOfData = result.data.records;
-
+        this.listOfData = result.data.records;
         let params = new HttpParams().append('status', 'END');
         this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
           if (HttpResult.succeed(result.code)) {
@@ -327,7 +329,7 @@ export class DataTrainingComponent implements OnInit {
               this.listOfData2 = this.listOfData 
             }
 
-            if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
+            if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,'handClick')
 
           }
         });
@@ -373,7 +375,7 @@ export class DataTrainingComponent implements OnInit {
             this.listOfData2 = this.listOfData 
           }
 
-          if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
+          if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
 
         }
       });
@@ -540,11 +542,37 @@ export class DataTrainingComponent implements OnInit {
 
     }
 
-    if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
+    if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
   
   }
 
-  tableClick(id: number) {
+  Training1Datax=[];
+  Training1Datay=[];
+  now = new Date();
+  oneDay = 24 * 3600 * 1000;
+  tableClick(id: number,type:string) {
+  var  now =new Date();
+  var timeName = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`+""
+  let value = Math.random() * 1000;
+  value = value + Math.random() * 21 - 10;
+
+    if(type == "handClick"){
+      this.lineChart2 = null;
+      this.Training1Datax=[];
+      this.Training1Datay=[];
+    }else{
+      if( this.Training1Datax.length>60){
+        this.Training1Datax.shift()
+        this.Training1Datay.shift()
+        this.Training1Datax.push(timeName)
+        this.Training1Datay.push(this.dataTrain.lossRate)
+      }else{
+        this.Training1Datax.push(timeName)
+        this.Training1Datay.push(this.dataTrain.lossRate)
+      
+      }
+    }
+
     this.rightComponent = true;
     for (let i = 0; i < this.listOfData.length; i++) {
       if (this.listOfData[i].id === id) {
@@ -569,7 +597,7 @@ export class DataTrainingComponent implements OnInit {
              
      } 
      var taskProgress:any = this.listOfData[i].taskProgress*1
-     taskProgress = taskProgress.toFixed(2)
+        taskProgress = taskProgress.toFixed(2)
      this.listOfData[i].taskProgress = taskProgress
         this.dataTrain = this.listOfData[i];
       }
@@ -593,11 +621,11 @@ export class DataTrainingComponent implements OnInit {
     $.each(xdata,function(i,n){
       echartsData.push([n,ydata[i]])
     })
+
     if (this.status == "STATUS" || this.status == "END") {
-      this.initModeLineCharts2(echartsData)
+      this.initModeLineCharts2(this.Training1Datax,this.Training1Datay)
     } 
-    console.log(this.dataTrain)
-    console.log(this.dataTrain.taskProgress)
+
 
 
   }
@@ -681,55 +709,7 @@ listData:any
         }
       })
     },50)
-   
-    // // console.log('data', data);
-    // this.createTestTask(data.id);
-    // // this.nzMessage.warning('正在创建测试任务.........');
-    // event.stopPropagation();
-    // this.nzModal.create({
-    //   nzTitle: '模型精度',
-    //   nzContent: ModelPrecisionComponent,
-    //   nzOkText: '加入对比',
-    //   nzComponentParams: {
-    //     'trainId': data.id,
-    //   },
-    //   nzOnOk: (modelPrecisionComponent: ModelPrecisionComponent) => {
-
-    //     // 判断是否重复添加
-    //     let duplicated = false;
-    //     for (let i = 0; i < this.comparingDataTrainList.length; i++) {
-    //       if (this.comparingDataTrainList[i].id === modelPrecisionComponent.dataTrain.id) {
-    //         duplicated = true;
-    //         break;
-    //       }
-    //     }
-
-    //     if (duplicated) {
-    //       this.nzMessage.error('请勿重复添加');
-    //       return false;
-    //     } else if (this.comparingDataTrainList.length < 3) {
-
-    //       let compareName: string;
-    //       if (this.comparingDataTrainList.length == 0) {
-    //         compareName = '模型一';
-    //       } else if (this.comparingDataTrainList.length == 1) {
-    //         compareName = '模型二';
-    //       } else if (this.comparingDataTrainList.length == 2) {
-    //         compareName = '模型三';
-    //       }
-    //       modelPrecisionComponent.dataTrain.compareName = compareName;
-
-    //       this.comparingDataTrainList.push(modelPrecisionComponent.dataTrain);
-
-    //       this.showCompare = true;
-
-    //     } else {
-    //       this.nzMessage.error('最多对比3个模型');
-    //       return false;
-    //     }
-    //   },
-    //   nzCancelText: '关闭'
-    // });
+ 
   }
 
   tableData:any = [];
@@ -864,6 +844,7 @@ listData:any
       }
     });
   }
+
   handleCancel(){
     this.isVisible = false;
   }
@@ -1074,46 +1055,14 @@ var option = {
 
 
 
-  initModeLineCharts2(data:any){
-
-  
-    
-    let data1 =  data.map(x=>{
-       return x+""
-     })
-        data1 = data1.map(x=>{
-          
-       return x.split(",")
-      
-      })
-  
-    
-  
-      echarts.registerTransform(ecStat.transform.regression);
-  
+  initModeLineCharts2(datax:any,datay){
       var option = {
-        dataset: [
-          {
-            source: data1
-          },
-          {
-            transform: {
-              type: 'ecStat:regression',
-              config: {
-                method: 'exponential',
-                // 'end' by default
-                // formulaOn: 'start'
-              }
-            }
-          }
-          
-        ],
         grid:{
           bottom:50,
           top:40,
         },
          title: {
-          text: '模型精度曲线',
+          text: 'loss曲线',
           textStyle: {
             color: "#fff", // 主标题文字的颜色。
             fontStyle: "normal", // 主标题文字字体的风格。 'normal'  'italic'  'oblique'
@@ -1127,26 +1076,28 @@ var option = {
           top:'10'
         },
         tooltip: {
-          // trigger: 'axis',
+          trigger: 'axis',
+          formatter: function (params) {
+            params = params[0];
+       
+            return ( params.axisValue +"/"+  params.data);
+          },
           axisPointer: {
-            type: 'cross',
-            label:{
-              color:"rgba(14, 24, 142, 1)"
-            }
+            animation: false
           }
         },
         xAxis: {
-            name:'召回率',
+            name:'时间',
+            type: 'category',
+            data:datax,
             nameLocation: "middle",
             nameTextStyle: {
                     fontSize: 14,//正常是不用添加
                     padding: [5, 0, 0, 250] 
           },
-          splitLine: {
-            lineStyle: {
-              type: 'dashed'
-            }
-          },
+          splitLine:{
+            　　　　show:false
+            　　},
           axisLine:{
             symbol:['none','arrow'],
             lineStyle:{
@@ -1155,19 +1106,15 @@ var option = {
           }
         },
         yAxis: {
-          name:'准确率',
-            
+          name:'loss',
+          type: 'value',
           nameLocation: "end",
-          
           nameTextStyle: {
-                  fontSize: 14,//正常是不用添加
+              fontSize: 14,//正常是不用添加
             },
-          splitLine: {
-            lineStyle: {
-              type: 'dashed',
-             
-            }
-          },
+            　splitLine:{
+              　　　　show:false
+              　　},
           axisLine:{
             symbol:['none','arrow'],
             lineStyle:{
@@ -1179,26 +1126,36 @@ var option = {
           {
             name: 'line',
             type: 'line',
+            showSymbol: false,
+            data: datay,
             smooth: true,
-            datasetIndex: 0,
-            symbolSize:3,
-            // symbol: 'circle',
-            // label: { show: true, fontSize: 16 },
-            labelLayout: { dx: -20 },
-            encode: { label: 2, tooltip: 1 }
+            itemStyle: {
+              normal: {
+                  color: '#0c6cc3', //改变折线点的颜色
+                  lineStyle: {
+                      color: '#0c6cc3' //改变折线颜色
+                  }
+              }
+          }
           }
         ]
       };
 
       setTimeout(() => {
-        var lineChartsDom:any = document.getElementById("lineCharts2")
-        var lineChart:any =  echarts.init(lineChartsDom)
-        lineChart.setOption(option);
+
+        if(!this.lineChart2) {
+          this.lineChartsDom = document.getElementById("lineCharts2")
+          this.lineChart2 =  echarts.init(this.lineChartsDom)
+          this.lineChart2.setOption(option);
+        }else{
+          this.lineChart2.setOption(option);     
+        }
       }, 100);
     
     }
 
-
+    lineChartsDom:any 
+    lineChart2:any
   initModeLineCharts(data:any){
 
     

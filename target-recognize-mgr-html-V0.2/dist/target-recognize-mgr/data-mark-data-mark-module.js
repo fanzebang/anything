@@ -802,11 +802,14 @@ class DataMarkComponent {
         this.removeKeyboard();
         this.dataMarkService.creatNzModal(this, idx, fileSample);
     }
+    autoMarkRequest() {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].API_URL}/v1/mark-detect`, {
+            "ossKey": this.currentAllotFile.file.ossKey
+        });
+    }
     autoMark() {
         if (this.currentAllotFile) {
-            this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].API_URL}/v1/mark-detect`, {
-                "ossKey": this.currentAllotFile.file.ossKey
-            }).subscribe((result) => {
+            this.autoMarkRequest().subscribe((result) => {
                 if (_core_http_entity__WEBPACK_IMPORTED_MODULE_2__["HttpResult"].succeed(result.code)) {
                     const marks = result.data;
                     const rects = [];
