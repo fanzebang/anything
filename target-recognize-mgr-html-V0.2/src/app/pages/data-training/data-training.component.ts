@@ -596,6 +596,9 @@ export class DataTrainingComponent implements OnInit {
     if (this.status == "STATUS" || this.status == "END") {
       this.initModeLineCharts2(echartsData)
     } 
+    console.log(this.dataTrain)
+    console.log(this.dataTrain.taskProgress)
+
 
   }
 

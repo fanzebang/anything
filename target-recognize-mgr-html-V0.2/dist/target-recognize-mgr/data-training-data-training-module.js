@@ -1642,6 +1642,8 @@ class DataTrainingComponent {
         if (this.status == "STATUS" || this.status == "END") {
             this.initModeLineCharts2(echartsData);
         }
+        console.log(this.dataTrain);
+        console.log(this.dataTrain.taskProgress);
     }
     addTask(id) {
         const modal = this.nzModal.create({

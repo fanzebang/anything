@@ -5687,7 +5687,20 @@ class DetailDataManageComponent {
         var that = this;
         let coordinateData = JSON.parse(Imgdata.labelMessage);
         let ossKey = Imgdata.ossKey;
-        let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey;
+        // let imgUrl = localStorage.getItem('sampleResourcePath') + '/' + ossKey
+        var itemKey;
+        switch (Imgdata.bucketName) {
+            case "sample-resource":
+                itemKey = "sampleResourcePath";
+                break;
+            case "target-recognize":
+                itemKey = "targetRecognizePath";
+                break;
+            default:
+                itemKey = "sampleResourcePath";
+                break;
+        }
+        var imgUrl = localStorage.getItem(itemKey) + `/${ossKey}`;
         let text = Imgdata.samplePath.split("/")[Imgdata.samplePath.split("/").length - 2];
         let img = new Image();
         img.src = imgUrl;

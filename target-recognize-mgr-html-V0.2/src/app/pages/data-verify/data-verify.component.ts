@@ -90,10 +90,7 @@ export class DataVerifyComponent implements OnInit {
             if(this.selectClassIndex1 == 0) this.toDown = true
             var picturesDom =  document.querySelector(".audit-pictures")
             if( this.toDown){
-
               this.changeClassIndex(this.selectClassIndex1+1)
-
-
             }else{
 
               this.changeClassIndex(this.selectClassIndex1-1)
