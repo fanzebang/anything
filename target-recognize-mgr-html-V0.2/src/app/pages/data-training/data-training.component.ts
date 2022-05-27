@@ -312,7 +312,10 @@ export class DataTrainingComponent implements OnInit {
   
       this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
         if (HttpResult.succeed(result.code)) {
-          this.listOfData = result.data.records;
+          for (let index = 0; index < result.data.records.length; index++) {
+            const element = result.data.records[index];
+            this.listOfData.push(element)
+          }
 
         let params = new HttpParams().append('status', 'END');
         this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
@@ -326,9 +329,7 @@ export class DataTrainingComponent implements OnInit {
             this.pageIndex = result.data.current;
               this.listOfData2 = this.listOfData 
             }
-
             if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id)
-
           }
         });
           
