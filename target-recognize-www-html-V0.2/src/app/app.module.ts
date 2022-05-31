@@ -56,11 +56,13 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { Home2Component } from './pages/home2/home2.component';
+import { Detect2Component } from './pages/detect2/detect2.component';
 
 @NgModule({
   declarations: [
     AppComponent, HomeComponent, DetectComponent, PersonageComponent, WarshipComponent, JetComponent, SsoComponent,
-    DragDropUploadDirective, OssPathPipe, SceneTypePipe, SafePipe, VideoCanvasComponent, SampleOssPathPipe, AdminUrlPipe,VideoInfoPipe, VideoComponent, VideoListComponent, AccordionComponent, KeyobjectComponent, LabelComponent, ChartComponent, ModelComponent, TargetComponent, Target2Component, ObjComponent, WorldComponent, KeyComponent, SenceComponent, TimeComponent, Target2LabelComponent, Target1Component, NewsComponent
+    DragDropUploadDirective, OssPathPipe, SceneTypePipe, SafePipe, VideoCanvasComponent, SampleOssPathPipe, AdminUrlPipe,VideoInfoPipe, VideoComponent, VideoListComponent, AccordionComponent, KeyobjectComponent, LabelComponent, ChartComponent, ModelComponent, TargetComponent, Target2Component, ObjComponent, WorldComponent, KeyComponent, SenceComponent, TimeComponent, Target2LabelComponent, Target1Component, NewsComponent, Home2Component, Detect2Component
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,42 @@
+
+<div class="select">
+
+    <div style="width: 100%;height:100%;background-color: rgba(0, 0, 0, .5);position: absolute;top: -50px;left: 0;z-index: 99999;" *ngIf="spin">
+        <nz-spin nzTip="Loading..." style="margin-top: 25%;">
+    
+        </nz-spin>
+    </div>
+
+
+    <div>
+        <nz-select [(ngModel)]="select1" style="min-width:50px">
+            <nz-option nzValue="通用" nzLabel="通用"></nz-option>
+            <nz-option nzValue="人物" nzLabel="人物"></nz-option>
+            <nz-option nzValue="武器" nzLabel="武器"></nz-option>
+            <nz-option nzValue="卫片" nzLabel="卫片"></nz-option>
+            <nz-option nzValue="舰船" nzLabel="舰船"></nz-option>
+            <nz-option nzValue="飞机" nzLabel="飞机"></nz-option>
+            <nz-option nzValue="坦克" nzLabel="坦克 "></nz-option>
+        </nz-select>
+    </div>
+        
+    <div>
+        <nz-select [(ngModel)]="select2"  style="min-width:50px">
+            <nz-option nzValue="高精度" nzLabel="高精度"></nz-option>
+            <nz-option nzValue="低时延" nzLabel="低时延"></nz-option>
+            <nz-option nzValue="平衡" nzLabel="平衡"></nz-option>
+            <nz-option nzValue="边缘" nzLabel="边缘"></nz-option>
+            <nz-option nzValue="终端" nzLabel="终端"></nz-option>
+        </nz-select>
+    </div>
+
+
+    <div>
+        <button nz-button nzType="primary" (click)="inputClick()">上传图片</button>
+        <input type="file" style="display: none;" id="fileInput" (change)="getFile($event)" accept="image/jpeg,image/png"/>
+    </div>
+
+</div>
+
+
+

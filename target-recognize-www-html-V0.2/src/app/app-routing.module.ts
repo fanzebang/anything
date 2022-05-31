@@ -9,6 +9,8 @@ import {TargetComponent} from "./pages/show/target/target.component";
 import {Target1Component} from "./pages/show/target1/target1.component";
 import {Target2Component} from "./pages/show/target2/target2.component";
 import { NewsComponent } from "./pages/news/news.component";
+import { Home2Component } from './pages/home2/home2.component';
+import { Detect2Component } from './pages/detect2/detect2.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,12 @@ const routes: Routes = [
   },
   {
     path: 'detect', component: DetectComponent
+  },
+  {
+    path: 'home2', component: Home2Component
+  },
+  {
+    path: 'detect2', component: Detect2Component
   },
   {
     path: '', redirectTo: 'home', pathMatch: 'full'

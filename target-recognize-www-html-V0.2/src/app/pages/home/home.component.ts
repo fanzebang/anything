@@ -890,8 +890,6 @@ let fileBig = false
           }
 
         }
-
-        // this.uploadWithVideoFiles(formData);
       if(!fileBig){
         this.videoService.sendVideoFile(fileList)
 
@@ -928,10 +926,9 @@ let fileBig = false
         }else{
 
         for(let i=0;i<fileList.length;i++){
-
           formData.append('files', fileList[i]);
-
         }
+        
         this.router.navigate(['/detect']);
           this.uploadWithFiles(formData);
         }
@@ -962,6 +959,7 @@ let fileBig = false
                  this.uploadWithFiles(formData);
 
                this.router.navigate(['/detect']);
+
               }
               return;
 
