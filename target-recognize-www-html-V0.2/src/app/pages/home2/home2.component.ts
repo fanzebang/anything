@@ -37,7 +37,8 @@ export class Home2Component implements OnInit {
     formData.append("files",files[0]);
     formData.append("algorithmType",this.select1);
     formData.append("modelType",this.select2);
-    axios.post(`${environment.API_URL}/v1/detect-api/personalDetect?algorithmType=${this.select1}&modelType=${this.select2}`,formData,{
+    // ?algorithmType=${this.select1}&modelType=${this.select2}
+    axios.post(`${environment.API_URL}/v1/detect-api/personalDetect`,formData,{
       headers: {
         'Authorization':'Bearer 123456',
         'TR-Role': 'TR-Api'

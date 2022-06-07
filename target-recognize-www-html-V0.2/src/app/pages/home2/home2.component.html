@@ -8,7 +8,7 @@
     </div>
 
 
-    <div>
+    <div style="flex: 0 0 49%;text-align: right;">
         <nz-select [(ngModel)]="select1" style="min-width:50px">
             <nz-option nzValue="通用" nzLabel="通用"></nz-option>
             <nz-option nzValue="人物" nzLabel="人物"></nz-option>
@@ -19,19 +19,17 @@
             <nz-option nzValue="坦克" nzLabel="坦克 "></nz-option>
         </nz-select>
     </div>
-        
-    <div>
+         
+    <div style="flex: 0 0 45%;text-align: left;margin-left:30px;">
         <nz-select [(ngModel)]="select2"  style="min-width:50px">
             <nz-option nzValue="高精度" nzLabel="高精度"></nz-option>
-            <nz-option nzValue="低时延" nzLabel="低时延"></nz-option>
+            <nz-option nzValue="高性能" nzLabel="高性能"></nz-option>
             <nz-option nzValue="平衡" nzLabel="平衡"></nz-option>
             <nz-option nzValue="边缘" nzLabel="边缘"></nz-option>
             <nz-option nzValue="终端" nzLabel="终端"></nz-option>
         </nz-select>
     </div>
-
-
-    <div>
+    <div style="text-align: center;width: 100%;">
         <button nz-button nzType="primary" (click)="inputClick()">上传图片</button>
         <input type="file" style="display: none;" id="fileInput" (change)="getFile($event)" accept="image/jpeg,image/png"/>
     </div>
