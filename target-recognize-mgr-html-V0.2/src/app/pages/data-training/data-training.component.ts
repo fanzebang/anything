@@ -360,8 +360,6 @@ export class DataTrainingComponent implements OnInit {
     }else{
        params = new HttpParams().append('status', this.status);
     }
-
-
     if(this.status != 'STATUS'){
       this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
         if (HttpResult.succeed(result.code)) {
@@ -921,7 +919,8 @@ var echartsData1 = []
 
       series.push(
       {
-        name: x.data.taskName+'---'+x.data.typeSourceName,
+        // name: x.data.taskName+'---'+x.data.typeSourceName,
+        name: x.data.taskName+'-',
         type: 'line',
         smooth: true,
         datasetIndex: i,
@@ -949,11 +948,16 @@ for (let i = 0; i < dataset.length; i++) {
     area += ((element1[1]*1+element2[1]*1)*(element2[0]*1-element1[0]*1))/2
   }
 
-  if(area>maxArea) maxArea = area;maxAreaIndex = i;
+  series[i].name += i;
+  if(area>maxArea) {
+    maxArea = area;
+    maxAreaIndex = i;
+  }
 
 }
 
-this.recommend = series[maxAreaIndex].name.split("---")[0];
+// this.recommend = series[maxAreaIndex].name.split("---")[0];
+this.recommend = data[maxAreaIndex].id
 series[maxAreaIndex].name += "(推荐)"
 series[maxAreaIndex].itemStyle = { 
   normal : { 
@@ -963,6 +967,7 @@ series[maxAreaIndex].itemStyle = {
   } 
   } 
 }
+console.log(series)
 var option = {
     dataset:dataset,
     legend: {
@@ -1116,6 +1121,7 @@ var option = {
               　　　　show:false
               　　},
           axisLine:{
+            show:true,
             symbol:['none','arrow'],
             lineStyle:{
               color:'#fff'

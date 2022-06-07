@@ -36,7 +36,7 @@ margin: 50px 10%;
        [nzData]="tableData" 
        [nzFrontPagination] = false 
        [nzScroll]="{x: '', y: '100px'}" 
-       style="margin-left: 20px;text-align: center;" >
+       style="margin-left: 20px;text-align: center;margin-top: -25px;" >
         <thead>
           <tr>
             <th>训练版本</th>
@@ -46,7 +46,7 @@ margin: 50px 10%;
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of basicTable.data" [ngClass]="{'recomend': data.taskName == recommend}">
+          <tr *ngFor="let data of basicTable.data" [ngClass]="{'recomend': data.id == recommend}">
             <td  nzBreakWord >{{ data.taskName }}</td>
             <td  nzBreakWord>{{ data.precision }}</td>
             <td  nzBreakWord>{{ data.lossRate }}</td>
@@ -68,11 +68,11 @@ margin: 50px 10%;
     <nz-table #basicTable1
      [nzData]="tableData"
       [nzFrontPagination] = false 
-      [nzScroll]="{ x: '', y: '500px' }" 
+      [nzScroll]="{ x: '', y: '450px' }" 
       style="margin-left: 20px;margin-top: 20px;" >
       <thead>
         <tr>
-          <th *ngFor="let item of tableData"  [ngClass]="{'recomend': item.taskName == recommend}">{{item.taskName}}</th>
+          <th *ngFor="let item of tableData"  [ngClass]="{'recomend': item.id == recommend}" style="min-width: 100px;">{{item.taskName}}</th>
         </tr>
       </thead>
       <tbody>
@@ -84,9 +84,10 @@ margin: 50px 10%;
               <!-- <div *ngFor="let item of items.leftTableData">
                   {{item}}
               </div> -->
-          <td nzBreakWord  *ngFor="let items of basicTable1.data" style="padding: 0;" [ngClass]="{'recomend': items.taskName == recommend}">
-            <div *ngFor="let item of items.leftTableData" style="border-bottom: 1px solid #15a0ff;min-height:70px;text-align: center;" >
-              <span style="display:inline-block;margin: 15% 0;">{{item}}</span>
+          <td nzBreakWord  *ngFor="let items of basicTable1.data" style="padding: 0;" [ngClass]="{'recomend': items.id == recommend}">
+            <div *ngFor="let item of items.leftTableData" style="border-bottom: 1px solid #15a0ff;min-height:70px;text-align: center;padding-top: 15%;font-size: 12px;" >
+              <!-- <span style="display:block;margin: 25% 0;">{{item}}</span> -->
+              {{item}}
             </div>
           </td>
           
@@ -244,7 +245,9 @@ margin: 50px 5%;
         <div class="flex-column">
           <nz-table class="blue-table" #rowSelectionTable nzShowSizeChanger [nzData]="listOfData"
                     [nzShowPagination]="false"
-                    [nzTotal]="dataTotal" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize">
+                    [nzTotal]="dataTotal" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+                    [nzScroll]="{ y: '800px' }"
+                    >
             <thead>
             <tr>
               <th
@@ -274,14 +277,14 @@ margin: 50px 5%;
               <td>{{ data.taskStatus | taskStatus}}</td>
               <td>{{ data.createdTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
               <td *ngIf="flag === 1">
-                <button class="btn" (click)="checkModelPrecision($event,data)">模型精度</button>
+                <button class="btn" (click)="checkModelPrecision($event,data)" style="width: 120px;">模型精度</button>
                 <!--
                 <span style="color: #FFF;background: #15a0ff;padding: 4px 8px;border-radius: 2px;cursor: pointer;"
                       (click)="checkModelPrecision($event,data)">模型精度</span>
                       -->
               </td>
               <td *ngIf="flag === 1">
-                <button class="btn" (click)="download1($event, data)">发布为</button>
+                <button class="btn" (click)="download1($event, data)" style="width: 100px;">发布为</button>
               </td>
             </tr>
             </tbody>
