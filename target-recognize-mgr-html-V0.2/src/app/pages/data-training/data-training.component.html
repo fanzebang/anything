@@ -68,11 +68,11 @@ margin: 50px 10%;
     <nz-table #basicTable1
      [nzData]="tableData"
       [nzFrontPagination] = false 
-      [nzScroll]="{ x: '', y: '450px' }" 
+      [nzScroll]="{ x: '120px', y: '470px' }" 
       style="margin-left: 20px;margin-top: 20px;" >
       <thead>
         <tr>
-          <th *ngFor="let item of tableData"  [ngClass]="{'recomend': item.id == recommend}" style="min-width: 100px;">{{item.taskName}}</th>
+          <th *ngFor="let item of tableData"  [ngClass]="{'recomend': item.id == recommend}" style="min-width: 100px;" nzWidth="100px">{{item.taskName}}</th>
         </tr>
       </thead>
       <tbody>
@@ -84,7 +84,7 @@ margin: 50px 10%;
               <!-- <div *ngFor="let item of items.leftTableData">
                   {{item}}
               </div> -->
-          <td nzBreakWord  *ngFor="let items of basicTable1.data" style="padding: 0;" [ngClass]="{'recomend': items.id == recommend}">
+          <td nzBreakWord  *ngFor="let items of basicTable1.data" style="padding: 0;min-width: 100px;" [ngClass]="{'recomend': items.id == recommend}">
             <div *ngFor="let item of items.leftTableData" style="border-bottom: 1px solid #15a0ff;min-height:70px;text-align: center;padding-top: 15%;font-size: 12px;" >
               <!-- <span style="display:block;margin: 25% 0;">{{item}}</span> -->
               {{item}}
@@ -246,7 +246,7 @@ margin: 50px 5%;
           <nz-table class="blue-table" #rowSelectionTable nzShowSizeChanger [nzData]="listOfData"
                     [nzShowPagination]="false"
                     [nzTotal]="dataTotal" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
-                    [nzScroll]="{ y: '800px' }"
+                    [nzScroll]="{ y: '650px' }"
                     >
             <thead>
             <tr>
@@ -265,7 +265,7 @@ margin: 50px 5%;
               <th *ngIf="flag === 1">发布</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody style="padding: 20px;">
             <tr *ngFor="let data of listOfData;index as ids" (click)="tableClick(data.id,'handClick')" [class.current-row]="dataTrain?.id === data.id">
               <td nzShowCheckbox
                   [(nzChecked)]="mapOfCheckedId[data.id]"
