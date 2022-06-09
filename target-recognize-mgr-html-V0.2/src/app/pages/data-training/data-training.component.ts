@@ -1,4 +1,4 @@
-import {Component, OnInit,ViewChild,ElementRef} from '@angular/core';
+import {Component, OnInit,ViewChild,ElementRef, SystemJsNgModuleLoader} from '@angular/core';
 import {NzMessageService, NzModalService,NzUploadChangeParam} from 'ng-zorro-antd';
 import {AddTrainingComponent} from './add-training.component';
 import {HttpClient, HttpParams} from '@angular/common/http';
@@ -94,7 +94,15 @@ export class DataTrainingComponent implements OnInit {
   
   checkAll(value: boolean): void {
    
-    this.listOfData.forEach(d => (this.mapOfCheckedId[String(d.id)] = value));
+
+    if(!value){
+
+      this.mapOfCheckedId = {};
+    }else{
+      // console.log(this.listOfData)
+      this.listOfData.forEach(d => (this.mapOfCheckedId[String(d.id)] = value));
+    }
+
     
     this.refreshStatus();
   }
@@ -714,14 +722,15 @@ listData:any
   //对比
   startCompare() {
     this.tableData = [];
-    const checkedCameraIds = [];
-    for (const k in this.mapOfCheckedId) {
+    var checkedCameraIds = [];
+    for (var k in this.mapOfCheckedId) {
       if (this.mapOfCheckedId[k]) {
         checkedCameraIds.push(k);
       }
     }
 
-
+ 
+  
     if (checkedCameraIds.length < 1) {
       this.nzMessage.error('最少勾选一项');
       return;
@@ -740,7 +749,7 @@ listData:any
 
     var Arr1 = [];
 
-    var leftTableData:any = {
+var leftTableData:any = {
     id:"",
     data:[]
 };
@@ -772,6 +781,7 @@ listData:any
           }
         }
       }
+     
       leftTableData.id = resultData[0].taskId
       leftTableData.data = Arr2 
       for (let i = 0; i < this.listOfData.length; i++) {
@@ -787,6 +797,7 @@ listData:any
       }
     })
     this.initModeLineCharts1(dataList)
+   
   }
 
   clearCompare() {
@@ -934,7 +945,6 @@ var echartsData1 = []
 
 // preY 下底 nextY 上底 nextX-preX 高 
 
-
 var maxArea = -1;
 var maxAreaIndex;
 for (let i = 0; i < dataset.length; i++) {
@@ -967,7 +977,7 @@ series[maxAreaIndex].itemStyle = {
   } 
   } 
 }
-console.log(series)
+
 var option = {
     dataset:dataset,
     legend: {

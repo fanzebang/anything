@@ -1229,7 +1229,13 @@ class DataTrainingComponent {
         // this.refreshCheckedStatus();
     }
     checkAll(value) {
-        this.listOfData.forEach(d => (this.mapOfCheckedId[String(d.id)] = value));
+        if (!value) {
+            this.mapOfCheckedId = {};
+        }
+        else {
+            // console.log(this.listOfData)
+            this.listOfData.forEach(d => (this.mapOfCheckedId[String(d.id)] = value));
+        }
         this.refreshStatus();
     }
     refreshStatus() {
@@ -1745,8 +1751,8 @@ class DataTrainingComponent {
     //对比
     startCompare() {
         this.tableData = [];
-        const checkedCameraIds = [];
-        for (const k in this.mapOfCheckedId) {
+        var checkedCameraIds = [];
+        for (var k in this.mapOfCheckedId) {
             if (this.mapOfCheckedId[k]) {
                 checkedCameraIds.push(k);
             }
@@ -1952,7 +1958,6 @@ class DataTrainingComponent {
                 }
             }
         };
-        console.log(series);
         var option = {
             dataset: dataset,
             legend: {
