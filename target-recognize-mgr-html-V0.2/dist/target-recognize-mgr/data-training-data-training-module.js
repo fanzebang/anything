@@ -1245,7 +1245,7 @@ class DataTrainingComponent {
             }
             if (this.dataTrain && (this.status == "STATUS" || this.status == "END"))
                 this.tableClick(this.dataTrain.id, 'autoClick');
-        }, 1000 * 20);
+        }, 1000 * 2);
     }
     stopInterval() {
         clearInterval(this.intervalLoadTraining);
