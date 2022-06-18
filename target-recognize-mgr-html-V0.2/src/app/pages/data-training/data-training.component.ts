@@ -149,7 +149,7 @@ export class DataTrainingComponent implements OnInit {
      
       if(this.dataTrain && (this.status == "STATUS" || this.status == "END" )) this.tableClick(this.dataTrain.id,'autoClick')
 
-    },1000*2)
+    },1000*20)
   }
 
   stopInterval(){
@@ -241,19 +241,31 @@ export class DataTrainingComponent implements OnInit {
             }
             break;
             case 'zx':
-              for (let index = 0; index < this.listOfData.length; index++) {
-                const element = this.listOfData[index];
-                  if(element.id == this.downloadId){
-                    deployModelUrls= JSON.parse(element.deployModelUrls)
-                  }
-              }  
-      
-              for (let index = 0; index < deployModelUrls.length; index++) {
-                const element = deployModelUrls[index];
-                  if(element.type == "onlineUrl"){
-                    window.open(element.url,"_blank"); 
-                  }
+            var formdata:any = new FormData();
+            formdata.append("id",this.downloadId);          
+            let timeout = 1000*30;
+            $("body").append('<div style="width: 100%;height: 100%;background: #15132d99;position: absolute;top:0;left:0;z-index:99999" id="loding"><div style="width:30px;height:30px;position: absolute;left:50%;top:50%"><img src="assets/images/loading.gif"></div></div>')
+            axios.post(`${environment.API_URL}/v1/data_train/publishDataTrainModel`,formdata, {
+              timeout: timeout,
+              headers: {
+                'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+                'TR-Role': 'TR-User'
               }
+            })
+            .then((result:any)=>{
+              $("#loding").remove();
+              if(result.data.code == 1){
+                this.nzMessage.success(result.data.message);
+              }else{
+                this.nzMessage.error(result.data.message);
+              }
+            })
+            .catch(e=>{
+             if(e.code == "ECONNABORTED"){
+              this.nzMessage.error("网络超时，发布失败");
+             }
+              $("#loding").remove();
+            })
               break;
       default:
         break;
