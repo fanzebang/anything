@@ -8174,6 +8174,14 @@ class NotLeafDataManageComponent {
         this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_URL}/v1/stat-infos/`).subscribe((result) => {
             if (_core_http_entity__WEBPACK_IMPORTED_MODULE_4__["HttpResult"].succeed(result.code)) {
                 this.statInfo = result.data;
+                var yhCount;
+                var totalUserNum = JSON.parse(this.statInfo.totalUserNum);
+                totalUserNum.forEach(element => {
+                    if (element.count) {
+                        yhCount = element.count;
+                    }
+                });
+                this.statInfo.totalUserNum = yhCount;
             }
         });
     }

@@ -111,7 +111,17 @@ export class NotLeafDataManageComponent implements OnInit {
   loadStatInfo(): void {
     this.http.get(`${environment.API_URL}/v1/stat-infos/`).subscribe((result: HttpResult<StatInfo>) => {
       if (HttpResult.succeed(result.code)) {
+       
         this.statInfo = result.data;
+        var yhCount;
+        var totalUserNum = JSON.parse(this.statInfo.totalUserNum)
+        totalUserNum.forEach(element => {
+          if(element.count){
+            yhCount = element.count
+          }
+        });
+
+        this.statInfo.totalUserNum = yhCount; 
       }
     });
   }
