@@ -94,25 +94,52 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
 
   constructor(private http: HttpClient) {
 
-    axios.get(`${environment.API_URL}/v1/stat-infos/getDataStatistics`, {
+this.requestMapData("湖北")
+
+  }
+
+
+  //6-20 按省份请求数据
+  requestMapData(name){
+  axios.get(`${environment.API_URL}/v1/stat-infos/getDataStatistics`, {
       headers: {
         'Authorization':'Bearer '+localStorage.getItem('Bearer'),
         'TR-Role': 'TR-User'
       }
     })
     .then((result:any)=>{
+    var yhdata = JSON.parse(result.data.data.yh)
+     var data:any = [];
+     var yhCount;
+      yhdata.forEach(element => {
+        if(element.last_province){
+          data.push(element)
+        }
+        if(element.count){
+          yhCount = element.count
+        }
+      });
+      var yh;
+  
+      data.forEach(element=>{
+        if(element.last_province.indexOf(name)!=-1){
+          yh = element.num
+        }
+      })
 
+      if(!yh){
+        yh = 0;
+      }
       $(".mapData span")[0].innerHTML = result.data.data.syyb
       $(".mapData span")[1].innerHTML = result.data.data.dzmx
-      $(".mapData span")[2].innerHTML = result.data.data.yh
+      $(".mapData span")[2].innerHTML = yh
       $(".mapData span")[3].innerHTML = result.data.data.qqcs
-
-      this.arr1 = (result.data.data.yh+"").split("")
-
       
+ 
+
+      this.arr1 = (yhCount+"").split("")
 
     })
-
   }
 
   loadUsePercentCharts(dbClikcSarchElement:any): void {
@@ -575,9 +602,9 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
 
 
   loadMapOption(dbClikcSarchElement:any) {
-
+var that = this;
    var toolTipData :any= [{
-      "provinceName": "北京",
+      "provinceName": "北京市",
       "provinceKey": 110000,
       "cityName": null,
       "cityKey": null,
@@ -586,7 +613,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 31744,
       "onlineCount": 0
   }, {
-      "provinceName": "天津",
+      "provinceName": "天津市",
       "provinceKey": 120000,
       "cityName": null,
       "cityKey": null,
@@ -595,7 +622,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 30025,
       "onlineCount": 0
   }, {
-      "provinceName": "河北",
+      "provinceName": "河北省",
       "provinceKey": 130000,
       "cityName": null,
       "cityKey": null,
@@ -604,7 +631,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 50625,
       "onlineCount": 0
   }, {
-      "provinceName": "山西",
+      "provinceName": "山西省",
       "provinceKey": 140000,
       "cityName": null,
       "cityKey": null,
@@ -622,7 +649,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 14585,
       "onlineCount": 0
   }, {
-      "provinceName": "辽宁",
+      "provinceName": "辽宁省",
       "provinceKey": 210000,
       "cityName": null,
       "cityKey": null,
@@ -631,7 +658,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 27143,
       "onlineCount": 0
   }, {
-      "provinceName": "吉林",
+      "provinceName": "吉林省",
       "provinceKey": 220000,
       "cityName": null,
       "cityKey": null,
@@ -649,7 +676,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 6481,
       "onlineCount": 0
   }, {
-      "provinceName": "上海",
+      "provinceName": "上海市",
       "provinceKey": 310000,
       "cityName": null,
       "cityKey": null,
@@ -658,7 +685,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 26753,
       "onlineCount": 0
   }, {
-      "provinceName": "江苏",
+      "provinceName": "江苏省",
       "provinceKey": 320000,
       "cityName": null,
       "cityKey": null,
@@ -667,7 +694,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 158180,
       "onlineCount": 0
   }, {
-      "provinceName": "浙江",
+      "provinceName": "浙江省",
       "provinceKey": 330000,
       "cityName": null,
       "cityKey": null,
@@ -676,7 +703,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 116344,
       "onlineCount": 0
   }, {
-      "provinceName": "安徽",
+      "provinceName": "安徽省",
       "provinceKey": 340000,
       "cityName": null,
       "cityKey": null,
@@ -685,7 +712,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 57139,
       "onlineCount": 0
   }, {
-      "provinceName": "福建",
+      "provinceName": "福建省",
       "provinceKey": 350000,
       "cityName": null,
       "cityKey": null,
@@ -694,7 +721,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 65228,
       "onlineCount": 0
   }, {
-      "provinceName": "江西",
+      "provinceName": "江西省",
       "provinceKey": 360000,
       "cityName": null,
       "cityKey": null,
@@ -703,7 +730,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 31822,
       "onlineCount": 0
   }, {
-      "provinceName": "山东",
+      "provinceName": "山东省",
       "provinceKey": 370000,
       "cityName": null,
       "cityKey": null,
@@ -712,7 +739,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 59966,
       "onlineCount": 0
   }, {
-      "provinceName": "河南",
+      "provinceName": "河南省",
       "provinceKey": 410000,
       "cityName": null,
       "cityKey": null,
@@ -722,7 +749,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "onlineCount": 0
   }, {
       "name":"湖北",
-      "provinceName": "湖北",
+      "provinceName": "湖北省",
       "provinceKey": 420000,
       "cityName": null,
       "cityKey": null,
@@ -731,7 +758,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 46768,
       "onlineCount": 0
   }, {
-      "provinceName": "湖南",
+      "provinceName": "湖南省",
       "provinceKey": 430000,
       "cityName": null,
       "cityKey": null,
@@ -740,7 +767,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 44094,
       "onlineCount": 0
   }, {
-      "provinceName": "广东",
+      "provinceName": "广东省",
       "provinceKey": 440000,
       "cityName": null,
       "cityKey": null,
@@ -749,7 +776,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 165774,
       "onlineCount": 0
   }, {
-      "provinceName": "广西",
+      "provinceName": "广西省",
       "provinceKey": 450000,
       "cityName": null,
       "cityKey": null,
@@ -758,7 +785,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 69882,
       "onlineCount": 0
   }, {
-      "provinceName": "海南",
+      "provinceName": "海南省",
       "provinceKey": 460000,
       "cityName": null,
       "cityKey": null,
@@ -767,7 +794,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 33090,
       "onlineCount": 0
   }, {
-      "provinceName": "重庆",
+      "provinceName": "重庆省",
       "provinceKey": 500000,
       "cityName": null,
       "cityKey": null,
@@ -776,7 +803,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 20163,
       "onlineCount": 0
   }, {
-      "provinceName": "四川",
+      "provinceName": "四川省",
       "provinceKey": 510000,
       "cityName": null,
       "cityKey": null,
@@ -785,7 +812,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 43625,
       "onlineCount": 0
   }, {
-      "provinceName": "贵州",
+      "provinceName": "贵州省",
       "provinceKey": 520000,
       "cityName": null,
       "cityKey": null,
@@ -794,7 +821,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 28817,
       "onlineCount": 0
   }, {
-      "provinceName": "云南",
+      "provinceName": "云南省",
       "provinceKey": 530000,
       "cityName": null,
       "cityKey": null,
@@ -803,7 +830,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 30916,
       "onlineCount": 0
   }, {
-      "provinceName": "西藏",
+      "provinceName": "西藏省",
       "provinceKey": 540000,
       "cityName": null,
       "cityKey": null,
@@ -812,7 +839,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 2470,
       "onlineCount": 0
   }, {
-      "provinceName": "陕西",
+      "provinceName": "陕西省",
       "provinceKey": 610000,
       "cityName": null,
       "cityKey": null,
@@ -821,7 +848,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 27093,
       "onlineCount": 0
   }, {
-      "provinceName": "甘肃",
+      "provinceName": "甘肃省",
       "provinceKey": 620000,
       "cityName": null,
       "cityKey": null,
@@ -830,7 +857,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 12390,
       "onlineCount": 0
   }, {
-      "provinceName": "青海",
+      "provinceName": "青海省",
       "provinceKey": 630000,
       "cityName": null,
       "cityKey": null,
@@ -839,7 +866,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 1161,
       "onlineCount": 0
   }, {
-      "provinceName": "宁夏",
+      "provinceName": "宁夏省",
       "provinceKey": 640000,
       "cityName": null,
       "cityKey": null,
@@ -848,7 +875,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 5240,
       "onlineCount": 0
   }, {
-      "provinceName": "新疆",
+      "provinceName": "新疆省",
       "provinceKey": 650000,
       "cityName": null,
       "cityKey": null,
@@ -857,7 +884,7 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
       "orderCount": 11741,
       "onlineCount": 0
   }, {
-      "provinceName": "台湾",
+      "provinceName": "台湾省",
       "provinceKey": 650000,
       "cityName": null,
       "cityKey": null,
@@ -931,24 +958,44 @@ export class DataStatisticsComponent implements OnInit, AfterViewInit {
 
     mapEcharts.on('click', function (params) {
 
+      $(".mapData div")[0].innerHTML = params.name
       option.series[0].data = [] 
       option.series[0].data.push({name:params.name, selected:true})
       mapEcharts.setOption(option);
 
-      axios.get(`${environment.API_URL}/v1/stat-infos/getDataStatistics`, {
-        headers: {
-          'Authorization':'Bearer '+localStorage.getItem('Bearer'),
-          'TR-Role': 'TR-User'
-        }
-      })
-      .then((result:any)=>{
-        $(".mapData span")[0].innerHTML = result.data.data.syyb
-        $(".mapData span")[1].innerHTML = result.data.data.dzmx
-        $(".mapData span")[2].innerHTML = result.data.data.yh
-        $(".mapData span")[3].innerHTML = result.data.data.qqcs
-        this.arr1 = (result.data.data.yh+"").split("")
+      that.requestMapData(params.name);
+
+      // axios.get(`${environment.API_URL}/v1/stat-infos/getDataStatistics`, {
+      //   headers: {
+      //     'Authorization':'Bearer '+localStorage.getItem('Bearer'),
+      //     'TR-Role': 'TR-User'
+      //   }
+      // })
+      // .then((result:any)=>{
+      // var yhdata = JSON.parse(result.data.data.yh)
+      //  var data:any = [];
+      //   yhdata.forEach(element => {
+      //     if(element.last_province){
+      //       data.push(element)
+      //     }
+      //   });
+      //   var yh;
+      //   data.forEach(element=>{
+      //     if(element.last_province.indexOf(params.name)!=-1){
+      //       yh = element.num
+      //     }
+      //   })
+
+      //   if(!yh){
+      //     yh = 0;
+      //   }
+      //   $(".mapData span")[0].innerHTML = result.data.data.syyb
+      //   $(".mapData span")[1].innerHTML = result.data.data.dzmx
+      //   $(".mapData span")[2].innerHTML = yh
+      //   $(".mapData span")[3].innerHTML = result.data.data.qqcs
+      //   this.arr1 = (result.data.data.yh+"").split("")
   
-      })
+      // })
   });
 
   }
