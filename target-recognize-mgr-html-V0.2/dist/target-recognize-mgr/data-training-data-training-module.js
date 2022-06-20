@@ -1407,22 +1407,27 @@ class DataTrainingComponent {
         }
     }
     loadTraining1() {
+        var arr1 = [];
+        var arr2 = [];
         let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('status', 'STATUS');
         this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/data_train/`, { params }).subscribe((result) => {
             if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
-                this.listOfData = result.data.records;
+                // this.listOfData = result.data.records;
+                arr1 = result.data.records;
                 let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpParams"]().append('status', 'END');
                 this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/data_train/`, { params }).subscribe((result) => {
                     if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
                         if (this.selectData == "全部") {
                             for (let index = 0; index < result.data.records.length; index++) {
                                 const element = result.data.records[index];
-                                this.listOfData.push(element);
+                                arr2.push(element);
                             }
                             this.dataTotal += result.data.total;
                             this.pageIndex = result.data.current;
-                            this.listOfData2 = this.listOfData;
+                            // this.listOfData2 = this.listOfData 
                         }
+                        this.listOfData = arr1.concat(arr2);
+                        this.listOfData2 = this.listOfData;
                         if (this.listOfData.length > 0 && !this.dataTrain)
                             this.tableClick(this.listOfData[0].id, 'handClick');
                     }
