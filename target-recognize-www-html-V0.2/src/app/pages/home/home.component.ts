@@ -1079,6 +1079,9 @@ isAllEqual(array:[string],fileListArr2):any{
   }
 
 searchImg(){
+
+  if($("#dataWinBox").length == 0){
+
     if(!$(".search-img").val()){
       this.message.error("请输入文字后查询", {
         nzDuration: 3000
@@ -1087,12 +1090,16 @@ searchImg(){
       this.router.navigate(['/detect', {textSearch:$(".search-img").val(),borderShow:6}]);
     }
 
+  }
+
+
 }
 
 
   detectHotspot(ossKey) {
     this.uploadWithUrl(this.ossPathPipe.transform(ossKey));
   }
+  
 
   loadTypeTrainCount() {
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getTypeTrainCount`).subscribe((result: HttpResult<any>) => {
@@ -1578,7 +1585,6 @@ $("#CorrectionErrorBox > div.wb-header > div.wb-icon > span.wb-close").click()
 dataAna(): void {
  $("#dataWinBox > div.wb-header > div.wb-icon > span.wb-close").click()
  $("#modal-container").css("display","none")
-
  this.closeTable()
   this.dataBox = new WinBox({
       id:'dataWinBox',
