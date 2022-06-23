@@ -56,6 +56,11 @@
                     <span class="detail-info-param">上传作者</span>
                     <span class="detail-info-value">{{sampleOssFile?.createdName}}</span>
                 </div>
+
+                <div class="detail-info-type flex-row">
+                    <span class="detail-info-param">待训练状态</span>
+                    <span class="detail-info-value">{{sampleOssFile|trainStatus}}</span>
+                </div>
             </div>
 
             <div class="detail-info-box p-a">

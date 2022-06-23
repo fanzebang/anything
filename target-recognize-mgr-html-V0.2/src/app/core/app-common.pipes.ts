@@ -92,6 +92,18 @@ export class MarkStatusPipe implements PipeTransform {
 }
 
 
+@Pipe({name: 'trainStatus'})
+export class TrainStatusPipe implements PipeTransform {
+  transform(file: SampleOssFile): string {
+    if(file.trainNumber == 0 && file.markStatus == 3){
+      return "是";
+    } else{
+      return "否";
+    }
+  }
+}
+
+
 @Pipe({name: 'MarkedRectImage'})
 export class MarkedRectImagePipe implements PipeTransform {
   transform(rect: any, sampleFile: SampleOssFile): Observable<any> {

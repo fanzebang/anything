@@ -508,7 +508,8 @@ this.aiLabel.events.on('featureUpdated',(feature: any, shape: any) => {
         x: 100,
         y: 0,
         y2: 0,
-        x2: 0
+        x2: 0,
+        right: "5%",
       },
       series: [
         {

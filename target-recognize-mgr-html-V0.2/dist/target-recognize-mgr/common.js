@@ -15,12 +15,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const COMMON_PIPES = [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"]];
+const COMMON_PIPES = [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"]];
 class AppCommonModule {
 }
 AppCommonModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: AppCommonModule });
 AppCommonModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function AppCommonModule_Factory(t) { return new (t || AppCommonModule)(); } });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AppCommonModule, { declarations: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"]], exports: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"]] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AppCommonModule, { declarations: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"]], exports: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AppCommonModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
@@ -36,7 +36,7 @@ AppCommonModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineIn
 /*!******************************************!*\
   !*** ./src/app/core/app-common.pipes.ts ***!
   \******************************************/
-/*! exports provided: OssPathPipe, KbPipe, LocalImgFilePipe, MarkStatusPipe, MarkedRectImagePipe, SampleTypeIdPathPipe */
+/*! exports provided: OssPathPipe, KbPipe, LocalImgFilePipe, MarkStatusPipe, TrainStatusPipe, MarkedRectImagePipe, SampleTypeIdPathPipe */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45,6 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KbPipe", function() { return KbPipe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalImgFilePipe", function() { return LocalImgFilePipe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MarkStatusPipe", function() { return MarkStatusPipe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TrainStatusPipe", function() { return TrainStatusPipe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MarkedRectImagePipe", function() { return MarkedRectImagePipe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SampleTypeIdPathPipe", function() { return SampleTypeIdPathPipe; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
@@ -151,6 +152,22 @@ MarkStatusPipe.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefinePi
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](MarkStatusPipe, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"],
         args: [{ name: 'marks' }]
+    }], null, null); })();
+class TrainStatusPipe {
+    transform(file) {
+        if (file.trainNumber == 0 && file.markStatus == 3) {
+            return "是";
+        }
+        else {
+            return "否";
+        }
+    }
+}
+TrainStatusPipe.ɵfac = function TrainStatusPipe_Factory(t) { return new (t || TrainStatusPipe)(); };
+TrainStatusPipe.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefinePipe"]({ name: "trainStatus", type: TrainStatusPipe, pure: true });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TrainStatusPipe, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"],
+        args: [{ name: 'trainStatus' }]
     }], null, null); })();
 class MarkedRectImagePipe {
     transform(rect, sampleFile) {

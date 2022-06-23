@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {KbPipe, LocalImgFilePipe, MarkedRectImagePipe, OssPathPipe, SampleTypeIdPathPipe, MarkStatusPipe} from './app-common.pipes';
+import {KbPipe, LocalImgFilePipe, MarkedRectImagePipe, OssPathPipe, SampleTypeIdPathPipe, MarkStatusPipe,TrainStatusPipe} from './app-common.pipes';
 
-const COMMON_PIPES = [OssPathPipe, KbPipe, LocalImgFilePipe, MarkedRectImagePipe, SampleTypeIdPathPipe, MarkStatusPipe];
+const COMMON_PIPES = [OssPathPipe, KbPipe, LocalImgFilePipe, MarkedRectImagePipe, SampleTypeIdPathPipe, MarkStatusPipe,TrainStatusPipe];
 
 @NgModule({
   declarations: [...COMMON_PIPES],
