@@ -29,10 +29,10 @@ export class OssPathPipe implements PipeTransform {
   }
 }
 
-
 @Pipe({name: 'taskProgress'})
 export class taskProgress implements PipeTransform {
   transform(taskProgress: number): string {
+    console.log(taskProgress) 
     return taskProgress.toFixed(2);
   }
 }

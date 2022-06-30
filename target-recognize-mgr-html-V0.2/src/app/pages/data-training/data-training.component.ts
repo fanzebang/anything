@@ -619,9 +619,8 @@ export class DataTrainingComponent implements OnInit {
           default:   this.listOfData[i].taskModeName = ""
              
      } 
-     var taskProgress:any = this.listOfData[i].taskProgress*1
-        taskProgress = taskProgress.toFixed(2)
-     this.listOfData[i].taskProgress = taskProgress
+
+    //  this.listOfData[i].taskProgress = this.listOfData[i].taskProgress
         this.dataTrain = this.listOfData[i];
       }
     }

@@ -44,11 +44,11 @@ export class DataTaskStatusPipes implements PipeTransform {
 
 @Pipe({name: 'taskProgress'})
 export class DataTaskProgressPipes implements PipeTransform {
-  transform(taskProgress: any): number {
+  transform(taskProgress: any): string {
     if (!isNaN(+taskProgress)) {
-      return +taskProgress * 100;
+      return (+taskProgress*100).toFixed(2);
     } else {
-      return 0;
+      return "0";
     }
   }
 }

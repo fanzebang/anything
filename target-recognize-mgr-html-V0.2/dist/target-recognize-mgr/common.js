@@ -15,12 +15,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const COMMON_PIPES = [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"]];
+const COMMON_PIPES = [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["taskProgress"]];
 class AppCommonModule {
 }
 AppCommonModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: AppCommonModule });
 AppCommonModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function AppCommonModule_Factory(t) { return new (t || AppCommonModule)(); } });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AppCommonModule, { declarations: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"]], exports: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"]] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AppCommonModule, { declarations: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["taskProgress"]], exports: [_app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["OssPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["KbPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["LocalImgFilePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkedRectImagePipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["SampleTypeIdPathPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["MarkStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["TrainStatusPipe"], _app_common_pipes__WEBPACK_IMPORTED_MODULE_1__["taskProgress"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AppCommonModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
@@ -86,6 +86,7 @@ OssPathPipe.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefinePipe"
     }], null, null); })();
 class taskProgress {
     transform(taskProgress) {
+        console.log(taskProgress);
         return taskProgress.toFixed(2);
     }
 }

@@ -512,10 +512,10 @@ DataTaskStatusPipes.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
 class DataTaskProgressPipes {
     transform(taskProgress) {
         if (!isNaN(+taskProgress)) {
-            return +taskProgress * 100;
+            return (+taskProgress * 100).toFixed(2);
         }
         else {
-            return 0;
+            return "0";
         }
     }
 }
@@ -1645,9 +1645,7 @@ class DataTrainingComponent {
                         break;
                     default: this.listOfData[i].taskModeName = "";
                 }
-                var taskProgress = this.listOfData[i].taskProgress * 1;
-                taskProgress = taskProgress.toFixed(2);
-                this.listOfData[i].taskProgress = taskProgress;
+                //  this.listOfData[i].taskProgress = this.listOfData[i].taskProgress
                 this.dataTrain = this.listOfData[i];
             }
         }
