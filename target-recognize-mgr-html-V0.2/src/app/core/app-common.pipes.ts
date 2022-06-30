@@ -4,7 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {HttpResult, SampleOssFile} from './http-entity';
 import {HttpClient} from '@angular/common/http';
 declare var Tiff:any;
-
+declare var $:any;
 @Pipe({name: 'ossPath'})
 export class OssPathPipe implements PipeTransform {
   transform(tiem: any): string {
@@ -24,32 +24,16 @@ export class OssPathPipe implements PipeTransform {
     }
 
 
-    // .ossKey
-
-    // if(tiem.ossKey){
-    //   var xhr = new XMLHttpRequest()
-    //   xhr.responseType = 'arraybuffer';
-   
-    //   var url = localStorage.getItem('sampleResourcePath') + '/' + tiem.ossKey
-    //   xhr.open('GET', url)
-    //   var tiff = new Tiff({buffer: xhr.response})
-    //  var imgSrc = tiff.toDataURL() // 是转化成base64的api
-    //     console.log(Tiff)
-    //     // return url;
-
-    //   // xhr.onload = function (e) {
-    //   //   var tiff = new Tiff({buffer: xhr.response})
-    //   //   console.log(tiff)
-    
-    //   //   };
-      
-    // }else{
-    //   return localStorage.getItem('sampleResourcePath') + '/' + tiem;
-    // }
-
-
     return localStorage.getItem(itemKey) + '/' + tiem.ossKey;
   
+  }
+}
+
+
+@Pipe({name: 'taskProgress'})
+export class taskProgress implements PipeTransform {
+  transform(taskProgress: number): string {
+    return taskProgress.toFixed(2);
   }
 }
 
@@ -60,16 +44,63 @@ export class KbPipe implements PipeTransform {
   }
 }
 
+function getImageFileFromUrl(url, imageName) {
+  return new Promise((resolve, reject) => {
+      var blob = null;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.setRequestHeader('Accept', 'image/png');
+      xhr.responseType = "blob";
+      // 加载时处理
+      xhr.onload = () => {
+        // 获取返回结果
+          blob = xhr.response;
+          let imgFile = new File([blob], imageName, { type: 'image/png' });
+          // 返回结果
+          resolve(imgFile);
+      };
+      xhr.onerror = (e) => {
+          reject(e)
+      };
+      // 发送
+      xhr.send();
+  });
+}
+
+
 @Pipe({name: 'LocalImgFile'})
 export class LocalImgFilePipe implements PipeTransform {
   transform(file: File): Observable<any> {
-    const subject = new Subject<any>();
 
+    
+    const subject = new Subject<any>();
     const fr = new FileReader();
     fr.onload = () => {
       subject.next(fr.result);
     };
-    fr.readAsDataURL(file);
+
+    if(file.type.startsWith("image")){
+      fr.readAsDataURL(file);
+    }else{
+   let imageFile = null
+    getImageFileFromUrl("../assets/images/ysb.png","ysb")
+      .then((response)=>{
+        // 返回的是文件对象，使用变量接收即可
+            imageFile  = response
+            fr.readAsDataURL(imageFile);
+        })
+        .catch((e)=>{
+        console.error(e)
+        }
+      )
+
+      // let ysbFile = new File("../assets/images/photo.png", 'ysb.png', {type: 'image/png'});
+      // 
+
+    }
+    
+   
+
     return subject.asObservable();
   }
 }

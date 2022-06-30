@@ -16,7 +16,7 @@
             <div class="import-samples-btn-wrap" *ngIf="upLoadZipIsVisible">
                 <!-- <button class="upload">导入</button> -->
                 <button class="btn m-r upload" >导入压缩包</button>
-                <input #filesInput1 type="file" value="本地上传" multiple (change)="uploadZip($event)" id="zipInput" accept=".zip,.rar">
+                <input #filesInput1 type="file" value="本地上传" multiple (change)="uploadZip($event)" id="zipInput" accept=".zip">
             </div>
             <!-- <button class="btn btn-batch" (click)="operateMgr(true)">批量管理</button> -->
         </ng-container>

@@ -110,8 +110,6 @@ export class LeafDataManageComponent implements OnInit {
           
    
         this.secondaryData = result.data.records;
-        console.log( this.secondaryData)
-
         this.secondaryData.map(x=>{
           if(x.markStatus == 0){
             x.markStatusText = "未标注"
@@ -320,7 +318,7 @@ export class LeafDataManageComponent implements OnInit {
   uploadZip(evt:any):void{
     this.hideUploadingProgress = false;
     this.hideUploadingPanel = false;
-    this.type = "zip/rar";
+    this.type = "zip";
     this.imgUploadSize = "";
     const fileList = evt.target.files as FileList;
  
@@ -338,7 +336,7 @@ export class LeafDataManageComponent implements OnInit {
       for (let i = 0; i < fileCount; i++) {
         // 每个文件单个上传，这样才能对每个文件有进度条
         let type = fileList[i].type
-        if(type == "application/x-zip-compressed" || type == "" ){
+        if(type == "application/x-zip-compressed"){
           uploadingFiles.push({
             file: fileList[i],
             progress: 0

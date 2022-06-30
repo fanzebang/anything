@@ -144,6 +144,7 @@ export class DataTrain {
   typeSource: string;
 
   taskProgress: number;
+  
   precision: number;
   recall: number;
   compareName?: string;
