@@ -15,7 +15,7 @@ import 'echarts/map/js/china.js';
 
 import axios from "axios"
 
- 
+
 declare var $:any;
 declare var echarts:any
 declare var ecStat:any
@@ -48,7 +48,7 @@ export class DataTrainingComponent implements OnInit {
   rightComponent = false;
   recommend:String;
   leftTableData1:any=[];
-  
+
   // listOfData = [{
   //   taskName: 'Minie Ford',
   //   taskPattern: '自动',
@@ -80,7 +80,7 @@ export class DataTrainingComponent implements OnInit {
   numberOfChecked = 0;
   jdcurver:any = [];
   csPic:any = []
-  precision:any;
+  precision:number;
   selectList:String[] = ["全部"];
   selectData:any = "全部";
   intervalLoadTraining:any
@@ -91,9 +91,9 @@ export class DataTrainingComponent implements OnInit {
 
   comparingDataTrainList: DataTrain[] = [];
 
-  
+
   checkAll(value: boolean): void {
-   
+
 
     if(!value){
 
@@ -103,14 +103,14 @@ export class DataTrainingComponent implements OnInit {
       this.listOfData.forEach(d => (this.mapOfCheckedId[String(d.id)] = value));
     }
 
-    
+
     this.refreshStatus();
   }
 
 
   refreshStatus(): void {
 
-    
+
 
     // if(arguments[0])
 
@@ -137,7 +137,7 @@ export class DataTrainingComponent implements OnInit {
 
   }
 
-  
+
   startInterval(){
     this.intervalLoadTraining =  setInterval(()=>{
 
@@ -146,7 +146,7 @@ export class DataTrainingComponent implements OnInit {
       }else{
         this.loadTraining();
       }
-     
+
       if(this.dataTrain && (this.status == "STATUS" || this.status == "END" )) this.tableClick(this.dataTrain.id,'autoClick')
 
     },1000*2)
@@ -156,7 +156,7 @@ export class DataTrainingComponent implements OnInit {
     clearInterval(this.intervalLoadTraining)
   }
   nzOpenChange(e:any){
-    
+
     if(e){
       this.stopInterval();
     }else{
@@ -169,7 +169,7 @@ export class DataTrainingComponent implements OnInit {
     //Add 'implements AfterViewInit' to the class.
     this.loadTraining1();
     this.startInterval()
-    
+
   }
 
   ngOnDestroy(): void {
@@ -182,11 +182,11 @@ export class DataTrainingComponent implements OnInit {
   download1(e,d){
     this.isVisible2 = true;
     this.downloadId= d.id
-    
+
   }
 
   download(type){
-    let deployModelUrls; 
+    let deployModelUrls;
     switch (type) {
       case 'cpu':
         for (let index = 0; index < this.listOfData.length; index++) {
@@ -194,55 +194,55 @@ export class DataTrainingComponent implements OnInit {
             if(element.id == this.downloadId){
               deployModelUrls= JSON.parse(element.deployModelUrls)
             }
-        }  
+        }
         for (let index = 0; index < deployModelUrls.length; index++) {
           const element = deployModelUrls[index];
             if(element.type == "cpuUrl"){
-              window.open(element.url,"_blank"); 
+              window.open(element.url,"_blank");
             }
         }
 
 
         break;
         case 'gpu':
-        
+
           for (let index = 0; index < this.listOfData.length; index++) {
             const element = this.listOfData[index];
               if(element.id == this.downloadId){
                 deployModelUrls= JSON.parse(element.deployModelUrls)
-  
-              
-  
+
+
+
               }
-          }  
-  
+          }
+
           for (let index = 0; index < deployModelUrls.length; index++) {
             const element = deployModelUrls[index];
               if(element.type == "gpuUrl"){
-                window.open(element.url,"_blank"); 
+                window.open(element.url,"_blank");
               }
           }
-  
+
           break;
           case 'hs':
-          
+
             for (let index = 0; index < this.listOfData.length; index++) {
               const element = this.listOfData[index];
                 if(element.id == this.downloadId){
                   deployModelUrls= JSON.parse(element.deployModelUrls)
                 }
-            }  
-    
+            }
+
             for (let index = 0; index < deployModelUrls.length; index++) {
               const element = deployModelUrls[index];
                 if(element.type == "hisiliconUrl"){
-                  window.open(element.url,"_blank"); 
+                  window.open(element.url,"_blank");
                 }
             }
             break;
             case 'zx':
             var formdata:any = new FormData();
-            formdata.append("id",this.downloadId);          
+            formdata.append("id",this.downloadId);
             let timeout = 1000*30;
             $("body").append('<div style="width: 100%;height: 100%;background: #15132d99;position: absolute;top:0;left:0;z-index:99999" id="loding"><div style="width:30px;height:30px;position: absolute;left:50%;top:50%"><img src="assets/images/loading.gif"></div></div>')
             axios.post(`${environment.API_URL}/v1/data_train/publishDataTrainModel`,formdata, {
@@ -270,10 +270,10 @@ export class DataTrainingComponent implements OnInit {
       default:
         break;
     }
- 
+
     this.isVisible2 = false;
   }
-  
+
   fileChange(){
     var file = $("#imgInput")[0].files
     var formData = new FormData()
@@ -293,7 +293,7 @@ export class DataTrainingComponent implements OnInit {
     .then((result:any)=>{
       $("#loding").remove()
       if(result.data.message == "测试失败"){
-          alert(result.data.message)    
+          alert(result.data.message)
       }else{
         if(result.data.code == 1){
           var imgData = JSON.parse(result.data.data)
@@ -301,10 +301,14 @@ export class DataTrainingComponent implements OnInit {
             $("#image-list1").append(`<div class="cover"><img src="${n}" alt=""></div>`)
           })
         }
-    
       }
-      $("#imgInput").val("")
     })
+      .catch((e:any)=>{
+        console.log(e)
+    })
+      .finally(()=>{
+        $("#imgInput").val("")
+      })
   }
   tabChange(e:any){
     var that = this
@@ -329,10 +333,7 @@ export class DataTrainingComponent implements OnInit {
     }
   }
 
-
-
   loadTraining1() {
-   
     var arr1 = [];
     var arr2 = []
       let params = new HttpParams().append('status', 'STATUS');
@@ -350,24 +351,24 @@ export class DataTrainingComponent implements OnInit {
             }
             this.dataTotal += result.data.total;
             this.pageIndex = result.data.current;
-              // this.listOfData2 = this.listOfData 
+              // this.listOfData2 = this.listOfData
             }
             this.listOfData = arr1.concat(arr2)
-            this.listOfData2 = this.listOfData 
+            this.listOfData2 = this.listOfData
             if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,'handClick')
 
           }
         });
-          
+
         }
       });
 
 
 
-  
 
 
-      
+
+
 
 
 
@@ -395,14 +396,14 @@ export class DataTrainingComponent implements OnInit {
           if(this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END'){
               this.loadSelectData(this.listOfData);
           }
-            this.listOfData2 = this.listOfData 
+            this.listOfData2 = this.listOfData
           }
 
           if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
 
         }
       });
-      
+
     }
 
 
@@ -425,7 +426,7 @@ export class DataTrainingComponent implements OnInit {
             }
           });
         }else{
-     
+
         let elementArr = element.taskSampleType.split(",");
         for (let i = 0; i < elementArr.length; i++) {
             let value = elementArr[i];
@@ -437,7 +438,7 @@ export class DataTrainingComponent implements OnInit {
             });
         }
         }
-        
+
         if(index == (listOfData.length-1)) {
           setTimeout(()=>{
             for (const key in lastClass) {
@@ -455,7 +456,7 @@ export class DataTrainingComponent implements OnInit {
           },200)
         }
 
-      
+
       }
 
 
@@ -511,9 +512,9 @@ export class DataTrainingComponent implements OnInit {
   changeStatus(flag: number) {
     this.rightComponent = false;
     this.flag = flag;
-    this.compareDisplay= false 
+    this.compareDisplay= false
     this.dataTrain = null;
-  
+
     if(flag ==0){
       this.status = 'STATUS';
       console.log('点击进行中');
@@ -535,15 +536,15 @@ export class DataTrainingComponent implements OnInit {
       this.loadTraining();
     }
 
- 
+
 
 
   }
 
 
- 
+
   ngModelChange(){
-   
+
     this.dataTrain = null;
     this.selectData  == "全部"? this.compareDisplay = false: this.compareDisplay = true
     this.listOfData1 = [];
@@ -556,8 +557,8 @@ export class DataTrainingComponent implements OnInit {
           this.listOfData1.push(element);
         }
       }
-   
-      this.listOfData = this.listOfData1 
+
+      this.listOfData = this.listOfData1
 
     }else{
 
@@ -566,7 +567,7 @@ export class DataTrainingComponent implements OnInit {
     }
 
     if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
-  
+
   }
 
   Training1Datax=[];
@@ -592,14 +593,14 @@ export class DataTrainingComponent implements OnInit {
       }else{
         this.Training1Datax.push(timeName)
         this.Training1Datay.push(this.dataTrain.lossRate)
-      
+
       }
     }
 
     this.rightComponent = true;
     for (let i = 0; i < this.listOfData.length; i++) {
       if (this.listOfData[i].id === id) {
-       
+
         switch(this.listOfData[i].taskMode) {
           case 0:
             this.listOfData[i].taskModeName = "高精度"
@@ -617,15 +618,15 @@ export class DataTrainingComponent implements OnInit {
                   this.listOfData[i].taskModeName = "终端"
                    break;
           default:   this.listOfData[i].taskModeName = ""
-             
-     } 
+
+     }
 
     //  this.listOfData[i].taskProgress = this.listOfData[i].taskProgress
         this.dataTrain = this.listOfData[i];
       }
     }
     var prCurve;
- if( this.dataTrain.prCurve) prCurve = this.dataTrain.prCurve.split(" ") 
+ if( this.dataTrain.prCurve) prCurve = this.dataTrain.prCurve.split(" ")
     var aaa:any = [];
     var xdata:any = [];
     var ydata:any = [];
@@ -646,7 +647,7 @@ export class DataTrainingComponent implements OnInit {
 
     if (this.status == "STATUS" || this.status == "END") {
       this.initModeLineCharts2(this.Training1Datax,this.Training1Datay)
-    } 
+    }
 
 
 
@@ -661,7 +662,7 @@ export class DataTrainingComponent implements OnInit {
         'trainId': id,
       },
       nzOnOk: (addComponent: AddTrainingComponent) => {
-     
+
         addComponent.submitForm();
         return false;
       }
@@ -670,7 +671,7 @@ export class DataTrainingComponent implements OnInit {
       this.loadTraining();
     });
   }
-  
+
 listData:any
   checkModelPrecision(event: any, data: any) {
     var that = this
@@ -699,18 +700,18 @@ listData:any
       })
       .then((result:any)=>{
         var result = result.data.data
-        this.precision = result.precision.slice(0,5)*100+'%'
+        this.precision = result.precision.slice(0,5)
         var prCurve = result.prCurve.split(" ")
         var aaa:any = [];
         var xdata:any = [];
         var ydata:any = [];
-        
+
         var echartsData = []
-  
+
         $.each(prCurve,function(i,n){
           aaa.push(parseFloat(n.trim()))
         })
-      
+
         $.each(aaa,function(i,n){
             if(i%2){
               ydata.push(n)
@@ -724,14 +725,14 @@ listData:any
 
         })
         that.initModeLineCharts(echartsData)
-        var imgArr = JSON.parse(result.valErrorSample)      
+        var imgArr = JSON.parse(result.valErrorSample)
         for (let index = 0; index < imgArr.length; index++) {
           const element = imgArr[index];
           that.jdcurver.push(element.replace(",",""))
         }
       })
     },50)
- 
+
   }
 
   tableData:any = [];
@@ -745,8 +746,8 @@ listData:any
       }
     }
 
- 
-  
+
+
     if (checkedCameraIds.length < 1) {
       this.nzMessage.error('最少勾选一项');
       return;
@@ -760,7 +761,7 @@ listData:any
               this.tableData.push(element)
             }
         }
-      
+
     }
 
     var Arr1 = [];
@@ -788,7 +789,7 @@ var leftTableData:any = {
         Arr2.push(element)
         if(Arr1.indexOf(element) == -1) Arr1.push(element)
       }
-  
+
       if( Arr1.join(",") != Arr2.join(",")){
         for (let i = 0; i < Arr1.length; i++) {
           const element = Arr1[i];
@@ -797,9 +798,9 @@ var leftTableData:any = {
           }
         }
       }
-     
+
       leftTableData.id = resultData[0].taskId
-      leftTableData.data = Arr2 
+      leftTableData.data = Arr2
       for (let i = 0; i < this.listOfData.length; i++) {
         const element = this.listOfData[i];
         if(element.id ==  leftTableData.id) element.leftTableData = leftTableData.data
@@ -808,12 +809,12 @@ var leftTableData:any = {
     }
     this.isVisible1 = true
     var dataList = this.listOfData.map((item)=>{
-      if(this.mapOfCheckedId[item.id]){ 
+      if(this.mapOfCheckedId[item.id]){
         return item
       }
     })
     this.initModeLineCharts1(dataList)
-   
+
   }
 
   clearCompare() {
@@ -890,7 +891,7 @@ var leftTableData:any = {
 var echartsData1 = []
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
-    
+
     if(element){
 
       var aaa:any = [];
@@ -920,7 +921,7 @@ var echartsData1 = []
 
     }
 
-    
+
   }
 
 
@@ -933,9 +934,9 @@ var echartsData1 = []
       return y+""
     })
        data1 = data1.map(x=>{
-         
+
       return x.split(",")
-     
+
      })
 
     dataset.push(
@@ -959,7 +960,7 @@ var echartsData1 = []
       })
    })
 
-// preY 下底 nextY 上底 nextX-preX 高 
+// preY 下底 nextY 上底 nextX-preX 高
 
 var maxArea = -1;
 var maxAreaIndex;
@@ -985,13 +986,13 @@ for (let i = 0; i < dataset.length; i++) {
 // this.recommend = series[maxAreaIndex].name.split("---")[0];
 this.recommend = data[maxAreaIndex].id
 series[maxAreaIndex].name += "(推荐)"
-series[maxAreaIndex].itemStyle = { 
-  normal : { 
+series[maxAreaIndex].itemStyle = {
+  normal : {
   color:'red', //改变折线点的颜色
-  lineStyle:{ 
+  lineStyle:{
   color:'red' //改变折线颜色
-  } 
-  } 
+  }
+  }
 }
 
 var option = {
@@ -1051,16 +1052,16 @@ var option = {
     },
     yAxis: {
       name:'准确率',
-        
+
       nameLocation: "end",
-      
+
       nameTextStyle: {
               fontSize: 14,//正常是不用添加
         },
       splitLine: {
         lineStyle: {
           type: 'dashed',
-         
+
         }
       },
       axisLine:{
@@ -1080,7 +1081,7 @@ var option = {
   },10)
 
 
- 
+
 
   }
 
@@ -1110,7 +1111,7 @@ var option = {
           trigger: 'axis',
           formatter: function (params) {
             params = params[0];
-       
+
             return ( params.axisValue +"/"+  params.data);
           },
           axisPointer: {
@@ -1124,7 +1125,7 @@ var option = {
             nameLocation: "middle",
             nameTextStyle: {
                     fontSize: 14,//正常是不用添加
-                    padding: [5, 0, 0, 250] 
+                    padding: [5, 0, 0, 250]
           },
           splitLine:{
             　　　　show:false
@@ -1180,27 +1181,27 @@ var option = {
           this.lineChart2 =  echarts.init(this.lineChartsDom)
           this.lineChart2.setOption(option);
         }else{
-          this.lineChart2.setOption(option);     
+          this.lineChart2.setOption(option);
         }
       }, 100);
-    
+
     }
 
-    lineChartsDom:any 
+    lineChartsDom:any
     lineChart2:any
   initModeLineCharts(data:any){
 
-    
+
   let data1 =  data.map(x=>{
      return x+""
    })
       data1 = data1.map(x=>{
-        
+
      return x.split(",")
-    
+
     })
 
-  
+
 
     // echarts.registerTransform(ecStat.transform.regression);
 
@@ -1219,7 +1220,7 @@ var option = {
             }
           }
         }
-        
+
       ],
        title: {
         text: '模\n型\n精\n度\n曲\n线',
@@ -1264,16 +1265,16 @@ var option = {
       },
       yAxis: {
         name:'准确率',
-          
+
         nameLocation: "end",
-        
+
         nameTextStyle: {
                 fontSize: 14,//正常是不用添加
           },
         splitLine: {
           lineStyle: {
             type: 'dashed',
-           
+
           }
         },
         axisLine:{

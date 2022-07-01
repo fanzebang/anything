@@ -88,12 +88,10 @@ export class HomeComponent implements OnInit {
       errorCorrectionData:{
         errorCorrectionMsg:""
       }
-      
+
     },
-    
+
  }
-
-
   dataBox:any
   dataBoxCorrectionError:any
   progress:any = 30;
@@ -196,13 +194,11 @@ keyboardSubscription:any
               private ossPathPipe: OssPathPipe,private videoService:VideoService,private message:NzMessageService) {
                 localStorage.removeItem('videoData')
 
-        
+
 
   }
 
   ngOnInit(): void {
-
-
     // localStorage.setItem("detectResult","[]")
     var that = this
     axios.get(`${environment.API_URL}/v1/detect-history/detect-search-status`, {
@@ -219,8 +215,8 @@ keyboardSubscription:any
         }
       })
     })
-   
- 
+
+
     this.http.get(`${environment.API_URL}/v1/users/0`).subscribe((result: HttpResult<User>) => {
       if (HttpResult.succeed(result.code)) {
         this.user = result.data;
@@ -258,13 +254,13 @@ this.keyboardSubscription = fromEvent(window, 'keydown').subscribe((event: any) 
     $(".board-img").find('img').removeClass('board-ani')
     $(".board-img").find('a').attr('href',obj.attr('url'))
     $(".board-img").find('div').remove()
-    
+
     setTimeout(function(){
         $(".board-img").find('img').attr('src',obj.attr('data'))
         $(".board-img").find('img').addClass('board-ani')
         $(".board-img").find('img').after('<div class="board-text-ani">'+obj.attr('alt')+'</div>')
     },100)
-    
+
 }
 
 batchDiscern(isDetailOpen:any){
@@ -306,16 +302,16 @@ batchDiscernById(id){
     }
   })
   .then(data=>{
-   
+
     this.winboxData.modalData.detail = JSON.parse(data.data.data)
-    
+
     this.winboxData.modalData.detail.discernName = JSON.parse(this.winboxData.modalData.detail.discernName)
 
-    this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.detail.standardName  
+    this.winboxData.modalData.errorCorrectionData.errorCorrectionMsg = this.winboxData.modalData.detail.standardName
 
     if(this.winboxData.modalData.detail) this.winboxData.modalData.detail.discernType = JSON.parse(this.winboxData.modalData.detail.ext1)
-  
-    
+
+
   })
   .catch(e=>{
     // if(e.response.status == 401){
@@ -332,7 +328,7 @@ setanothername(){
   }catch(e){
     discernType= "";
   }
- 
+
   axios.post(`${environment.API_URL}/v1/batchDiscern/insertSampleOssType?standardName=${this.winboxData.modalData.detail.standardName}&discernName=${this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue]}&discernType=${discernType}`, {
     standardName:this.winboxData.modalData.detail.standardName,
     discernName:this.winboxData.modalData.detail.discernName[this.winboxData.modalData.radioValue],
@@ -385,7 +381,7 @@ closeTable(){
     try{
       $("#dataContent>canvas").remove()
     }catch(e){}
-   
+
     var renderer = new FSS.CanvasRenderer();
     var scene = new FSS.Scene();
     var light = new FSS.Light('#192539', '#416296');
@@ -412,8 +408,8 @@ closeTable(){
       light.setPosition(300*Math.sin(now*0.001), 200*Math.cos(now*0.0005), 60);
       renderer.render(scene);
       requestAnimationFrame(animate);
-     
-  
+
+
     }
 
     initialise();
@@ -424,7 +420,7 @@ closeTable(){
   }
 
 
-  
+
 
   starCanvas(){
     setTimeout(()=>{
@@ -432,12 +428,12 @@ closeTable(){
       ctx:any = canvas.getContext('2d'),
       w:any = canvas.width = window.innerWidth,
       h:any = canvas.height = window.innerHeight,
-    
+
       hue = 217,
       stars = [],
       count = 0,
       maxStars = 1300;//星星数量
-    
+
     var canvas2:any = document.createElement('canvas'),
      ctx2 = canvas2.getContext('2d');
     canvas2.width = 100;
@@ -448,90 +444,90 @@ closeTable(){
     gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
     gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
     gradient2.addColorStop(1, 'transparent');
-    
+
     ctx2.fillStyle = gradient2;
     ctx2.beginPath();
     ctx2.arc(half, half, half, 0, Math.PI * 2);
     ctx2.fill();
-    
+
     // End cache
-    
+
     function random(...args: any){
-    
-      
+
+
       if (args.length < 2) {
         args[1] = args[0];
         args[0] = 0;
       }
-    
+
       if (args[0] > args[1]) {
         var hold = args[1];
         args[1] = args[0];
         args[0] = hold;
       }
-    
+
       return Math.floor(Math.random() * (args[1] - args[0] + 1)) + args[0];
     }
-    
+
     function maxOrbit(x:any, y:any):any {
       var max = Math.max(x, y),
         diameter = Math.round(Math.sqrt(max * max + max * max));
       return diameter / 2;
       //星星移动范围，值越大范围越小，
     }
-    
+
     var Star:any = function() {
-    
+
       this.orbitRadius = random(maxOrbit(w, h));
-      this.radius = random(60, this.orbitRadius) / 8; 
+      this.radius = random(60, this.orbitRadius) / 8;
       //星星大小
       this.orbitX = w / 2;
       this.orbitY = h / 2;
       this.timePassed = random(0, maxStars);
-      this.speed = random(this.orbitRadius) / 500000; 
+      this.speed = random(this.orbitRadius) / 500000;
       //星星移动速度
       this.alpha = random(2, 10) / 10;
-    
+
       count++;
       stars[count] = this;
     }
-    
+
     Star.prototype.draw = function() {
       var x = Math.sin(this.timePassed) * this.orbitRadius + this.orbitX,
         y = Math.cos(this.timePassed) * this.orbitRadius + this.orbitY,
         twinkle = random(10);
-    
+
       if (twinkle === 1 && this.alpha > 0) {
         this.alpha -= 0.05;
       } else if (twinkle === 2 && this.alpha < 1) {
         this.alpha += 0.05;
       }
-    
+
       ctx.globalAlpha = this.alpha;
       ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
       this.timePassed += this.speed;
     }
-    
+
     for (var i = 0; i < maxStars; i++) {
       new Star();
     }
-    
+
     function animation() {
       ctx.globalCompositeOperation = 'source-over';
       ctx.globalAlpha = 0.5; //尾巴
       ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 2)';
       ctx.fillRect(0, 0, w, h)
-    
+
       ctx.globalCompositeOperation = 'lighter';
       for (var i = 1, l = stars.length; i < l; i++) {
         stars[i].draw();
       };
-    
+
       window.requestAnimationFrame(animation);
     }
-    
+
     animation();
-      
+
 
 
     },500)
@@ -540,8 +536,8 @@ closeTable(){
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    
-  
+
+
     this.starCanvas();
 
     try{
@@ -564,7 +560,7 @@ closeTable(){
 
   }
 
-  
+
 
 
   liMouseLeave(key){
@@ -590,7 +586,7 @@ closeTable(){
 
 toShow(key){
 
- 
+
 
     if(key == 1){
 
@@ -619,20 +615,20 @@ toShow(key){
     this.borderShow = key
       this.navArr.forEach((x:any)=>{
         let incon = x.icon
-        
+
         if(incon.split(".")[0].endsWith("1")){
           let s = incon.split(".")[0]
           x.icon = s.substring(0,s.length-1)+"."+incon.split(".")[1]
         }
       })
-     
+
       let selectIcon = this.navArr[key].icon
       if(!selectIcon.split(".")[0].endsWith("1")){
         let s1 = selectIcon.split(".")[0]
         this.navArr[key].icon = s1+"1."+selectIcon.split(".")[1]
       }
 
-     
+
   }
 
   fileUpload(evt: any): void {
@@ -771,7 +767,7 @@ grid: {
           itemStyle: {
             normal: {
               barBorderRadius:15,
-              
+
               label: {
                 show: false,
                 position: 'insideRight'
@@ -835,7 +831,7 @@ grid: {
           itemStyle: {
             normal: {
               barBorderRadius:15,
-              
+
               label: {
                 show: false,
                 position: 'insideRight'
@@ -881,7 +877,7 @@ let fileBig = false
 
           if(fileList[i].size > 52428800){
             fileBig = true
-           
+
 
           }else{
 
@@ -917,8 +913,8 @@ let fileBig = false
           }
 
       }else if(fileList[0].type.split('/')[0] == 'image' && this.borderShow == 5){
-      
-     
+
+
         if(typeArr.length>1){
 
           alert("单次最多上传1张")
@@ -928,7 +924,7 @@ let fileBig = false
         for(let i=0;i<fileList.length;i++){
           formData.append('files', fileList[i]);
         }
-        
+
         this.router.navigate(['/detect']);
           this.uploadWithFiles(formData);
         }
@@ -990,9 +986,9 @@ isAllEqual(array:[string],fileListArr2):any{
 
           var lastName = fileListArr2[index].name.split(".")[fileListArr2[index].name.split(".").length-1]
             // if(fileListArr2[index].type.split("/")[1] == 'gif'){
-              
+
             //     return true;
- 
+
             // }
             if(lastName == 'gif' || lastName == 'jfif'){
               return true;
@@ -1099,7 +1095,7 @@ searchImg(){
   detectHotspot(ossKey) {
     this.uploadWithUrl(this.ossPathPipe.transform(ossKey));
   }
-  
+
 
   loadTypeTrainCount() {
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/getTypeTrainCount`).subscribe((result: HttpResult<any>) => {
@@ -1128,14 +1124,14 @@ searchImg(){
   // }
 
   deatailFormAction(data,key){
-    
+
     if($(".modal-detaile").css("display") == 'none'){
         $(".modal").animate({left:'-200px'},200)
         $(".modal-detaile").css("display","block")
         $(".modal-detaile").animate({right:'-400px'},200)
         this.batchDiscernById(data.id)
     }else{
-      
+
       this.batchDiscernById(data.id)
       }
       setTimeout(()=>{
@@ -1165,7 +1161,7 @@ searchImg(){
           this.winboxData.loding = true
         }
         this.requsetProgress1()
-       
+
        })
       }else{
         axios.post(`${environment.API_URL}/v1/label_task/resumeDistinguishBatchImg?id=${id}`,{id},{
@@ -1180,17 +1176,17 @@ searchImg(){
             this.winboxData.loding = true
           }
           this.requsetProgress1()
-       
+
         })
 
       }
-  
-  
-     
+
+
+
     }
 
     overFenxi(){
-     
+
       clearInterval(this.winboxData.interVal)
       let id = this.winboxData.tastkId
       axios.post(`${environment.API_URL}/v1/label_task/stopDistinguishBatchImg?id=${id}`,{},{ headers: {
@@ -1200,8 +1196,8 @@ searchImg(){
       .then(data=>{
         if(data.data.code == 1){
           this.winboxData.loding = true
-         
-      
+
+
         }
         this.requsetProgress1()
       })
@@ -1209,14 +1205,14 @@ searchImg(){
     }
 
 fenxi(){
- 
+
     axios.get(`${environment.API_URL}/v1/label_task/checkBuildTask`,{
       headers: {
         'Authorization':'Bearer '+localStorage.getItem('Bearer'),
         'TR-Role': 'TR-User'
       }
     })
-    .then(data=>{ 
+    .then(data=>{
       this.winboxData.loding = true
       clearInterval(this.winboxData.interVal)
       let requestData = JSON.parse(data.data.data)
@@ -1249,7 +1245,7 @@ fenxi(){
             $("#dataContent .historyAna").animate({'top':'80px'}, 500 );
           }
         })
-      
+
       }
     })
     .catch(e=>{
@@ -1331,7 +1327,7 @@ if(this.winboxData.historyPageIndex*10 >=total){
             'TR-Role': 'TR-User'
           }
         })
-        .then(data=>{ 
+        .then(data=>{
           clearInterval(this.winboxData.interVal)
           let requestData = JSON.parse(data.data.data)
           if(requestData.flag != "0000"){
@@ -1339,7 +1335,7 @@ if(this.winboxData.historyPageIndex*10 >=total){
             this.winboxData.tastkId = requestData.list[0].id
             this.requsetProgress1()
           }else{
-            this.winboxData.tastkId = ''   
+            this.winboxData.tastkId = ''
             this.winboxData.fenxiButtonisShow = true
           }
         })
@@ -1353,7 +1349,7 @@ if(this.winboxData.historyPageIndex*10 >=total){
 requsetProgress1(){
   this.winboxData.interVal =  setInterval(()=>{
       if(this.winboxData.tastkId){
-        
+
         axios.post(`${environment.API_URL}/v1/label_task/queryProgressOfBatchImg?id=${this.winboxData.tastkId}`, {
           id: this.winboxData.tastkId
         },{
@@ -1427,7 +1423,7 @@ requsetProgress1(){
 
 
   setwinBoxCss(){
-    
+
     $("#dataContent").css({
       width:"100%",
       height:"100%",
@@ -1445,7 +1441,7 @@ requsetProgress1(){
     })
 
     $(".wb-full").css("display","none")
-   
+
 
     // this.dataAnalysis = "存量数据 "
     // this.dataAnaStatus = '分析中'
@@ -1458,7 +1454,7 @@ requsetProgress1(){
     var myChart = echarts.init(chartDom);
     var option;
     option = {
-   
+
       title:{
         text: '最\n近\n一\n周\n分\n析\n次\n数',
         textStyle: {
@@ -1470,7 +1466,7 @@ requsetProgress1(){
         },
         left:0, // 距离 left top right bottom
         top:'5'
-     
+
       },
             tooltip: {
         trigger: 'axis',
@@ -1517,12 +1513,12 @@ requsetProgress1(){
           data: [820, 932, 901, 934, 1290, 1330, 1320],
           type: 'line',
           smooth: true,
-          itemStyle : {  
-            normal : {  
-                lineStyle:{  
-                    color:'#00a0e9'  
-                }  
-            }  
+          itemStyle : {
+            normal : {
+                lineStyle:{
+                    color:'#00a0e9'
+                }
+            }
         },
         }
       ]
@@ -1575,7 +1571,7 @@ $("#CorrectionErrorBox > div.wb-header > div.wb-icon > span.wb-close").click()
         })
     },
   });
-  
+
   $("#CorrectionErrorBox").css({
     'z-index': '999'
   })
