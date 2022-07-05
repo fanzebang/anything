@@ -11,7 +11,7 @@ import axios from 'axios';
 import { DataManageService } from '../data-manage.service';
 import { de } from 'date-fns/locale';
 declare var $:any
-declare var AILabel:any;
+declare var AILabel2:any;
 @Component({
   templateUrl: './detail.data-manage.component.html',
   styleUrls: ['./detail.data-manage.component.less']
@@ -160,7 +160,7 @@ public  mutliple;
 
       $("#detailLabel").empty();
      
-      this.aiLabel= new AILabel.Map(`detailLabel`,{
+      this.aiLabel= new AILabel2.Map(`detailLabel`,{
         center: {x: imgWidth/2, y: imgHeight/2}, // 为了让图片居中
         zoom: labelZoom,
         mode: 'RECT', // 绘制线段
@@ -176,7 +176,7 @@ public  mutliple;
 
      
 
-    var imageLayer = new AILabel.Layer.Image(
+    var imageLayer = new AILabel2.Layer.Image(
               'img', // id
               {
                 src: imgUrl,
@@ -193,11 +193,11 @@ public  mutliple;
          );
   that.aiLabel.addLayer(imageLayer)
 
-  this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
+  this.gfeatureLayer = new AILabel2.Layer.Feature(`feature`, {name: '第一个矢量图层'}, {zIndex:19});
 
   this.aiLabel.addLayer(this.gfeatureLayer)
 
-  var gFirstTextLayer = new AILabel.Layer.Text(
+  var gFirstTextLayer = new AILabel2.Layer.Text(
     'first-layer-text', // id
     {name: '第一个文本图层'}, // props
     {zIndex: 12, opacity: 1} // style
@@ -220,7 +220,7 @@ if (!coordinateData.length){coordinateData = [coordinateData] }
         testData.shape.width = testData.shape.width *1* this.mutliple
         testData.shape.x = testData.shape.x *1* this.mutliple
         testData.shape.y = testData.shape.y *1* this.mutliple
-        feature = new AILabel.Feature.Rect(
+        feature = new AILabel2.Feature.Rect(
         testData.id, 
         testData.shape, 
         testData.props, 
@@ -239,7 +239,7 @@ for (let index = 0; index < testData.shape.points.length; index++) {
   element.x =  element.x *1* this.mutliple
   element.y =  element.y *1* this.mutliple
 }   
-      feature = new AILabel.Feature.Polygon(
+      feature = new AILabel2.Feature.Polygon(
         testData.id, 
         testData.shape, 
         testData.props, 
@@ -251,7 +251,7 @@ for (let index = 0; index < testData.shape.points.length; index++) {
     that.gfeatureLayer.addFeature(feature);
 
     var {x: ltx, y: lty} = feature.shape;
-    var gFirstText = new AILabel.Text(
+    var gFirstText = new AILabel2.Text(
       testData.props.textId, // id
       {text:text, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
       {name: '第一个文本对象'}, // props
