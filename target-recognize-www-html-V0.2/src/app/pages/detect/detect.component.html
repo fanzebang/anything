@@ -150,8 +150,8 @@
         <!-- <div class="content-title matching">匹配结果</div> -->
 
         <div class="content-item flex-column" id="ifmBox">
-            <iframe src="" frameborder="0" [hidden]="!isSlectTab" class="result" ></iframe>
-            <iframe src="" frameborder="0" [hidden]="isSlectTab" class="result"></iframe>
+            <iframe src="" frameborder="0" *ngIf="!isSlectTab" class="result" ></iframe>
+            <iframe src="" frameborder="0" *ngIf="isSlectTab" class="result"></iframe>
         </div>
 
       </div>
