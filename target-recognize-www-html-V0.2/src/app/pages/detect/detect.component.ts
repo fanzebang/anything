@@ -159,19 +159,11 @@ export class DetectComponent implements OnInit, OnDestroy {
         }
       });
    }
-
-
-
-
-
-
-
-
+   
   changeSelect(){
     this.isSlectTab = false  }
   changeSelect1(){
     this.isSlectTab = true
-
   }
 
   ngOnInit(): void {
@@ -811,7 +803,6 @@ drawTargetsPolygon(targetJson: Array<{
   kmsSearch(historyId: string, name: string): void {
     const params = new HttpParams().append('historyId', historyId).append('name', name);
     this.http.get(`${environment.API_URL}/v1/kms/detect-kms`, {params}).subscribe((result: any) => {
- 
       this.kms = result.data;
       $("#ifmBox iframe").eq(1).attr("src","")
       $("#ifmBox iframe").eq(0).attr("src","")
