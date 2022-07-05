@@ -23,7 +23,6 @@ creatNzModal(that:any,idx:any,fileSample:any){
       nzOnOk: (markSampleTreeComponent: MarkSampleTreeComponent) => {
         let sampleId 
         let classValue
-
         if(markSampleTreeComponent.selectedSampleId){
           sampleId= markSampleTreeComponent.selectedSampleId;
           classValue = markSampleTreeComponent.classValue
@@ -32,6 +31,7 @@ creatNzModal(that:any,idx:any,fileSample:any){
         }
 
         if (sampleId && markSampleTreeComponent.nzTreeComponent && this.isTree){
+          console.log("aaaa")
           const samplePath = markSampleTreeComponent.selectedSamplePath;
           that.drawingRects[idx].sampleId = sampleId;
           that.drawingRects[idx].samplePath = samplePath.split("/")[samplePath.split("/").length -2];
@@ -43,9 +43,15 @@ creatNzModal(that:any,idx:any,fileSample:any){
               }
           })
           that.gMapArr.layers[1].features[idx].props.name = fileSample.sampleId  //保存分类id到ailabel
+         
+         var textId = "label-text-id-"+that.gMapArr.layers[1].features[idx].id
          // 删除对应text
-           that.drawingRects[idx].id = markSampleTreeComponent.selectedSampleId
-          that.gMapArr.layers[2].removeTextById(fileSample.markData.relatedTextId[idx]);
+        //  console.log( that.drawingRects)
+         that.drawingRects.map(x=>{
+            if(x.relatedTextId == textId) x.id = markSampleTreeComponent.selectedSampleId
+         })
+          //  that.drawingRects[idx].id = markSampleTreeComponent.selectedSampleId
+          that.gMapArr.layers[2].removeTextById(textId);
          
         //添加对应text
           const {x: ltx, y: lty} = arr[idx].shape;
@@ -58,6 +64,7 @@ creatNzModal(that:any,idx:any,fileSample:any){
         );
         that.gMapArr.layers[2].addText(gFirstText);
         }else{
+          console.log("bbbb")
           var samplePath:any;
           let ix:any = 0
           // const sampleId = markSampleTreeComponent.classListInfo[0].id;
@@ -71,21 +78,20 @@ creatNzModal(that:any,idx:any,fileSample:any){
           that.drawingRects[idx].samplePath = samplePath
           var albelText =  that.drawingRects[idx].samplePath
           let arr = []
-    
+
           $.each(that.gMapArr.layers[1].features,function(i,n){
               if(n.props.name != "uninterested"){
-                
                 arr.push(n)
               }
           })
+
           that.gMapArr.layers[1].features[idx].props.name = fileSample.sampleId //保存分类id到ailabel
-        
            // 删除对应text
           markSampleTreeComponent.classListInfo[ix].relatedTextId = fileSample.markData.relatedTextId 
           fileSample.markData = markSampleTreeComponent.classListInfo[ix]
           that.drawingRects[idx].id = fileSample.markData.id
           that.gMapArr.layers[2].removeTextById(fileSample.markData.relatedTextId[idx]); 
-          
+
         //添加对应text
           const {x: ltx, y: lty} = arr[idx].shape;
           const relatedTextId = `label-text-id-${arr[idx].id}`;
@@ -96,8 +102,9 @@ creatNzModal(that:any,idx:any,fileSample:any){
             {fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff'} // style
         );
         that.gMapArr.layers[2].addText(gFirstText);
-      
+
         }
+
         that.listenKeyboard();
         that.keyBoardOfFeature()
         that.listenKeyboard2()

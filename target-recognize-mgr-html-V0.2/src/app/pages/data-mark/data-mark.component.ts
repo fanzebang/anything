@@ -85,7 +85,6 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
   }
 
   private reqMarkCountData(){
-
     axios.post(`${environment.API_URL}/v1/mark-detect/markStatistics`,{},{
       headers: {
         'Authorization':'Bearer '+localStorage.getItem('Bearer'),
@@ -240,7 +239,6 @@ export class DataMarkComponent implements OnInit, AfterViewInit {
 
 
   loadSampleFiles() {
-
     this.http.get(`${environment.API_URL}/v1/sample-oss-file/allot`).subscribe((result: HttpResult<any>) => {
       if (HttpResult.succeed(result.code)) {
         this.allotFiles = result.data.map((file) => {
@@ -462,10 +460,6 @@ this.loadSy()
     
        
       })
-  
-    
-  
-  
        // 添加feature标签名
        const {x: ltx, y: lty} = data;
        const gFirstText = new AILabel.Text(
@@ -510,8 +504,9 @@ this.loadSy()
        length =  0
        text = arr[length]
       }
-      
-  
+
+
+      console.log(that.gMapArr)
       if(!that.uninterested){
         axios.post(`${environment.API_URL}/v1/sample-oss-file/relationQueryCatalogue?sampleTypeName=${text}`,{sampleTypeName:text},{
           headers: {
@@ -807,9 +802,7 @@ removeImg(){
   editRect(idx: number,fileSample:any) {
     this.drawingRects[idx].markData.rects = []
     localStorage.setItem("markData",JSON.stringify(this.drawingRects[idx].markData))
-    //oo
     this.gMapArr.getActiveFeature()
-    // this.keyboardSubscription.unsubscribe()
     this.removeKeyboard() 
     this.dataMarkService.creatNzModal(this,idx,fileSample)
   }
@@ -990,12 +983,11 @@ featureActive(key){
     this.lableAloneStatus = true
     this.gMapUnactive()
     if(!this.keyboarChangeFeature || this.keyboarChangeFeature.closed)  this.keyBoardOfFeature()
-    // if(this.keyboardVerifySubscription2) this.keyboardVerifySubscription2.unsubscribe()
     this.selectClassIndex1 = key
-    // this.keyBoardOfFeature()
     for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
       let rectFeature = this.gMapArr.layers[1].features[index];
-      let textFeature = this.gMapArr.layers[2].texts[index];
+      let textFeature = this.gMapArr.layers[2].getTextById("label-text-id-"+rectFeature.id);
+      console.log(textFeature,rectFeature)
       if(rectFeature.props.name != "uninterested"){
       if(key != index){
         rectFeature.style.stroke = false
