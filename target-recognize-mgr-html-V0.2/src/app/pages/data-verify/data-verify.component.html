@@ -28,7 +28,7 @@
           <th>待审核数量</th>
           <th>标注时间</th>
           <th>总数</th>
-          <th>审核状态</th>
+          <th>审核进度</th>
          
         </tr>
         </thead>
@@ -48,7 +48,7 @@
               /
               <span>{{ data.countFile}}</span>
               -->
-              <nz-progress [nzPercent]="data.checkFile * 100 / data.countFile"></nz-progress>
+              <nz-progress [nzPercent]="(100 -(data.unchedkFile/data.countNum) *100) | taskProgress "></nz-progress>
             </td>
           </tr>
           <tr [nzExpand]="expandSet.has(data.createdBy)">

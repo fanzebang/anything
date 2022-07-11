@@ -86,7 +86,6 @@ OssPathPipe.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefinePipe"
     }], null, null); })();
 class taskProgress {
     transform(taskProgress) {
-        console.log(taskProgress);
         return taskProgress.toFixed(2);
     }
 }

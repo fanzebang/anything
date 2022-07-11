@@ -535,6 +535,7 @@ class DataMarkComponent {
                             length = 0;
                             text = arr[length];
                         }
+                        console.log(that.gMapArr);
                         if (!that.uninterested) {
                             axios__WEBPACK_IMPORTED_MODULE_4___default.a.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].API_URL}/v1/sample-oss-file/relationQueryCatalogue?sampleTypeName=${text}`, { sampleTypeName: text }, {
                                 headers: {
@@ -796,9 +797,7 @@ class DataMarkComponent {
     editRect(idx, fileSample) {
         this.drawingRects[idx].markData.rects = [];
         localStorage.setItem("markData", JSON.stringify(this.drawingRects[idx].markData));
-        //oo
         this.gMapArr.getActiveFeature();
-        // this.keyboardSubscription.unsubscribe()
         this.removeKeyboard();
         this.dataMarkService.creatNzModal(this, idx, fileSample);
     }
@@ -957,12 +956,11 @@ class DataMarkComponent {
         this.gMapUnactive();
         if (!this.keyboarChangeFeature || this.keyboarChangeFeature.closed)
             this.keyBoardOfFeature();
-        // if(this.keyboardVerifySubscription2) this.keyboardVerifySubscription2.unsubscribe()
         this.selectClassIndex1 = key;
-        // this.keyBoardOfFeature()
         for (let index = 0; index < this.gMapArr.layers[1].features.length; index++) {
             let rectFeature = this.gMapArr.layers[1].features[index];
-            let textFeature = this.gMapArr.layers[2].texts[index];
+            let textFeature = this.gMapArr.layers[2].getTextById("label-text-id-" + rectFeature.id);
+            console.log(textFeature, rectFeature);
             if (rectFeature.props.name != "uninterested") {
                 if (key != index) {
                     rectFeature.style.stroke = false;
@@ -1264,6 +1262,7 @@ class DataMarkService {
                     return this.nzModal.openModals[0].triggerCancel();
                 }
                 if (sampleId && markSampleTreeComponent.nzTreeComponent && this.isTree) {
+                    console.log("aaaa");
                     const samplePath = markSampleTreeComponent.selectedSamplePath;
                     that.drawingRects[idx].sampleId = sampleId;
                     that.drawingRects[idx].samplePath = samplePath.split("/")[samplePath.split("/").length - 2];
@@ -1275,9 +1274,15 @@ class DataMarkService {
                         }
                     });
                     that.gMapArr.layers[1].features[idx].props.name = fileSample.sampleId; //保存分类id到ailabel
+                    var textId = "label-text-id-" + that.gMapArr.layers[1].features[idx].id;
                     // 删除对应text
-                    that.drawingRects[idx].id = markSampleTreeComponent.selectedSampleId;
-                    that.gMapArr.layers[2].removeTextById(fileSample.markData.relatedTextId[idx]);
+                    //  console.log( that.drawingRects)
+                    that.drawingRects.map(x => {
+                        if (x.relatedTextId == textId)
+                            x.id = markSampleTreeComponent.selectedSampleId;
+                    });
+                    //  that.drawingRects[idx].id = markSampleTreeComponent.selectedSampleId
+                    that.gMapArr.layers[2].removeTextById(textId);
                     //添加对应text
                     const { x: ltx, y: lty } = arr[idx].shape;
                     const relatedTextId = `label-text-id-${arr[idx].id}`;
@@ -1289,6 +1294,7 @@ class DataMarkService {
                     that.gMapArr.layers[2].addText(gFirstText);
                 }
                 else {
+                    console.log("bbbb");
                     var samplePath;
                     let ix = 0;
                     // const sampleId = markSampleTreeComponent.classListInfo[0].id;

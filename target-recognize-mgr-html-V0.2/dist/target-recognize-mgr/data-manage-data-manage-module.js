@@ -5724,7 +5724,7 @@ class DetailDataManageComponent {
             }
             // let coordinateData1 = coordinateData.data
             $("#detailLabel").empty();
-            this.aiLabel = new AILabel.Map(`detailLabel`, {
+            this.aiLabel = new AILabel2.Map(`detailLabel`, {
                 center: { x: imgWidth / 2, y: imgHeight / 2 },
                 zoom: labelZoom,
                 mode: 'RECT',
@@ -5737,7 +5737,7 @@ class DetailDataManageComponent {
                 zoomMax: imgWidth * 10,
                 zoomMin: imgWidth / 10
             });
-            var imageLayer = new AILabel.Layer.Image('img', // id
+            var imageLayer = new AILabel2.Layer.Image('img', // id
             {
                 src: imgUrl,
                 width: imgWidth,
@@ -5749,9 +5749,9 @@ class DetailDataManageComponent {
                 },
             }, { name: '第一个图片图层' }, { zIndex: 1 });
             that.aiLabel.addLayer(imageLayer);
-            this.gfeatureLayer = new AILabel.Layer.Feature(`feature`, { name: '第一个矢量图层' }, { zIndex: 19 });
+            this.gfeatureLayer = new AILabel2.Layer.Feature(`feature`, { name: '第一个矢量图层' }, { zIndex: 19 });
             this.aiLabel.addLayer(this.gfeatureLayer);
-            var gFirstTextLayer = new AILabel.Layer.Text('first-layer-text', // id
+            var gFirstTextLayer = new AILabel2.Layer.Text('first-layer-text', // id
             { name: '第一个文本图层' }, // props
             { zIndex: 12, opacity: 1 } // style
             );
@@ -5775,7 +5775,7 @@ class DetailDataManageComponent {
                     testData.shape.width = testData.shape.width * 1 * this.mutliple;
                     testData.shape.x = testData.shape.x * 1 * this.mutliple;
                     testData.shape.y = testData.shape.y * 1 * this.mutliple;
-                    feature = new AILabel.Feature.Rect(testData.id, testData.shape, testData.props, testData.style);
+                    feature = new AILabel2.Feature.Rect(testData.id, testData.shape, testData.props, testData.style);
                 }
                 else { // if(testData.type == "POLYGON")
                     // testData.shape.height = testData.shape.height *1* this.mutliple
@@ -5788,11 +5788,11 @@ class DetailDataManageComponent {
                         element.x = element.x * 1 * this.mutliple;
                         element.y = element.y * 1 * this.mutliple;
                     }
-                    feature = new AILabel.Feature.Polygon(testData.id, testData.shape, testData.props, testData.style);
+                    feature = new AILabel2.Feature.Polygon(testData.id, testData.shape, testData.props, testData.style);
                 }
                 that.gfeatureLayer.addFeature(feature);
                 var { x: ltx, y: lty } = feature.shape;
-                var gFirstText = new AILabel.Text(testData.props.textId, // id
+                var gFirstText = new AILabel2.Text(testData.props.textId, // id
                 { text: text, position: { x: ltx, y: lty }, offset: { x: 0, y: 0 } }, // shape, 左上角
                 { name: '第一个文本对象' }, // props
                 { fillStyle: '#15a0ff', strokeStyle: '#f0f8ff00', background: true, globalAlpha: 1, fontColor: '#fff' } // style
