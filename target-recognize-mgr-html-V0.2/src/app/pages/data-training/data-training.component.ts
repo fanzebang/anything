@@ -367,16 +367,11 @@ export class DataTrainingComponent implements OnInit {
 
 
 
-
-
-
-
-
-
   }
 
 
   loadTraining() {
+
     let params;
     //不分页
     if (this.status === 'END') {
@@ -386,6 +381,7 @@ export class DataTrainingComponent implements OnInit {
     }else{
        params = new HttpParams().append('status', this.status);
     }
+
     if(this.status != 'STATUS'){
       this.http.get(`${environment.API_URL}/v1/data_train/`, {params}).subscribe((result: HttpResult<ApiPage<DataTrain>>) => {
         if (HttpResult.succeed(result.code)) {
@@ -393,13 +389,15 @@ export class DataTrainingComponent implements OnInit {
           this.listOfData = result.data.records;
           this.dataTotal = result.data.total;
           this.pageIndex = result.data.current;
+
           if(this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END'){
               this.loadSelectData(this.listOfData);
+              
           }
             this.listOfData2 = this.listOfData
           }
 
-          if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
+          if(this.listOfData.length>0 && !this.dataTrain) this.tableClick( this.listOfData[0].id,"handClick" )
 
         }
       });
@@ -434,6 +432,8 @@ export class DataTrainingComponent implements OnInit {
               if (HttpResult.succeed(result.code)){
                 lastClass[element.id].push(result.data.sampleTypeName)
 
+
+
               }
             });
         }
@@ -453,14 +453,12 @@ export class DataTrainingComponent implements OnInit {
                 }
               }
             }
-          },200)
+          },400)
         }
 
-
+        
       }
-
-
-
+  
   }
   // 暂停
   endTask() {

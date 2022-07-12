@@ -817,17 +817,18 @@ removeImg(){
   autoMark() {
 
     if (this.currentAllotFile) {
-
-  
-
       this.autoMarkRequest().subscribe((result: HttpResult<any>) => {
         if (HttpResult.succeed(result.code)) {
           const marks = result.data;
           const rects = []
           if(marks.length == 0){
-            this.nzMessage.error("无法识别");
+
+            this.nzMessage.error("请求失败，识别失败");
+
           }else{
-            this.nzMessage.success("识别成功");
+
+            let flag = true
+
             for (let i = 0; i < marks.length; i++) {
               rects.push({
                 startX: Math.floor(marks[i].markPolygon.minX * this.currentAllotFile.scaleRatio),
@@ -854,6 +855,8 @@ removeImg(){
               this.gfeatureLayer.addFeature(feature)
               const {x: ltx, y: lty} = feature.shape;
        
+              if (marks[i].markPolygon.categoryCn == "未识别") flag = false;
+
               const gFirstText = new AILabel.Text(
                 relatedTextId, // id
                 {text:  marks[i].markPolygon.categoryCn, position: {x: ltx, y: lty}, offset: {x: 0, y: 0}}, // shape, 左上角
@@ -870,6 +873,13 @@ removeImg(){
                     })
                    
             }
+
+            if(flag){
+              this.nzMessage.success("请求成功，识别成功");
+            }else{
+              this.nzMessage.success("请求成功，识别失败");
+            }
+
           }
         }
       });

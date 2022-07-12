@@ -1512,7 +1512,7 @@ class DataTrainingComponent {
                             }
                         }
                     }
-                }, 200);
+                }, 400);
             }
         }
     }
