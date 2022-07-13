@@ -28,6 +28,7 @@ export class SsoComponent implements OnInit {
 
       localStorage.setItem('sampleResourcePath', fragments1[1]);
       localStorage.setItem('Bearer', fragments1[0]);
+      localStorage.setItem('targetRecognizePath', fragments1[2]);
       this.store.dispatch(new LoginAction(fragments1[0])).subscribe(() => {
         this.router.navigate(['/console/data-manage']);
       });

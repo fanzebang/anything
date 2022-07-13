@@ -437,7 +437,6 @@ export class DataTrainingComponent implements OnInit {
         }
 
         if(index == (listOfData.length-1)) {
-      
           setTimeout(()=>{
             for (const key in lastClass) {
               var selectString =lastClass[key].sort().join(",")
@@ -451,8 +450,8 @@ export class DataTrainingComponent implements OnInit {
                 }
               }
             }
-            console.log(this.selectList)
-          },listOfData.length*10)
+           
+          },400)
         }
       }
   }

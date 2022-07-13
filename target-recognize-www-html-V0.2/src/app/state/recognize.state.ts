@@ -21,21 +21,13 @@ export class RecognizeState {
   recognize(ctx: StateContext<RecognizeStateModel>, action: RecognizeAction): void {
     console.log('RecognizeAction is :', action);
     let detectResult =  JSON.parse(localStorage.getItem("detectResult"))
-
-    try{
-      detectResult.push(action.recognizeJson)
-    }catch(e){
-      setTimeout(()=>{
-        detectResult.push(action.recognizeJson)
-      },1000)
-      
-    }
-   
-    // localStorage.setItem("detectResult",JSON.stringify(detectResult))
+    detectResult.push(action.recognizeJson)
+    localStorage.setItem("detectResult",JSON.stringify(detectResult))
     const state = ctx.getState();
     ctx.setState({
       ...state,
       recognizeJson: action.recognizeJson
     })
+   
   }
 }

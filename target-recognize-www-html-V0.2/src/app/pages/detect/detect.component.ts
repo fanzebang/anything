@@ -191,13 +191,21 @@ export class DetectComponent implements OnInit, OnDestroy {
       }
     });
   
-    this.recognizeSubscription = this.recognize$.subscribe((recognizeStateModel) => {
-      if (recognizeStateModel == null || recognizeStateModel.recognizeJson == null) {
-        return;
-      }
+   
+
+  }
+
+ngAfterViewInit(): void{
+
+  this.recognizeSubscription = this.recognize$.subscribe((recognizeStateModel) => {
+
+    if (recognizeStateModel == null || recognizeStateModel.recognizeJson == null) {
+      
+      return;
+
+    }
 
       const recognizeData = JSON.parse(recognizeStateModel.recognizeJson) as DetectHistory;
-
       for (let i = 0, len = this.detectHistory.length; i < len; i++) {
         if (recognizeData.id === this.detectHistory[i].id) {
           this.detectHistory[i] = recognizeData;
@@ -208,12 +216,11 @@ export class DetectComponent implements OnInit, OnDestroy {
         this.currentDetectResult = recognizeData;
         this.showDetectResult();
       }
-    });
 
-  }
 
-ngAfterViewInit(): void{
-  
+    
+  });
+
 
 }
 
@@ -241,7 +248,7 @@ ngAfterViewInit(): void{
       params
     }).subscribe((result: HttpResult<ApiPage<DetectHistory>>) => {
       if (HttpResult.succeed(result.code)) {
-       
+      
         this.detectHistory = result.data.records;
         this.total = result.data.total;
         if (this.total > 0) {
@@ -323,24 +330,18 @@ borderShowHidden(detectResult){
 
   //范
   showDetectResult(): void {
- 
     this.isPic = true
     clearInterval(this.detectingInterval);
-    // console.log(this.currentDetectResult,this.searchClass)
-    if(this.currentDetectResult.sampleTypeName) 
-    {
-
+    if(this.currentDetectResult.sampleTypeName){
       this.borderShowHidden(this.currentDetectResult)
       if(this.searchClass == 5){
         $(".content-right").hide();
       }
-    
     } 
     this.drawMarkedLines(this.currentDetectResult);
     this.drwReact1(this.currentDetectResult.targetJson)
 
     if (this.currentDetectResult.targetJson.length != 0 ) {
-
       this.drawTargetsPolygon(this.currentDetectResult.targetJson);
 
     }
@@ -519,6 +520,7 @@ pageIndexChange(){
     let imgUrl =`${localStorage.getItem('targetRecognizePath')}/` +  this.currentDetectResult.ossKey
     let img = new Image();
     img.src = imgUrl
+ 
     this.kmsSearch(this.currentDetectResult.id + '', selectedTargetPolygonArr[0].categoryCn);
     this.selectedTargetPolygon =  this.currentDetectResult.targetJson[0]
     this.getLikeImg()

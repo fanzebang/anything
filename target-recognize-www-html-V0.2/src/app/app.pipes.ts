@@ -6,7 +6,6 @@ import axios from "axios";
 @Pipe({name: 'ossPath'})
 export class OssPathPipe implements PipeTransform {
   transform(ossKey: any): string {
-
     return `${localStorage.getItem('targetRecognizePath')}/` + ossKey;
   }
 }
@@ -15,7 +14,6 @@ export class OssPathPipe implements PipeTransform {
 @Pipe({name: 'sampleOssPath'})
 export class SampleOssPathPipe implements PipeTransform {
   transform(ossKey: string): string {
-   
     return `${localStorage.getItem('sampleResourcePath')}/` + ossKey;
   }
 }
@@ -54,10 +52,8 @@ export class AdminUrlPipe implements PipeTransform {
     const bearer = localStorage.getItem("Bearer");
 
     const sampleResourcePath = localStorage.getItem("sampleResourcePath")
-
-    return `${localStorage.getItem("mgrPath")}#${bearer}#${sampleResourcePath}`;
-
-    // return `http://localhost:4201/sso#${bearer}#${sampleResourcePath}`;
+    const targetRecognizePath = localStorage.getItem("targetRecognizePath")
+    return `${localStorage.getItem("mgrPath")}#${bearer}#${sampleResourcePath}#${targetRecognizePath}`;
   }
 }
 

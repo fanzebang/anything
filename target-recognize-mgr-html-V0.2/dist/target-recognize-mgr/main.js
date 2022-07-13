@@ -471,6 +471,7 @@ class SsoComponent {
             var fragments1 = fragments.split("#");
             localStorage.setItem('sampleResourcePath', fragments1[1]);
             localStorage.setItem('Bearer', fragments1[0]);
+            localStorage.setItem('targetRecognizePath', fragments1[2]);
             this.store.dispatch(new _state_login_action__WEBPACK_IMPORTED_MODULE_1__["LoginAction"](fragments1[0])).subscribe(() => {
                 this.router.navigate(['/console/data-manage']);
             });
