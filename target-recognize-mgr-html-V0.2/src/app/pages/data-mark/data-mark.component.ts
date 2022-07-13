@@ -590,7 +590,7 @@ this.loadSy()
 }else{
   setTimeout(()=>{
   this.drawFileInCanvas(allotFile)
-},200)
+},400)
 }
 
  

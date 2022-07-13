@@ -611,7 +611,7 @@ class DataMarkComponent {
         else {
             setTimeout(() => {
                 this.drawFileInCanvas(allotFile);
-            }, 200);
+            }, 400);
         }
     }
     cancelRect() {

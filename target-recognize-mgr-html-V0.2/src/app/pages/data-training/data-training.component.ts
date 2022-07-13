@@ -411,6 +411,7 @@ export class DataTrainingComponent implements OnInit {
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
     var lastClass = { };
+    
   for (let index = 0; index < listOfData.length; index++) {
         const element = listOfData[index];
         lastClass[element.id]=[];
@@ -424,22 +425,19 @@ export class DataTrainingComponent implements OnInit {
             }
           });
         }else{
-
         let elementArr = element.taskSampleType.split(",");
         for (let i = 0; i < elementArr.length; i++) {
             let value = elementArr[i];
             this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
               if (HttpResult.succeed(result.code)){
                 lastClass[element.id].push(result.data.sampleTypeName)
-
-
-
               }
             });
         }
         }
 
         if(index == (listOfData.length-1)) {
+      
           setTimeout(()=>{
             for (const key in lastClass) {
               var selectString =lastClass[key].sort().join(",")
@@ -453,13 +451,16 @@ export class DataTrainingComponent implements OnInit {
                 }
               }
             }
-          },400)
+            console.log(this.selectList)
+          },listOfData.length*10)
         }
-
-        
       }
-  
   }
+
+
+
+
+
   // 暂停
   endTask() {
     const checkedCameraIds = [];

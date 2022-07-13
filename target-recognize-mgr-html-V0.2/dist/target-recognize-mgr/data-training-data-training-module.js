@@ -1512,7 +1512,8 @@ class DataTrainingComponent {
                             }
                         }
                     }
-                }, 400);
+                    console.log(this.selectList);
+                }, listOfData.length * 10);
             }
         }
     }
