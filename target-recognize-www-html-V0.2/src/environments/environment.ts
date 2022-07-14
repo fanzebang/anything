@@ -20,5 +20,5 @@ export const environment = {
 //   SAMPLE_OSS_URL: 'http://microismile.cn:9000/sample-resource',
 //  // KMS_URL: 'http://demo.kgtdata.com:18001/kgintegrationweb/#/Index?search_id=b8871fe143a4471480e7ae16ad725b86&kgId=fdce9fd6-4731-11ea-a899-0242ac110005&instanceId='
 //   KMS_URL: 'http://bms.hczy.top:16200/kms.wiki/#/detail?keyword='
-//
+
 // };
