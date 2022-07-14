@@ -161,7 +161,9 @@ export class DetectComponent implements OnInit, OnDestroy {
    }
    
   changeSelect(){
-    this.isSlectTab = false  }
+    this.isSlectTab = false 
+    
+   }
   changeSelect1(){
     this.isSlectTab = true
   }
