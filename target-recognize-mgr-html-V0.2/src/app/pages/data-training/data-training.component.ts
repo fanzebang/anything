@@ -392,7 +392,7 @@ export class DataTrainingComponent implements OnInit {
 
           if(this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END'){
               this.loadSelectData(this.listOfData);
-              
+
           }
             this.listOfData2 = this.listOfData
           }
@@ -411,7 +411,7 @@ export class DataTrainingComponent implements OnInit {
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
     var lastClass = { };
-    
+
   for (let index = 0; index < listOfData.length; index++) {
         const element = listOfData[index];
         lastClass[element.id]=[];
@@ -450,8 +450,8 @@ export class DataTrainingComponent implements OnInit {
                 }
               }
             }
-           
-          },400)
+
+          },600)
         }
       }
   }
