@@ -1474,10 +1474,16 @@ class DataTrainingComponent {
     loadSelectData(listOfData) {
         this.selectList = this.selectList.splice(0, 1);
         var lastClass = {};
+        var requestFinaly = false;
         for (let index = 0; index < listOfData.length; index++) {
+            // if(index == 0){ }
             const element = listOfData[index];
             lastClass[element.id] = [];
             if (element.taskSampleType.indexOf(",") == -1) {
+                if (index == (listOfData.length - 1)) {
+                    requestFinaly = true;
+                }
+                ;
                 this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result) => {
                     if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
                         if (this.selectList.indexOf(result.data.sampleTypeName) == -1) {
@@ -1490,6 +1496,10 @@ class DataTrainingComponent {
             else {
                 let elementArr = element.taskSampleType.split(",");
                 for (let i = 0; i < elementArr.length; i++) {
+                    if (index == (listOfData.length - 1) && i == (elementArr.length - 1)) {
+                        requestFinaly = true;
+                    }
+                    ;
                     let value = elementArr[i];
                     this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${value}`).subscribe((result) => {
                         if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
@@ -1498,7 +1508,7 @@ class DataTrainingComponent {
                     });
                 }
             }
-            if (index == (listOfData.length - 1)) {
+            if (requestFinaly) {
                 setTimeout(() => {
                     for (const key in lastClass) {
                         var selectString = lastClass[key].sort().join(",");
@@ -1512,7 +1522,7 @@ class DataTrainingComponent {
                             }
                         }
                     }
-                }, 600);
+                }, 1900);
             }
         }
     }

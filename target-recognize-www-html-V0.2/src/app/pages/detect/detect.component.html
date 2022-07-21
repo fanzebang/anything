@@ -143,8 +143,10 @@
       <div class="border"></div>
       <div class="rightContent">
         <ul class="tab">
-          <li [ngClass]="{'slectTab': isSlectTab}" (click)="changeSelect1()">百科匹配结果</li>
-          <li [ngClass]="{'slectTab': !isSlectTab}" (click)="changeSelect()">图谱匹配结果</li>
+          <!-- <li [ngClass]="{'slectTab': isSlectTab}" (click)="changeSelect1()"><a [href]="baiKeUrl1" target="_blank">百科匹配结果</a></li>
+          <li [ngClass]="{'slectTab': !isSlectTab}" (click)="changeSelect()">图谱匹配结果</li> -->
+            <li ><a [href]="baiKeUrl1" target="_blank">百科匹配结果</a></li>
+            <li class="slectTab">图谱匹配结果</li>
         </ul>
 
         <!-- <div class="content-title matching">匹配结果</div> -->
