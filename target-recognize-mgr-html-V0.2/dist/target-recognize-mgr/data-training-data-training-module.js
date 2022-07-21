@@ -1199,6 +1199,7 @@ class DataTrainingComponent {
         this.selectList = ["全部"];
         this.selectData = "全部";
         this.comparingDataTrainList = [];
+        this.requestFinaly = false;
         this.Training1Datax = [];
         this.Training1Datay = [];
         this.now = new Date();
@@ -1474,14 +1475,13 @@ class DataTrainingComponent {
     loadSelectData(listOfData) {
         this.selectList = this.selectList.splice(0, 1);
         var lastClass = {};
-        var requestFinaly = false;
         for (let index = 0; index < listOfData.length; index++) {
             // if(index == 0){ }
             const element = listOfData[index];
             lastClass[element.id] = [];
             if (element.taskSampleType.indexOf(",") == -1) {
                 if (index == (listOfData.length - 1)) {
-                    requestFinaly = true;
+                    this.requestFinaly = true;
                 }
                 ;
                 this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result) => {
@@ -1497,7 +1497,7 @@ class DataTrainingComponent {
                 let elementArr = element.taskSampleType.split(",");
                 for (let i = 0; i < elementArr.length; i++) {
                     if (index == (listOfData.length - 1) && i == (elementArr.length - 1)) {
-                        requestFinaly = true;
+                        this.requestFinaly = true;
                     }
                     ;
                     let value = elementArr[i];
@@ -1508,11 +1508,11 @@ class DataTrainingComponent {
                     });
                 }
             }
-            if (requestFinaly) {
+            if (this.requestFinaly) {
                 setTimeout(() => {
                     for (const key in lastClass) {
                         var selectString = lastClass[key].sort().join(",");
-                        if (this.selectList.indexOf(selectString) == -1) {
+                        if (this.selectList.indexOf(selectString) == -1 && selectString != "") {
                             this.selectList.push(selectString);
                         }
                         for (let index = 0; index < listOfData.length; index++) {
@@ -1522,7 +1522,7 @@ class DataTrainingComponent {
                             }
                         }
                     }
-                }, 1900);
+                }, 200);
             }
         }
     }
@@ -2365,7 +2365,7 @@ DataTrainingComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassProp"]("active", ctx.flag === 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.flag === 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.flag === 1 && ctx.requestFinaly);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.flag === 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);

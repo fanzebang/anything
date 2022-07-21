@@ -407,19 +407,18 @@ export class DataTrainingComponent implements OnInit {
 
 
   }
-
+   requestFinaly:boolean = false; 
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
     var lastClass = { };
 
-    var requestFinaly:boolean = false; 
+  
   for (let index = 0; index < listOfData.length; index++) {
- 
     // if(index == 0){ }
         const element = listOfData[index];
         lastClass[element.id]=[];
         if(element.taskSampleType.indexOf(",") == -1){
-          if(index == (listOfData.length-1)){ requestFinaly  = true };
+          if(index == (listOfData.length-1)){ this.requestFinaly  = true };
           this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
             if (HttpResult.succeed(result.code)) {
               if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
@@ -431,7 +430,7 @@ export class DataTrainingComponent implements OnInit {
         }else{
         let elementArr = element.taskSampleType.split(",");
           for (let i = 0; i < elementArr.length; i++) {
-            if(index == (listOfData.length-1) && i == (elementArr.length-1)){ requestFinaly  = true };
+            if(index == (listOfData.length-1) && i == (elementArr.length-1)){ this.requestFinaly  = true };
               let value = elementArr[i];
               this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
                 if (HttpResult.succeed(result.code)){
@@ -441,13 +440,13 @@ export class DataTrainingComponent implements OnInit {
           }
         }
          
-        if(requestFinaly) {
+        if(this.requestFinaly) {
 
           setTimeout(()=>{
      
             for (const key in lastClass) {
               var selectString =lastClass[key].sort().join(",")
-              if(this.selectList.indexOf(selectString) == -1){
+              if(this.selectList.indexOf(selectString) == -1 && selectString != ""){
                 this.selectList.push(selectString)
               }
               for (let index = 0; index < listOfData.length; index++) {
@@ -458,7 +457,7 @@ export class DataTrainingComponent implements OnInit {
               }
             }
 
-          },1900)
+          },200)
     
          
         }

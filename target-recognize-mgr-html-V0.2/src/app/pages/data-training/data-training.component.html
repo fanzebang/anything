@@ -214,8 +214,9 @@ margin: 50px 5%;
       <div class="train-table-box" >
         <div class="train-btns" style="position:relative">
 
-          <ng-container *ngIf="flag===1">
-            <nz-select [(ngModel)]="selectData"
+          <ng-container *ngIf="flag===1 && requestFinaly">
+            <nz-select 
+            [(ngModel)]="selectData"
             (nzOpenChange)="nzOpenChange($event)"
              style="position: absolute;left:0;"
              class="select"

@@ -813,8 +813,9 @@ drawTargetsPolygon(targetJson: Array<{
       $("#ifmBox iframe").eq(1).attr("src","")
       $("#ifmBox iframe").eq(0).attr("src","")
       let baiKeUrl1= this.kms[0].url;
-      this.baiKeUrl1 = this.kms[0].url;
+    
       let sfUrl = this.kms[0].sfUrl;
+      this.baiKeUrl1 = this.kms[0].sfUrl;
     setTimeout(()=>{
       $("#ifmBox iframe").eq(1).attr("src",baiKeUrl1)
       $("#ifmBox iframe").eq(0).attr("src",sfUrl)
