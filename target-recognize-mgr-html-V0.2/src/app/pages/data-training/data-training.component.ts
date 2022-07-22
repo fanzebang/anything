@@ -457,7 +457,7 @@ export class DataTrainingComponent implements OnInit {
               }
             }
 
-          },200)
+          },400)
     
          
         }
