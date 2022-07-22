@@ -1434,7 +1434,7 @@ class DataTrainingComponent {
                             // this.listOfData2 = this.listOfData
                         }
                         this.listOfData = arr1.concat(arr2);
-                        this.listOfData2 = this.listOfData;
+                        // this.listOfData2 = this.listOfData
                         if (this.listOfData.length > 0 && !this.dataTrain)
                             this.tableClick(this.listOfData[0].id, 'handClick');
                     }
@@ -1464,7 +1464,7 @@ class DataTrainingComponent {
                         if (this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END') {
                             // this.loadSelectData(this.listOfData);
                         }
-                        this.listOfData2 = this.listOfData;
+                        // this.listOfData2 = this.listOfData
                     }
                     if (this.listOfData.length > 0 && !this.dataTrain)
                         this.tableClick(this.listOfData[0].id, "handClick");
@@ -1475,56 +1475,103 @@ class DataTrainingComponent {
     loadSelectData(listOfData) {
         this.selectList = this.selectList.splice(0, 1);
         var lastClass = {};
+        let ClassList = [], result = [];
         for (let index = 0; index < listOfData.length; index++) {
-            // if(index == 0){ }
             const element = listOfData[index];
-            lastClass[element.id] = [];
-            if (element.taskSampleType.indexOf(",") == -1) {
-                if (index == (listOfData.length - 1)) {
-                    this.requestFinaly = true;
-                }
-                ;
-                this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result) => {
-                    if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
-                        if (this.selectList.indexOf(result.data.sampleTypeName) == -1) {
-                            this.selectList.push(result.data.sampleTypeName);
-                        }
-                        lastClass[element.id].push(result.data.sampleTypeName);
-                    }
-                });
-            }
-            else {
-                let elementArr = element.taskSampleType.split(",");
-                for (let i = 0; i < elementArr.length; i++) {
-                    if (index == (listOfData.length - 1) && i == (elementArr.length - 1)) {
+            ClassList[index] = new Promise((resove, reject) => {
+                lastClass[element.id] = [];
+                if (element.taskSampleType.indexOf(",") == -1) {
+                    if (index == (listOfData.length - 1)) {
                         this.requestFinaly = true;
                     }
                     ;
-                    let value = elementArr[i];
-                    this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${value}`).subscribe((result) => {
+                    this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result) => {
                         if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
+                            if (this.selectList.indexOf(result.data.sampleTypeName) == -1) {
+                                this.selectList.push(result.data.sampleTypeName);
+                            }
                             lastClass[element.id].push(result.data.sampleTypeName);
+                            resove(lastClass);
                         }
                     });
                 }
-            }
-            if (this.requestFinaly) {
-                setTimeout(() => {
-                    for (const key in lastClass) {
-                        var selectString = lastClass[key].sort().join(",");
-                        if (this.selectList.indexOf(selectString) == -1 && selectString != "") {
-                            this.selectList.push(selectString);
+                else {
+                    let elementArr = element.taskSampleType.split(",");
+                    for (let i = 0; i < elementArr.length; i++) {
+                        if (index == (listOfData.length - 1) && i == (elementArr.length - 1)) {
+                            this.requestFinaly = true;
                         }
-                        for (let index = 0; index < listOfData.length; index++) {
-                            const element = listOfData[index];
-                            if (element.id == (parseInt(key))) {
-                                element.lastClass = selectString;
+                        ;
+                        let value = elementArr[i];
+                        this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].API_URL}/v1/sample-oss-types/${value}`).subscribe((result) => {
+                            if (src_app_core_http_entity__WEBPACK_IMPORTED_MODULE_3__["HttpResult"].succeed(result.code)) {
+                                lastClass[element.id].push(result.data.sampleTypeName);
+                                resove(lastClass);
                             }
-                        }
+                        });
                     }
-                }, 400);
-            }
+                }
+            });
         }
+        Promise.all(ClassList).then((res) => {
+            for (const key in res[0]) {
+                var selectString = res[0][key].sort().join(",");
+                if (this.selectList.indexOf(selectString) == -1 && selectString != "") {
+                    this.selectList.push(selectString);
+                }
+                for (let index = 0; index < this.listOfData.length; index++) {
+                    if (this.listOfData[index].id == (parseInt(key))) {
+                        this.listOfData[index].lastClass = selectString;
+                    }
+                }
+            }
+            this.listOfData2 = this.listOfData;
+            setTimeout(() => {
+                this.requestFinaly = true;
+            }, 500);
+        });
+        // for (let index = 0; index < listOfData.length; index++) {
+        //       const element = listOfData[index];
+        //       lastClass[element.id]=[];
+        //       if(element.taskSampleType.indexOf(",") == -1){
+        //         if(index == (listOfData.length-1)){ this.requestFinaly  = true };
+        //         this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
+        //           if (HttpResult.succeed(result.code)) {
+        //             if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
+        //               this.selectList.push(result.data.sampleTypeName)
+        //             }
+        //             lastClass[element.id].push(result.data.sampleTypeName)
+        //           }
+        //         });
+        //       }else{
+        //       let elementArr = element.taskSampleType.split(",");
+        //         for (let i = 0; i < elementArr.length; i++) {
+        //           if(index == (listOfData.length-1) && i == (elementArr.length-1)){ this.requestFinaly  = true };
+        //             let value = elementArr[i];
+        //             this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
+        //               if (HttpResult.succeed(result.code)){
+        //                 lastClass[element.id].push(result.data.sampleTypeName)
+        //               }
+        //             });
+        //         }
+        //       }
+        //       if(this.requestFinaly) {
+        //         setTimeout(()=>{
+        //           for (const key in lastClass) {
+        //             var selectString =lastClass[key].sort().join(",")
+        //             if(this.selectList.indexOf(selectString) == -1 && selectString != ""){
+        //               this.selectList.push(selectString)
+        //             }
+        //             for (let index = 0; index < listOfData.length; index++) {
+        //               const element = listOfData[index];
+        //               if(element.id == (parseInt(key))){
+        //                 element.lastClass = selectString
+        //               }
+        //             }
+        //           }
+        //         },listOfData.length*30)
+        //       }
+        //     }
     }
     // 暂停
     endTask() {
@@ -1618,8 +1665,10 @@ class DataTrainingComponent {
         else {
             this.listOfData = this.listOfData2;
         }
-        if (this.listOfData.length > 0 && !this.dataTrain)
-            this.tableClick(this.listOfData[0].id, "handClick");
+        if (this.requestFinaly) {
+            if (this.listOfData.length > 0 && !this.dataTrain)
+                this.tableClick(this.listOfData[0].id, "handClick");
+        }
     }
     tableClick(id, type) {
         var now = new Date();

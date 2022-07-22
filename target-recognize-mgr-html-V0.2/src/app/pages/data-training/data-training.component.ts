@@ -354,7 +354,7 @@ export class DataTrainingComponent implements OnInit {
               // this.listOfData2 = this.listOfData
             }
             this.listOfData = arr1.concat(arr2)
-            this.listOfData2 = this.listOfData
+            // this.listOfData2 = this.listOfData
             if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,'handClick')
 
           }
@@ -394,7 +394,7 @@ export class DataTrainingComponent implements OnInit {
               // this.loadSelectData(this.listOfData);
 
           }
-            this.listOfData2 = this.listOfData
+            // this.listOfData2 = this.listOfData
           }
 
           if(this.listOfData.length>0 && !this.dataTrain) this.tableClick( this.listOfData[0].id,"handClick" )
@@ -411,18 +411,23 @@ export class DataTrainingComponent implements OnInit {
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
     var lastClass = { };
-  for (let index = 0; index < listOfData.length; index++) {
-    // if(index == 0){ }
-        const element = listOfData[index];
+    let ClassList = [],result=[];
+    for (let index = 0; index < listOfData.length; index++) {
+      const element = listOfData[index];
+        ClassList[index] = new Promise((resove,reject)=>{ 
         lastClass[element.id]=[];
         if(element.taskSampleType.indexOf(",") == -1){
           if(index == (listOfData.length-1)){ this.requestFinaly  = true };
           this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
             if (HttpResult.succeed(result.code)) {
-              if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
-                this.selectList.push(result.data.sampleTypeName)
-              }
-              lastClass[element.id].push(result.data.sampleTypeName)
+           
+                if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
+                  this.selectList.push(result.data.sampleTypeName)
+                }
+                lastClass[element.id].push(result.data.sampleTypeName)
+                resove(lastClass);
+           
+            
             }
           });
         }else{
@@ -432,35 +437,104 @@ export class DataTrainingComponent implements OnInit {
               let value = elementArr[i];
               this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
                 if (HttpResult.succeed(result.code)){
-                  lastClass[element.id].push(result.data.sampleTypeName)
+              
+                    lastClass[element.id].push(result.data.sampleTypeName)
+                    resove(lastClass);
+               
+               
                 }
               });
           }
         }
-         
-        if(this.requestFinaly) {
 
+      
 
-          setTimeout(()=>{
-     
-            for (const key in lastClass) {
-              var selectString =lastClass[key].sort().join(",")
+        })
+
+        
+    }
+
+    Promise.all(ClassList).then((res)=>{
+
+          for (const key in res[0]) {
+        
+              var selectString =res[0][key].sort().join(",")
+        
               if(this.selectList.indexOf(selectString) == -1 && selectString != ""){
                 this.selectList.push(selectString)
               }
-              for (let index = 0; index < listOfData.length; index++) {
-                const element = listOfData[index];
-                if(element.id == (parseInt(key))){
-                  element.lastClass = selectString
+              for (let index = 0; index < this.listOfData.length; index++) {
+          
+                if(this.listOfData[index].id == (parseInt(key))){
+             
+                  this.listOfData[index].lastClass = selectString
+                 
                 }
               }
+
             }
 
-          },400)
+            this.listOfData2 = this.listOfData
+       
+            setTimeout(()=>{
+              
+              this.requestFinaly  = true 
+           
+            },500)
+
+    })
+
+
+  // for (let index = 0; index < listOfData.length; index++) {
+
+  //       const element = listOfData[index];
+  //       lastClass[element.id]=[];
+  //       if(element.taskSampleType.indexOf(",") == -1){
+  //         if(index == (listOfData.length-1)){ this.requestFinaly  = true };
+  //         this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
+  //           if (HttpResult.succeed(result.code)) {
+  //             if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
+  //               this.selectList.push(result.data.sampleTypeName)
+  //             }
+  //             lastClass[element.id].push(result.data.sampleTypeName)
+  //           }
+  //         });
+  //       }else{
+  //       let elementArr = element.taskSampleType.split(",");
+  //         for (let i = 0; i < elementArr.length; i++) {
+  //           if(index == (listOfData.length-1) && i == (elementArr.length-1)){ this.requestFinaly  = true };
+  //             let value = elementArr[i];
+  //             this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
+  //               if (HttpResult.succeed(result.code)){
+  //                 lastClass[element.id].push(result.data.sampleTypeName)
+  //               }
+  //             });
+  //         }
+  //       }
+         
+  //       if(this.requestFinaly) {
+
+
+  //         setTimeout(()=>{
+     
+  //           for (const key in lastClass) {
+  //             var selectString =lastClass[key].sort().join(",")
+  //             if(this.selectList.indexOf(selectString) == -1 && selectString != ""){
+  //               this.selectList.push(selectString)
+  //             }
+  //             for (let index = 0; index < listOfData.length; index++) {
+  //               const element = listOfData[index];
+  //               if(element.id == (parseInt(key))){
+  //                 element.lastClass = selectString
+  //               }
+  //             }
+  //           }
+
+  //         },listOfData.length*30)
     
          
-        }
-      }
+  //       }
+  //     }
   }
 
 
@@ -561,11 +635,11 @@ export class DataTrainingComponent implements OnInit {
 
       for (let index = 0; index < this.listOfData2.length; index++) {
         const element = this.listOfData2[index];
+     
         if(element.lastClass == this.selectData){
           this.listOfData1.push(element);
         }
       }
-
       this.listOfData = this.listOfData1
 
     }else{
@@ -574,8 +648,10 @@ export class DataTrainingComponent implements OnInit {
 
     }
 
-    if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
-
+    if( this.requestFinaly){
+      if(this.listOfData.length>0 && !this.dataTrain) this.tableClick(this.listOfData[0].id,"handClick")
+    }
+   
   }
 
   Training1Datax=[];

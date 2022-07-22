@@ -804,9 +804,17 @@ drawTargetsPolygon(targetJson: Array<{
     }
   }
 
+  baikeClick(){
 
+      if(this.kms[0].sfUrl == null || this.kms[0].sfUrl == ""){
+        this.nzMessage.error("没有匹配到对应的百科信息");
+        return false;
+      }
+
+  }
 
   kmsSearch(historyId: string, name: string): void {
+    var that = this;
     const params = new HttpParams().append('historyId', historyId).append('name', name);
     this.http.get(`${environment.API_URL}/v1/kms/detect-kms`, {params}).subscribe((result: any) => {
       this.kms = result.data;
@@ -814,13 +822,9 @@ drawTargetsPolygon(targetJson: Array<{
       $("#ifmBox iframe").eq(0).attr("src","")
       let baiKeUrl1= this.kms[0].url;
    
-      if(this.kms[0].sfUrl == null || this.kms[0].sfUrl == ""){
-        $(".baikeLi").click(function(e){
-          return false;
-        })
-      }else{
+      
         this.baiKeUrl1= this.kms[0].sfUrl;
-      }
+      
       
       // let sfUrl = this.kms[0].sfUrl;
     setTimeout(()=>{

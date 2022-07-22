@@ -145,7 +145,7 @@
         <ul class="tab">
           <!-- <li [ngClass]="{'slectTab': isSlectTab}" (click)="changeSelect1()"><a [href]="baiKeUrl1" target="_blank">百科匹配结果</a></li>
           <li [ngClass]="{'slectTab': !isSlectTab}" (click)="changeSelect()">图谱匹配结果</li> -->
-            <li ><a [href]="baiKeUrl1" target="_blank" class="baikeLi">百科匹配结果</a></li>
+            <li ><a [href]="baiKeUrl1" target="_blank" class="baikeLi" (click)="baikeClick()">百科匹配结果</a></li>
             <li class="slectTab">图谱匹配结果</li>
         </ul>
 
