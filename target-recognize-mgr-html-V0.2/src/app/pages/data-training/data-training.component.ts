@@ -391,7 +391,7 @@ export class DataTrainingComponent implements OnInit {
           this.pageIndex = result.data.current;
 
           if(this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END'){
-              this.loadSelectData(this.listOfData);
+              // this.loadSelectData(this.listOfData);
 
           }
             this.listOfData2 = this.listOfData
@@ -411,8 +411,6 @@ export class DataTrainingComponent implements OnInit {
   loadSelectData(listOfData:Array<DataTrain>){
     this.selectList = this.selectList.splice(0,1)
     var lastClass = { };
-
-  
   for (let index = 0; index < listOfData.length; index++) {
     // if(index == 0){ }
         const element = listOfData[index];
@@ -441,6 +439,7 @@ export class DataTrainingComponent implements OnInit {
         }
          
         if(this.requestFinaly) {
+
 
           setTimeout(()=>{
      
@@ -534,6 +533,9 @@ export class DataTrainingComponent implements OnInit {
       this.status = 'OVER';
       //加载进行中的数据
       this.loadTraining();
+      setTimeout(()=>{
+        this.loadSelectData(this.listOfData);
+      },200)
     }
     if (flag ==-1){
       this.status = 'LINE_UP';

@@ -1462,7 +1462,7 @@ class DataTrainingComponent {
                         this.dataTotal = result.data.total;
                         this.pageIndex = result.data.current;
                         if (this.status != 'LINE_UP' && this.status != 'STATUS' && this.status != 'END') {
-                            this.loadSelectData(this.listOfData);
+                            // this.loadSelectData(this.listOfData);
                         }
                         this.listOfData2 = this.listOfData;
                     }
@@ -1591,6 +1591,9 @@ class DataTrainingComponent {
             this.status = 'OVER';
             //加载进行中的数据
             this.loadTraining();
+            setTimeout(() => {
+                this.loadSelectData(this.listOfData);
+            }, 200);
         }
         if (flag == -1) {
             this.status = 'LINE_UP';
