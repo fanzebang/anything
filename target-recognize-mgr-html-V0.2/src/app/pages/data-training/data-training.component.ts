@@ -409,6 +409,7 @@ export class DataTrainingComponent implements OnInit {
   }
    requestFinaly:boolean = false; 
   loadSelectData(listOfData:Array<DataTrain>){
+    this.requestFinaly = false; 
     this.selectList = this.selectList.splice(0,1)
     var lastClass = { };
     let ClassList = [],result=[];
@@ -417,7 +418,7 @@ export class DataTrainingComponent implements OnInit {
         ClassList[index] = new Promise((resove,reject)=>{ 
         lastClass[element.id]=[];
         if(element.taskSampleType.indexOf(",") == -1){
-          if(index == (listOfData.length-1)){ this.requestFinaly  = true };
+ 
           this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
             if (HttpResult.succeed(result.code)) {
            
@@ -425,24 +426,25 @@ export class DataTrainingComponent implements OnInit {
                   this.selectList.push(result.data.sampleTypeName)
                 }
                 lastClass[element.id].push(result.data.sampleTypeName)
-                resove(lastClass);
+                resove(result.data.sampleTypeName);
            
             
             }
           });
         }else{
         let elementArr = element.taskSampleType.split(",");
+        console.log(elementArr)
           for (let i = 0; i < elementArr.length; i++) {
-            if(index == (listOfData.length-1) && i == (elementArr.length-1)){ this.requestFinaly  = true };
+        
               let value = elementArr[i];
               this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
                 if (HttpResult.succeed(result.code)){
               
                     lastClass[element.id].push(result.data.sampleTypeName)
-                    resove(lastClass);
-               
-               
+                  
+
                 }
+                resove(lastClass[element.id]);
               });
           }
         }
@@ -456,9 +458,10 @@ export class DataTrainingComponent implements OnInit {
 
     Promise.all(ClassList).then((res)=>{
 
-          for (const key in res[0]) {
-        
-              var selectString =res[0][key].sort().join(",")
+      setTimeout(()=>{
+          for (const key in lastClass) {
+            console.log(lastClass[key].sort())
+              var selectString =lastClass[key].sort().join(",")
         
               if(this.selectList.indexOf(selectString) == -1 && selectString != ""){
                 this.selectList.push(selectString)
@@ -476,7 +479,7 @@ export class DataTrainingComponent implements OnInit {
 
             this.listOfData2 = this.listOfData
        
-            setTimeout(()=>{
+            
               
               this.requestFinaly  = true 
            
@@ -485,56 +488,6 @@ export class DataTrainingComponent implements OnInit {
     })
 
 
-  // for (let index = 0; index < listOfData.length; index++) {
-
-  //       const element = listOfData[index];
-  //       lastClass[element.id]=[];
-  //       if(element.taskSampleType.indexOf(",") == -1){
-  //         if(index == (listOfData.length-1)){ this.requestFinaly  = true };
-  //         this.http.get(`${environment.API_URL}/v1/sample-oss-types/${element.taskSampleType}`).subscribe((result: HttpResult<SampleOssType>) => {
-  //           if (HttpResult.succeed(result.code)) {
-  //             if(this.selectList.indexOf(result.data.sampleTypeName) == -1){
-  //               this.selectList.push(result.data.sampleTypeName)
-  //             }
-  //             lastClass[element.id].push(result.data.sampleTypeName)
-  //           }
-  //         });
-  //       }else{
-  //       let elementArr = element.taskSampleType.split(",");
-  //         for (let i = 0; i < elementArr.length; i++) {
-  //           if(index == (listOfData.length-1) && i == (elementArr.length-1)){ this.requestFinaly  = true };
-  //             let value = elementArr[i];
-  //             this.http.get(`${environment.API_URL}/v1/sample-oss-types/${value}`).subscribe((result: HttpResult<SampleOssType>) => {
-  //               if (HttpResult.succeed(result.code)){
-  //                 lastClass[element.id].push(result.data.sampleTypeName)
-  //               }
-  //             });
-  //         }
-  //       }
-         
-  //       if(this.requestFinaly) {
-
-
-  //         setTimeout(()=>{
-     
-  //           for (const key in lastClass) {
-  //             var selectString =lastClass[key].sort().join(",")
-  //             if(this.selectList.indexOf(selectString) == -1 && selectString != ""){
-  //               this.selectList.push(selectString)
-  //             }
-  //             for (let index = 0; index < listOfData.length; index++) {
-  //               const element = listOfData[index];
-  //               if(element.id == (parseInt(key))){
-  //                 element.lastClass = selectString
-  //               }
-  //             }
-  //           }
-
-  //         },listOfData.length*30)
-    
-         
-  //       }
-  //     }
   }
 
 
