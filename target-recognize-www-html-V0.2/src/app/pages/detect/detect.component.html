@@ -91,7 +91,7 @@
               </span>
               <span style="top: 6px" *ngIf="currentDetectResult.status !== 4">{{ currentDetectResult.sceneType | sceneType}}</span>
             </div>
-            <div class="effect-content flex-row" style="flex-wrap: wrap;">
+            <div class="effect-content flex-row" style="flex-wrap: wrap;overflow: auto;">
               <div class="effect-item flex-column" [class.target-selected]="selectedTargetPolygon == targetPolygon"
                    *ngFor="let targetPolygon of currentDetectResult.targetJson;index as idx;"
                    (click)="selectTargetPolygon(targetPolygon)" style="height: auto;">
